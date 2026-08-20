@@ -1,0 +1,12 @@
+{
+  "name": "portfolio-course-materials",
+  "version": "1.0.0",
+  "private": true,
+  "description": "포트폴리오 제작 8주 과정 강의자료 생성기",
+  "scripts": {
+    "build": "node scripts/build-deck.js"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}
