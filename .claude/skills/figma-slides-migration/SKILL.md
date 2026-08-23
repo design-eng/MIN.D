@@ -303,3 +303,105 @@ for (let idx = 0; idx < flat.length; idx++) {
 6. **되돌릴 수 있게** → 파괴적 변경 전 원본 값(텍스트·좌표)을 리포트에 남긴다.
 
 중복 생성 주의: 덱에 이미 같은 제목·같은 자식 수의 슬라이드가 있으면 **새로 만들지 말고 기존 것을 갱신**한 뒤, 둘 다 필요한지 되묻는다.
+
+---
+
+## 11. 화면정의서 결손 감사 · 행 추가 (2026-08 추가)
+
+### 11.1 결손 산출
+
+슬라이드마다 **마커 수(`Number sign` 최상위 인스턴스)** 와 **스펙 리스트 행 수**를 비교한다.
+기대값은 `행 수 = 마커 수 + 1` (index 0 = `설명` 헤더 행).
+
+```js
+const list = s.children.find(c =>
+  c.type === "FRAME" && c.layoutMode === "VERTICAL" && c.x > 1000);
+const marks = s.children.filter(c => c.name === "Number sign").length;
+const deficit = marks - (list.children.length - 1);
+```
+
+`list`가 없는 슬라이드는 **결손이 아니라 다른 템플릿**(스크린샷 나열형·3화면 플로우형)일 수 있다.
+숫자만 보고 결손으로 단정하지 말고 스크린샷으로 확인한다.
+
+### 11.2 행 템플릿은 반드시 44/44 짜리를 복제한다
+
+`PPT_form/list` 인스턴스는 **외곽 높이가 오버라이드로 고정**되어 있다.
+3줄짜리 행(88px)을 복제해 1줄 텍스트를 넣으면
+`Frame 270`은 88 그대로, 외곽은 44로 남아 **번호·기능·설명이 서로 어긋나게 렌더된다.**
+`textAutoResize = "HEIGHT"` 로도 복구되지 않는다.
+
+```js
+const parts = r => { const f = r.children[0]; return {
+  note: f.children[0].children[0].children[0],
+  fun:  f.children[1].children[0].children[0],
+  desc: f.children[2].children[0] }; };
+
+// 깨끗한 1줄 템플릿만 고른다
+const tpl = list.children.find(r =>
+  Math.round(r.height) === 44 &&
+  Math.round(r.children[0].height) === 44 &&
+  (() => { try { parts(r); return true; } catch (e) { return false; } })());
+```
+
+- 리스트 안에 44/44 행이 없으면 **다른 슬라이드의 리스트에서 복제**해 온다 (같은 파일 내 clone 가능).
+- 2줄 설명은 `\n` 만 넣으면 66px로 알아서 hug 된다.
+- 행 index 0(`설명` 헤더)은 구조가 달라 `parts()` 가 던진다. 항상 try/catch.
+
+**검증**: `list.children.filter(r => Math.abs(r.children[0].height - r.height) > 1).length === 0`
+
+### 11.3 높이 한계 → 초과하면 슬라이드를 나눈다
+
+리스트 상단 `y = 140`, 푸터 라인 `y = 1020` → **가용 높이 870px**.
+44px 행 기준 최대 19행, 실제 혼합 기준 **15행 전후가 상한**.
+
+초과하면 화면(좌/우) 기준으로 2장으로 나눈다. 마커 x좌표로 분류한다.
+
+```js
+const isScreen = c => c.width > 300 && c.width < 345 && c.height > 400;
+const scr = A.children.filter(isScreen).sort((a,b) => a.x - b.x);
+const THRESH = Math.round(scr[1].x - 60);          // 좌/우 경계
+
+const side = {};                                    // 마커번호 → 좌측인가
+for (const c of A.children)
+  if (c.name === "Number sign") side[mnum(c)] = c.x < THRESH;
+
+const B = A.clone();
+A.parent.insertChild(A.parent.children.indexOf(A) + 1, B);
+// A: side===true 인 행/마커/화면만 남김,  B: 나머지 + Toast
+```
+
+- **행 index가 아니라 마커 번호로 분류**한다 (번호가 건너뛰는 슬라이드가 있다).
+- `clone()` 이 원본 앞에 삽입되는 경우가 있으므로 **삽입 후 순서를 반드시 재확인**한다.
+- 화면이 1개만 남은 슬라이드는 `x = 535`, `y = 199` 로 옮겨 덱의 1화면 레이아웃과 맞춘다.
+  (화면이 848px보다 높으면 `y = 172` 로 붙이고 푸터 침범을 리포트한다.)
+
+### 11.4 폰트
+
+이 실행 환경에는 **Pretendard가 없다** (사용 가능 패밀리 1938개 중 0건, 시스템 폰트 자체가 없는 클라우드 카탈로그).
+따라서 새로 쓰는 행은 전부 `Noto Sans KR`이 된다. 이는 **되돌릴 수 있는 문제**로 취급한다:
+
+1. 새 텍스트는 일관되게 `Noto Sans KR / Regular` 로 쓴다 (섞지 않는다).
+2. 작업 종료 시 아래 스크립트를 사용자에게 전달해 **데스크톱 Figma에서 한 번에 복원**하게 한다.
+
+```js
+// Pretendard가 설치된 데스크톱 Figma 플러그인 콘솔에서 실행
+const PRET = s => ({ family: "Pretendard", style: s });
+const MAP  = { "Regular": "Regular", "Medium": "Medium", "Bold": "Bold" };
+for (const slide of slides) {                       // 대상 슬라이드 배열
+  const ts = []; (function w(n){ if (n.type === "TEXT") ts.push(n);
+    if ('children' in n) n.children.forEach(w); })(slide);
+  for (const t of ts) {
+    if (t.fontName === figma.mixed) continue;
+    if (t.fontName.family !== "Noto Sans KR") continue;
+    const f = PRET(MAP[t.fontName.style] || "Regular");
+    await figma.loadFontAsync(f);
+    t.fontName = f;
+  }
+}
+```
+
+### 11.5 원본 덱의 기존 불일치는 고치지 말고 리포트한다
+
+자동화 상세 슬라이드처럼 **기획자가 쓴 행 번호와 마커 위치가 어긋난 슬라이드**가 있다
+(마커는 보이는 화면 기준, 행은 스크롤된 전체 내용 기준).
+새 행은 **마커 위치 기준으로** 쓰되, 기존 행은 건드리지 않고 불일치 사실만 보고한다.
