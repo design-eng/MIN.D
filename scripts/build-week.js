@@ -8,7 +8,9 @@
  */
 const pptxgen = require("pptxgenjs");
 const path = require("path");
-const { COURSE, WEEK_CONTENT } = require("./week-content");
+// 과목 선택: --portfolio 를 주면 포트폴리오제작, 없으면 서비스디자인
+const USE_PORTFOLIO = process.argv.includes("--portfolio");
+const { COURSE, WEEK_CONTENT } = require(USE_PORTFOLIO ? "./portfolio-content" : "./week-content");
 
 /* ── 디자인 토큰 (개요 덱과 동일) ─────────────────────────── */
 const INK = "14161B", INK_SOFT = "262A33", GRAPHITE = "6B7280", MUTED = "9AA0AA";
@@ -25,6 +27,7 @@ function buildWeek(wk) {
   pres.subject = COURSE.subject;
 
   const DECK_TITLE = `${COURSE.name} · ${wk.n}주차 ${wk.title}`;
+  const SESSION = COURSE.session; // 예: "3시간", "90분"
   let pageNo = 0;
 
   /* ── 헬퍼 ───────────────────────────────────────────────── */
@@ -113,7 +116,7 @@ function buildWeek(wk) {
       fontSize: 17, color: "C9CDD6", fontFace: FL, margin: 0, lineSpacingMultiple: 1.24, valign: "top",
     });
     rule(s, M, 4.2, 3.2, "3A3F4B");
-    [["과목", COURSE.name + " · 학부 3학년"], ["오늘", "3시간 — " + wk.ratio], ["제출물", wk.output]]
+    [["과목", COURSE.name + " · " + COURSE.audience], ["오늘", SESSION + " — " + wk.ratio], ["제출물", wk.output]]
       .forEach(([k, v], i) => {
         const y = 4.44 + i * 0.42;
         s.addText(k, { x: M, y, w: 1.0, h: 0.34, fontSize: 11, bold: true, color: MUTED, fontFace: F, margin: 0, valign: "middle" });
@@ -125,9 +128,11 @@ function buildWeek(wk) {
   /* ── 2. 오늘의 3시간 (실제 시각 시간표) ─────────────────── */
   {
     const s = light();
-    head(s, "TODAY", "오늘의 3시간", wk.ratio);
+    head(s, "TODAY", "오늘의 " + SESSION, wk.ratio);
     const n = wk.schedule.length;
-    const rowH = Math.min(0.62, (6.42 - BODY_TOP - 0.16) / n);
+    // 행이 적은 주차(90분 과목)에서 표가 위에만 몰리지 않도록 높이를 가변으로 둔다
+    const rowH = Math.min(1.02, (6.42 - BODY_TOP - 0.16) / n);
+    const rowsEnd = BODY_TOP + 0.16 + n * rowH;
     wk.schedule.forEach(([time, what, how], i) => {
       const y = BODY_TOP + 0.16 + i * rowH;
       const rest = !how;
@@ -145,6 +150,20 @@ function buildWeek(wk) {
       });
       if (i < n - 1) rule(s, M, y + rowH - 0.02, CW, rest ? "F0F1F4" : LINE);
     });
+    // 표가 짧게 끝나면 남는 자리에 오늘의 도달점을 둔다
+    if (wk.todayEnd && rowsEnd < 5.2) {
+      const cy = rowsEnd + 0.34;
+      card(s, M, cy, CW, 6.34 - cy, { fill: INK });
+      s.addText("오늘 끝나면", {
+        x: M + 0.5, y: cy + 0.18, w: 3.0, h: 0.3,
+        fontSize: 10.5, bold: true, color: ACCENT, fontFace: F, charSpacing: 1.2, margin: 0, valign: "middle",
+      });
+      s.addText(wk.todayEnd, {
+        x: M + 0.5, y: cy + 0.48, w: CW - 1.0, h: 6.34 - cy - 0.62,
+        fontSize: 16, bold: true, color: WHITE, fontFace: F, margin: 0,
+        lineSpacingMultiple: 1.24, valign: "middle",
+      });
+    }
     foot(s);
     s.addNotes(wk.flowNote);
   }
@@ -416,11 +435,11 @@ function buildWeek(wk) {
     s.addNotes(wk.homeworkNote);
   }
 
-  const out = path.join(__dirname, "..", "dist", "weeks", `서비스디자인_${wk.n.padStart(2, "0")}주차_${wk.file}.pptx`);
+  const out = path.join(__dirname, "..", "dist", COURSE.outDir, `${COURSE.filePrefix}_${wk.n.padStart(2, "0")}주차_${wk.file}.pptx`);
   return pres.writeFile({ fileName: out }).then(() => out);
 }
 
-const want = process.argv.slice(2).map(Number);
+const want = process.argv.slice(2).filter((a) => /^\d+$/.test(a)).map(Number);
 const targets = want.length ? WEEK_CONTENT.filter((w) => want.includes(Number(w.n))) : WEEK_CONTENT;
 if (!targets.length) { console.error("해당 주차 콘텐츠가 없습니다:", want.join(", ")); process.exit(1); }
 Promise.all(targets.map(buildWeek)).then((outs) => outs.forEach((o) => console.log("생성 완료:", o)));

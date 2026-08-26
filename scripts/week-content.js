@@ -8,6 +8,10 @@
  */
 const COURSE = {
   name: "서비스디자인",
+  audience: "학부 3학년",
+  session: "3시간",
+  outDir: "weeks",
+  filePrefix: "서비스디자인",
   subject: "원광대학교 2026-2 · 학부 3학년 · 주 3시간 × 15주 · 졸업 전시 패널 제작",
 };
 
