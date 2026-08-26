@@ -1,5 +1,5 @@
 /**
- * 원광대학교 2026-2 · 학부 3학년「포트폴리오 · 서비스디자인」— 15주 강의자료 덱 생성기
+ * 원광대학교 2026-2 · 학부 3학년「서비스디자인」— 15주 강의자료 덱 생성기
  *   node scripts/build-deck.js
  *
  * 내용 근거: Drive「원광대_2026-2_커리큘럼_기획안」PART A (학부 3학년)
@@ -31,13 +31,13 @@ const M  = 0.7;                // 좌우 마진
 const CW = SW - M * 2;         // 11.933
 const BODY_TOP = 1.72;
 
-const DECK_TITLE = "포트폴리오 · 서비스디자인 · 15주";
+const DECK_TITLE = "서비스디자인 · 15주";
 
 const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE";
 pres.author = "MIN.D";
 pres.company = "MIN.D";
-pres.title = "원광대학교 2026-2 · 포트폴리오 · 서비스디자인 (학부 3학년)";
+pres.title = "원광대학교 2026-2 · 서비스디자인 (학부 3학년)";
 pres.subject = "주 3시간 × 15주 실습형 · 졸업 전시 패널 제작 커리큘럼 강의자료";
 
 let pageNo = 0;
@@ -236,7 +236,7 @@ const WEEKS = [
     x: M, y: 1.5, w: 7.5, h: 0.3,
     fontSize: 12, bold: true, color: ACCENT, fontFace: F, charSpacing: 1.6, margin: 0,
   });
-  s.addText("포트폴리오 · 서비스디자인", {
+  s.addText("서비스디자인", {
     x: M, y: 1.96, w: 8.2, h: 1.05,
     fontSize: 48, bold: true, color: WHITE, fontFace: F, margin: 0, valign: "middle",
   });
@@ -1059,7 +1059,7 @@ divider("02", "PART 02", "평가와 운영",
     x: M, y: 5.46, w: 7.8, h: 0.44,
     fontSize: 15, bold: true, color: WHITE, fontFace: F, margin: 0, valign: "middle",
   });
-  s.addText("원광대학교 2026-2 · 포트폴리오 · 서비스디자인 · 학부 3학년", {
+  s.addText("원광대학교 2026-2 · 서비스디자인 · 학부 3학년", {
     x: M, y: 6.2, w: 7.8, h: 0.3,
     fontSize: 10.5, color: MUTED, fontFace: F, margin: 0, valign: "middle",
   });
@@ -1067,5 +1067,5 @@ divider("02", "PART 02", "평가와 운영",
 }
 
 /* ──────────────────────────────────────────────────────────── */
-const out = path.join(__dirname, "..", "dist", "포트폴리오_서비스디자인_15주_강의자료.pptx");
+const out = path.join(__dirname, "..", "dist", "서비스디자인_15주_강의자료.pptx");
 pres.writeFile({ fileName: out }).then(() => console.log("생성 완료:", out));
