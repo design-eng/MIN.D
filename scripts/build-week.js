@@ -113,7 +113,7 @@ function buildWeek(wk) {
       fontSize: 17, color: "C9CDD6", fontFace: FL, margin: 0, lineSpacingMultiple: 1.24, valign: "top",
     });
     rule(s, M, 4.2, 3.2, "3A3F4B");
-    [["과목", COURSE.name + " · 학부 3학년"], ["오늘", "180분 — 강의 70 · 실습 60 · 크리틱 40 · 랩업 10"], ["제출물", wk.output]]
+    [["과목", COURSE.name + " · 학부 3학년"], ["오늘", "3시간 — " + wk.ratio], ["제출물", wk.output]]
       .forEach(([k, v], i) => {
         const y = 4.44 + i * 0.42;
         s.addText(k, { x: M, y, w: 1.0, h: 0.34, fontSize: 11, bold: true, color: MUTED, fontFace: F, margin: 0, valign: "middle" });
@@ -122,37 +122,29 @@ function buildWeek(wk) {
     s.addNotes(wk.coverNote);
   }
 
-  /* ── 2. 오늘의 흐름 ─────────────────────────────────────── */
+  /* ── 2. 오늘의 3시간 (실제 시각 시간표) ─────────────────── */
   {
     const s = light();
-    head(s, "TODAY", "오늘 180분의 흐름", wk.flowSub);
-    const blocks = [["70", "강의", wk.flow[0], 70], ["60", "실습", wk.flow[1], 60], ["40", "크리틱", wk.flow[2], 40], ["10", "랩업", wk.flow[3], 10]];
-    const total = 180, gap = 0.14, usableW = CW - gap * 3, MINW = 1.05;
-    let widths = blocks.map((b) => (usableW * b[3]) / total);
-    const deficit = widths.reduce((a, w) => a + Math.max(0, MINW - w), 0);
-    const donor = widths.filter((w) => w > MINW).reduce((a, w) => a + w, 0);
-    widths = widths.map((w) => (w < MINW ? MINW : w - (deficit * w) / donor));
-    let x = M;
-    const barY = BODY_TOP + 0.46;
-    blocks.forEach(([mins, name, desc], i) => {
-      const w = widths[i], isDark = i === 1 || i === 2;
-      s.addShape(pres.ShapeType.roundRect, {
-        x, y: barY, w, h: 1.0,
-        fill: { color: isDark ? INK : SURFACE }, line: { color: isDark ? INK : LINE, width: 1 }, rectRadius: 0.08,
+    head(s, "TODAY", "오늘의 3시간", wk.ratio);
+    const n = wk.schedule.length;
+    const rowH = Math.min(0.62, (6.42 - BODY_TOP - 0.16) / n);
+    wk.schedule.forEach(([time, what, how], i) => {
+      const y = BODY_TOP + 0.16 + i * rowH;
+      const rest = !how;
+      s.addText(time, {
+        x: M, y, w: 1.75, h: rowH,
+        fontSize: 11, bold: !rest, color: rest ? MUTED : ACCENT, fontFace: F, margin: 0, valign: "middle",
       });
-      const narrow = w < 1.6, inset = narrow ? 0.12 : 0.3;
-      s.addText(
-        [{ text: mins, options: { fontSize: narrow ? 20 : 28, color: isDark ? WHITE : INK, fontFace: FL } },
-         { text: "분", options: { fontSize: narrow ? 10 : 12, color: isDark ? MUTED : GRAPHITE, fontFace: F } }],
-        { x: x + inset, y: barY + 0.16, w: w - inset * 2, h: 0.66, margin: 0, valign: "middle", align: narrow ? "center" : "left" }
-      );
-      s.addText(name, { x, y: barY + 1.22, w, h: 0.34, fontSize: 16, bold: true, color: INK, fontFace: F, align: "center", margin: 0, valign: "middle" });
-      s.addText(desc, { x: x - 0.12, y: barY + 1.56, w: w + 0.24, h: 0.5, fontSize: 10.5, color: GRAPHITE, fontFace: F, align: "center", margin: 0, lineSpacingMultiple: 1.2, valign: "top" });
-      x += w + gap;
+      s.addText(what, {
+        x: M + 1.9, y, w: CW - 1.9 - 2.5, h: rowH,
+        fontSize: rest ? 11 : 13, bold: !rest, color: rest ? MUTED : INK, fontFace: F, margin: 0, valign: "middle",
+      });
+      if (how) s.addText(how, {
+        x: SW - M - 2.5, y, w: 2.5, h: rowH,
+        fontSize: 11, color: GRAPHITE, fontFace: F, align: "right", margin: 0, valign: "middle",
+      });
+      if (i < n - 1) rule(s, M, y + rowH - 0.02, CW, rest ? "F0F1F4" : LINE);
     });
-    card(s, M, 5.06, CW, 1.28, { fill: INK });
-    s.addText("오늘 끝나면", { x: M + 0.5, y: 5.24, w: 3.0, h: 0.3, fontSize: 10.5, bold: true, color: ACCENT, fontFace: F, charSpacing: 1.2, margin: 0, valign: "middle" });
-    s.addText(wk.todayEnd, { x: M + 0.5, y: 5.54, w: CW - 1.0, h: 0.7, fontSize: 16, bold: true, color: WHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.24, valign: "middle" });
     foot(s);
     s.addNotes(wk.flowNote);
   }
@@ -271,6 +263,74 @@ function buildWeek(wk) {
       if (b.note) s.addNotes(b.note);
     },
 
+    cols(b) {
+      const s = light();
+      head(s, b.kicker, b.title, b.sub);
+      const n = b.items.length, g = 0.36;
+      const cw = (CW - g * (n - 1)) / n;
+      const ch = b.foot ? 3.86 : 4.24;
+      b.items.forEach((it, i) => {
+        const x = M + i * (cw + g);
+        const isDark = b.dark === i;
+        card(s, x, BODY_TOP + 0.14, cw, ch, isDark ? { fill: INK } : {});
+        s.addText(it.t, {
+          x: x + 0.38, y: BODY_TOP + 0.42, w: cw - 0.76, h: 0.46,
+          fontSize: 17, bold: true, color: isDark ? WHITE : INK, fontFace: F, margin: 0, valign: "middle",
+        });
+        s.addText(it.sub, {
+          x: x + 0.38, y: BODY_TOP + 0.9, w: cw - 0.76, h: 0.34,
+          fontSize: 11, bold: true, color: ACCENT, fontFace: F, margin: 0, lineSpacingMultiple: 1.15, valign: "top",
+        });
+        rule(s, x + 0.38, BODY_TOP + 1.34, cw - 0.76, isDark ? "3A3F4B" : "DCDEE3");
+        bullets(s, it.items, {
+          x: x + 0.38, y: BODY_TOP + 1.5, w: cw - 0.76, h: ch - 1.7,
+          fontSize: 11.5, gap: 9, color: isDark ? WHITE : INK_SOFT,
+        });
+      });
+      if (b.foot) s.addText(b.foot, {
+        x: M, y: 6.14, w: CW, h: 0.46,
+        fontSize: 12.5, bold: true, color: INK, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
+      });
+      foot(s);
+      if (b.note) s.addNotes(b.note);
+    },
+
+    casebox(b) {
+      const s = light();
+      head(s, b.kicker, b.title, b.sub);
+      card(s, M, BODY_TOP + 0.14, CW, 1.12, { fill: INK });
+      s.addText("여정", {
+        x: M + 0.44, y: BODY_TOP + 0.32, w: 1.4, h: 0.28,
+        fontSize: 10, bold: true, color: ACCENT, fontFace: F, charSpacing: 1.4, margin: 0, valign: "middle",
+      });
+      s.addText(b.journey, {
+        x: M + 0.44, y: BODY_TOP + 0.62, w: CW - 0.88, h: 0.5,
+        fontSize: 12, color: WHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
+      });
+      const n = b.items.length, g = 0.36;
+      const cw = (CW - g * (n - 1)) / n;
+      const cy = BODY_TOP + 1.5;
+      b.items.forEach((it, i) => {
+        const x = M + i * (cw + g);
+        card(s, x, cy, cw, 2.86, { fill: WHITE, line: LINE });
+        chip(s, x + 0.36, cy + 0.34, String(i + 1), { size: 0.32, fontSize: 10.5 });
+        s.addText(it.t, {
+          x: x + 0.78, y: cy + 0.34, w: cw - 1.14, h: 0.32,
+          fontSize: 13.5, bold: true, color: INK, fontFace: F, margin: 0, valign: "middle",
+        });
+        s.addText(it.d, {
+          x: x + 0.36, y: cy + 0.86, w: cw - 0.72, h: 1.8,
+          fontSize: 11.5, color: GRAPHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.3, valign: "top",
+        });
+      });
+      if (b.foot) s.addText(b.foot, {
+        x: M, y: 6.5, w: CW, h: 0.4,
+        fontSize: 12, bold: true, color: ACCENT, fontFace: F, margin: 0, valign: "middle",
+      });
+      foot(s);
+      if (b.note) s.addNotes(b.note);
+    },
+
     checklist(b) {
       const s = light();
       head(s, b.kicker, b.title, b.sub);
@@ -293,22 +353,66 @@ function buildWeek(wk) {
 
   wk.blocks.forEach((b) => R[b.type](b));
 
-  /* ── 마지막. 과제 ───────────────────────────────────────── */
+  /* ── 마지막. 과제와 다음 주 ─────────────────────────────── */
   {
-    const s = dark();
-    const nextNo = String(Math.min(15, Number(wk.n) + 1)).padStart(2, "0");
-    s.addText(nextNo, { x: SW - M - 4.4, y: 0.9, w: 4.4, h: 5.6, fontSize: 255, color: INK_SOFT, fontFace: FT, align: "right", valign: "middle", margin: 0 });
-    s.addText("HOMEWORK", { x: M, y: 1.5, w: 7.6, h: 0.3, fontSize: 11, bold: true, color: ACCENT, fontFace: F, charSpacing: 2, margin: 0, valign: "middle" });
-    s.addText("다음 주까지 해올 것", { x: M, y: 1.9, w: 7.6, h: 0.7, fontSize: 38, bold: true, color: WHITE, fontFace: F, margin: 0, valign: "middle" });
-    wk.homework.forEach((t, i) => {
-      const y = 2.92 + i * 0.62;
-      chip(s, M, y + 0.04, String(i + 1).padStart(2, "0"), { size: 0.34, fontSize: 10.5, fill: ACCENT });
-      s.addText(t, { x: M + 0.62, y, w: 7.8, h: 0.42, fontSize: 14, color: "DDE0E6", fontFace: F, margin: 0, valign: "middle" });
+    const s = light();
+    head(s, "HOMEWORK", "과제와 다음 주", wk.homeworkSub);
+    const lw = 6.9;
+    wk.homework.forEach((h, i) => {
+      const y = BODY_TOP + 0.16 + i * 1.12;
+      card(s, M, y, lw, 0.98, {});
+      chip(s, M + 0.36, y + 0.3, String(i + 1), { size: 0.36, fontSize: 11, fill: ACCENT });
+      s.addText(h.t, {
+        x: M + 0.86, y: y + 0.1, w: lw - 1.24, h: 0.36,
+        fontSize: 14, bold: true, color: INK, fontFace: F, margin: 0, valign: "middle",
+      });
+      s.addText(h.d, {
+        x: M + 0.86, y: y + 0.44, w: lw - 1.24, h: 0.46,
+        fontSize: 11, color: GRAPHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.22, valign: "top",
+      });
     });
-    rule(s, M, 5.14, 7.8, "3A3F4B");
-    s.addText(`제출 — ${wk.output}`, { x: M, y: 5.34, w: 8.0, h: 0.4, fontSize: 15, bold: true, color: WHITE, fontFace: F, margin: 0, valign: "middle" });
-    s.addText(wk.deadline, { x: M, y: 5.76, w: 8.0, h: 0.34, fontSize: 12, color: ACCENT, fontFace: F, margin: 0, valign: "middle" });
-    s.addText(DECK_TITLE, { x: M, y: 6.3, w: 8.0, h: 0.3, fontSize: 10.5, color: MUTED, fontFace: F, margin: 0, valign: "middle" });
+    const subY = BODY_TOP + 0.16 + wk.homework.length * 1.12;
+    s.addText("제출 — " + wk.deadline, {
+      x: M, y: subY + 0.06, w: lw, h: 0.36,
+      fontSize: 12, bold: true, color: ACCENT, fontFace: F, margin: 0, valign: "middle",
+    });
+
+    const rx = M + lw + 0.44;
+    const rw = CW - lw - 0.44;
+    // 다음 주 항목 수에 따라 카드 높이와 구분선 위치를 계산한다 (6개까지 안전)
+    const nT = wk.next.topics.length;
+    const tFont = nT >= 6 ? 11 : 11.5;
+    const tGap = nT >= 6 ? 4 : 6;
+    const perItem = nT >= 6 ? 0.28 : 0.32;
+    const ruleY = BODY_TOP + 2.06 + nT * perItem + 0.08;
+    card(s, rx, BODY_TOP + 0.16, rw, ruleY + 0.9 - (BODY_TOP + 0.16), { fill: INK });
+    s.addText("NEXT WEEK", {
+      x: rx + 0.42, y: BODY_TOP + 0.46, w: rw - 0.84, h: 0.28,
+      fontSize: 10, bold: true, color: ACCENT, fontFace: F, charSpacing: 1.4, margin: 0, valign: "middle",
+    });
+    s.addText(wk.next.n + "주차", {
+      x: rx + 0.42, y: BODY_TOP + 0.78, w: rw - 0.84, h: 0.44,
+      fontSize: 26, color: WHITE, fontFace: FL, margin: 0, valign: "middle",
+    });
+    s.addText(wk.next.title, {
+      x: rx + 0.42, y: BODY_TOP + 1.28, w: rw - 0.84, h: 0.56,
+      fontSize: 17, bold: true, color: WHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.16, valign: "top",
+    });
+    rule(s, rx + 0.42, BODY_TOP + 1.94, rw - 0.84, "3A3F4B");
+    bullets(s, wk.next.topics, {
+      x: rx + 0.42, y: BODY_TOP + 2.1, w: rw - 0.84, h: nT * perItem,
+      fontSize: tFont, gap: tGap, color: "DDE0E6",
+    });
+    rule(s, rx + 0.42, ruleY, rw - 0.84, "3A3F4B");
+    s.addText("미리 준비할 것", {
+      x: rx + 0.42, y: ruleY + 0.12, w: rw - 0.84, h: 0.26,
+      fontSize: 9.5, bold: true, color: MUTED, fontFace: F, charSpacing: 1, margin: 0, valign: "middle",
+    });
+    s.addText(wk.next.prepare, {
+      x: rx + 0.42, y: ruleY + 0.4, w: rw - 0.84, h: 0.5,
+      fontSize: 11, bold: true, color: ACCENT, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
+    });
+    foot(s);
     s.addNotes(wk.homeworkNote);
   }
 
