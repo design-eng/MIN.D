@@ -4,6 +4,17 @@ const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
         Table, TableRow, TableCell, WidthType, ShadingType, BorderStyle,
         PageBreak, Header, Footer, PageNumber, convertInchesToTwip } = d;
 
+// ── 회사 정보와 시행 일자 : 여기만 고치면 문서 전체에 반영된다 ──────────
+const CO = {
+  name:    '마인드(MIN.D)',
+  ceo:     '최 민 숙',
+  addr:    '서울시 양천구 목동동로 293 현대 41타워 1314호',
+  enacted: '2026년 8월 27일',
+  effect:  '2026년 9월 1일',
+};
+// node build-rules.js --final  →  부속 검토 메모를 뺀 배포용
+const FINAL = process.argv.includes('--final');
+
 const FONT = '맑은 고딕';
 const INK = '14161B', GRAY = '6B7280', LINE = 'D4D6DB', SURF = 'F4F5F7', ACC = 'C2410C';
 
@@ -84,17 +95,17 @@ const P = (...x) => body.push(...x);
 // ==================== 표지 ====================
 P(
   new Paragraph({ spacing: { before: 2400, after: 200 }, alignment: AlignmentType.CENTER,
-    children: [T('마인드', { size: 28, color: GRAY })] }),
+    children: [T(CO.name, { size: 28, color: GRAY })] }),
   new Paragraph({ spacing: { after: 160 }, alignment: AlignmentType.CENTER,
     children: [T('취 업 규 칙', { size: 56, bold: true })] }),
   new Paragraph({ spacing: { after: 1200 }, alignment: AlignmentType.CENTER,
     children: [T('상시 근로자 5인 미만 사업장 기준', { size: 20, color: GRAY })] }),
   new Paragraph({ spacing: { after: 80 }, alignment: AlignmentType.CENTER,
-    children: [T('제정일    2026년      월      일', { size: 20 })] }),
+    children: [T('제정일    ' + CO.enacted, { size: 20 })] }),
   new Paragraph({ spacing: { after: 80 }, alignment: AlignmentType.CENTER,
-    children: [T('시행일    2026년      월      일', { size: 20 })] }),
+    children: [T('시행일    ' + CO.effect, { size: 20 })] }),
   new Paragraph({ spacing: { after: 2000 }, alignment: AlignmentType.CENTER,
-    children: [T('작성자                        (인)', { size: 20, color: GRAY })] }),
+    children: [T(CO.addr, { size: 18, color: GRAY })] }),
   new Paragraph({ children: [new PageBreak()] }),
 );
 
@@ -102,7 +113,7 @@ P(
 P(jang('제 1 장   총 칙'));
 
 P(jo(1, '목적'),
-  hang('이 규칙은 마인드(이하 "회사"라 한다)의 사원의 채용·복무 및 근로조건에 관한 사항을 정함을 목적으로 한다.'));
+  hang('이 규칙은 ' + CO.name + '(이하 "회사"라 한다)의 사원의 채용·복무 및 근로조건에 관한 사항을 정함을 목적으로 한다.'));
 
 P(jo(2, '적용범위'),
   hang('① 이 규칙은 회사에 근무하는 모든 사원에게 적용한다.'),
@@ -221,9 +232,10 @@ P(jo(20, '휴일'),
 
 P(jo(21, '연장·야간 및 휴일근로'),
   hang('① 회사는 업무상 필요한 경우 사원의 동의를 받아 소정근로시간을 초과하여 근로하게 할 수 있다.'),
-  hang('② 연장근로·야간근로 및 휴일근로에 대하여는 실제 근로한 시간에 대한 통상임금을 제31조제3항에 따라 지급한다. 회사는 상시 근로자 5명 미만 사업장으로서 근로기준법 제56조에 따른 가산임금 지급의무가 적용되지 아니한다.'),
-  hang('③ 회사는 연장·야간·휴일근로를 최소화하도록 노력하며, 부득이하게 발생한 경우 사원의 신청에 따라 그에 상응하는 시간을 유급휴가로 대체하여 부여할 수 있다.'),
-  hang('④ 임신 중인 사원에게는 연장근로를 시키지 아니하며, 산후 1년이 지나지 아니한 사원에게는 본인의 명시적 청구가 있는 경우에 한하여 연장근로를 시킬 수 있다.'));
+  hang('② 회사는 상시 근로자 5명 미만 사업장으로서 근로기준법 제56조의 적용을 받지 아니하나, 사원의 근로계약과 통일된 기준을 적용하기 위하여 연장근로·야간근로에 대하여는 통상임금의 100분의 50을, 휴일근로에 대하여는 8시간 이내는 통상임금의 100분의 50을, 8시간을 초과한 시간은 통상임금의 100분의 100을 가산하여 지급한다.'),
+  hang('③ 제2항에 따른 가산수당은 제31조제3항에 따라 지급한다.'),
+  hang('④ 회사는 연장·야간·휴일근로를 최소화하도록 노력하며, 부득이하게 발생한 경우 사원의 신청에 따라 그에 상응하는 시간을 유급휴가로 대체하여 부여할 수 있다.'),
+  hang('⑤ 임신 중인 사원에게는 연장근로를 시키지 아니하며, 산후 1년이 지나지 아니한 사원에게는 본인의 명시적 청구가 있는 경우에 한하여 연장근로를 시킬 수 있다.'));
 
 // ==================== 제5장 휴가 ====================
 P(jang('제 5 장   휴 가'));
@@ -427,7 +439,7 @@ P(jo(50, '징계의 절차'),
 // ==================== 부칙 ====================
 P(jang('부 칙'));
 P(jo(1, '시행일'),
-  hang('이 규칙은 2026년      월      일부터 시행한다.'));
+  hang('이 규칙은 ' + CO.effect + '부터 시행한다.'));
 P(jo(2, '규칙의 개정'),
   hang('① 이 규칙을 사원에게 불리하게 변경하려는 경우 회사는 사원 과반수의 동의를 받아야 한다.'),
   hang('② 그 밖의 경우에는 사원의 의견을 들어 변경할 수 있다.'));
@@ -436,13 +448,14 @@ P(jo(3, '규칙의 주지'),
 
 P(gap(600),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 200 },
-    children: [T('2026년      월      일', { size: 20 })] }),
+    children: [T(CO.effect, { size: 20 })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 },
-    children: [T('마 인 드', { size: 22, bold: true })] }),
+    children: [T(CO.name, { size: 22, bold: true })] }),
   new Paragraph({ alignment: AlignmentType.CENTER,
-    children: [T('대표                              (인)', { size: 20 })] }));
+    children: [T('대표    ' + CO.ceo + '            (서명 또는 인)', { size: 20 })] }));
 
-// ==================== 부속 메모 ====================
+// ==================== 부속 메모 (--final 이면 생략) ====================
+if (!FINAL) {
 P(new Paragraph({ children: [new PageBreak()] }));
 P(new Paragraph({ spacing: { after: 100 },
     children: [T('【부속】 확정 전 검토 메모', { bold: true, size: 26 })] }),
@@ -459,6 +472,7 @@ P(new Paragraph({ spacing: { before: 200, after: 120 },
   table(['조항', '넣은 내용', '빼려면'], [
     ['제20조①3호 공휴일', '관공서 공휴일·대체공휴일을 유급휴일로 부여', '해당 호를 삭제하면 공휴일은 무급 또는 정상근무일이 됩니다'],
     ['제22조 연차유급휴가', '법정 기준(15일·1년 미만 월 1일·3년 이상 가산)과 동일하게 입사일 기준으로 부여', '조 전체를 삭제하거나 "연 10일" 등으로 일수를 낮출 수 있습니다'],
+    ['제21조② 가산수당', '5인 미만은 지급의무가 없으나, 근로계약과 통일하기 위해 연장·야간 50% (휴일 8시간 초과분 100%)를 부여', '기존 근로계약이 이미 가산수당을 약정하고 있어 되돌려도 해당 사원에게는 계약이 우선 적용됩니다. 직원 간 차등이 생기므로 유지를 권장합니다'],
     ['제24조 하계휴가', '별도 휴가를 주지 않고 연차로 사용하도록 운영규칙만 정함 (6월 30일 마감 · 동시 부재 1명 · 근속순 우선)', '조 전체를 삭제해도 연차 사용에는 영향이 없습니다. 별도 유급 하계휴가를 주려면 제3항을 삭제하고 부여 일수를 명시하세요'],
     ['제25조 경조휴가', '결혼 5일, 사망 3~5일 등 유급', '무급으로 바꾸거나 일수를 줄일 수 있습니다'],
     ['제26조 병가', '연 10일 무급 병가', '삭제 시 병가는 연차로만 처리됩니다'],
@@ -485,9 +499,8 @@ P(new Paragraph({ spacing: { before: 340, after: 120 },
 P(new Paragraph({ spacing: { before: 340, after: 120 },
   children: [T('3. 5인 이상이 되면 즉시 바뀌는 것', { bold: true, size: 21 })] }),
   new Paragraph({ spacing: { after: 140 }, indent: { left: 200 },
-    children: [T('상시 근로자가 5명 이상이 되면 아래가 법적 의무로 전환됩니다. 제21조제2항과 제22조제1항, 제46조제2항의 "적용되지 아니한다"는 문구를 그때 삭제해야 합니다.',
+    children: [T('상시 근로자가 5명 이상이 되면 아래가 법적 의무로 전환됩니다. 제22조제1항과 제46조제2항의 "적용되지 아니한다"는 문구를 그때 삭제해야 합니다.',
       { size: 19, color: GRAY })] }),
-  ho('1. 연장·야간·휴일근로 가산수당 50% (휴일 8시간 초과분 100%)'),
   ho('2. 주 12시간 연장근로 한도 (주 52시간 상한)'),
   ho('3. 연차유급휴가 및 연차사용촉진제도'),
   ho('4. 관공서 공휴일 유급휴일'),
@@ -539,6 +552,8 @@ P(new Paragraph({ spacing: { before: 400 }, indent: { left: 200 },
   children: [T('※ 이 문서는 근로기준법 등 관계 법령을 기준으로 작성한 초안입니다. 실제 시행 전 노무사 또는 관할 고용노동관서의 검토를 받으시기를 권합니다.',
     { size: 18, color: GRAY, italics: true })] }));
 
+}   // end if (!FINAL)
+
 // ==================== 문서 조립 ====================
 const doc = new Document({
   styles: { default: { document: { run: { font: FONT, size: 20, color: INK } } } },
@@ -546,7 +561,7 @@ const doc = new Document({
     properties: { page: { margin: { top: 1300, right: 1200, bottom: 1300, left: 1200 } } },
     headers: { default: new Header({ children: [new Paragraph({
       alignment: AlignmentType.RIGHT, spacing: { after: 200 },
-      children: [T('마인드 취업규칙', { size: 17, color: GRAY })] })] }) },
+      children: [T(CO.name + ' 취업규칙', { size: 17, color: GRAY })] })] }) },
     footers: { default: new Footer({ children: [new Paragraph({
       alignment: AlignmentType.CENTER,
       children: [new TextRun({ font: FONT, size: 17, color: GRAY,
@@ -556,6 +571,8 @@ const doc = new Document({
 });
 
 Packer.toBuffer(doc).then(b => {
-  fs.writeFileSync(__dirname + '/../마인드_취업규칙.docx', b);
-  console.log('OK', b.length, 'bytes');
+  const out = __dirname + (FINAL ? '/../마인드_취업규칙_배포용.docx'
+                                 : '/../마인드_취업규칙_검토용.docx');
+  fs.writeFileSync(out, b);
+  console.log(FINAL ? '배포용' : '검토용', b.length, 'bytes ->', out);
 });
