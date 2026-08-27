@@ -2,7 +2,7 @@
 const d = require('docx');
 const fs = require('fs');
 const { Document, Packer, Paragraph, TextRun, AlignmentType, Table, TableRow,
-        TableCell, WidthType, ShadingType, BorderStyle, PageBreak } = d;
+        TableCell, WidthType, ShadingType, BorderStyle, PageBreak, HeightRule } = d;
 
 const CO = {
   name: '마인드(MIN.D)', ceo: '최 민 숙',
@@ -24,7 +24,7 @@ const gap  = n => new Paragraph({ spacing:{after:n||140}, children:[T('')] });
 const h2   = t => new Paragraph({ spacing:{before:340,after:130}, keepNext:true,
   border:{ bottom:{...med, space:7} }, children:[T(t,{bold:true,size:22})] });
 
-function table(head, rows, widths) {
+function table(head, rows, widths, rowHeight) {
   const cell=(text,w,opt={})=>new TableCell({
     width:{size:w,type:WidthType.DXA},
     shading: opt.head?{type:ShadingType.CLEAR,fill:SURF,color:'auto'}:undefined,
@@ -39,7 +39,9 @@ function table(head, rows, widths) {
       right:{style:BorderStyle.NONE,size:0,color:'FFFFFF'},
       insideHorizontal:thin, insideVertical:{style:BorderStyle.NONE,size:0,color:'FFFFFF'} },
     rows:[ new TableRow({tableHeader:true, children:head.map((h,i)=>cell(h,widths[i],{head:true,center:i>0}))}),
-      ...rows.map(r=>new TableRow({children:r.map((c,i)=>cell(c,widths[i],{center:i>0}))})) ],
+      ...rows.map(r=>new TableRow({
+        height: rowHeight ? {value:rowHeight, rule:HeightRule.ATLEAST} : undefined,
+        children:r.map((c,i)=>cell(c,widths[i],{center:i>0}))})) ],
   });
 }
 // 서명란
@@ -50,10 +52,31 @@ function signRow(labelA, nameA, labelB, nameB) {
       left:{style:BorderStyle.NONE,size:0,color:'FFFFFF'}, right:{style:BorderStyle.NONE,size:0,color:'FFFFFF'},
       insideHorizontal:{style:BorderStyle.NONE,size:0,color:'FFFFFF'}, insideVertical:{style:BorderStyle.NONE,size:0,color:'FFFFFF'} },
     rows:[ new TableRow({ children:[labelA,nameA,labelB,nameB].map((t,i)=>new TableCell({
-      width:{size:[1500,2600,1500,2600][i],type:WidthType.DXA}, margins:{top:200,bottom:200,left:0,right:130},
+      width:{size:[1500,2600,1500,2600][i],type:WidthType.DXA},
+      margins:{top:260,bottom:120,left:0,right:130},
+      borders: i%2===1 ? {bottom:{style:BorderStyle.SINGLE,size:4,color:LINE}} : undefined,
       children:[new Paragraph({children:[T(t,{size:20,bold:i%2===0,color:i%2===0?GRAY:INK})]})]})) }) ],
   });
 }
+
+// 손으로 적어 넣는 빈칸 — 지정한 높이의 테두리 상자
+function writeBox(height, placeholder) {
+  return new Table({
+    width:{size:8200,type:WidthType.DXA}, columnWidths:[8200],
+    borders:{ top:thin, bottom:thin, left:thin, right:thin,
+      insideHorizontal:thin, insideVertical:thin },
+    rows:[ new TableRow({ height:{value:height, rule:HeightRule.ATLEAST}, children:[
+      new TableCell({ width:{size:8200,type:WidthType.DXA},
+        margins:{top:120,bottom:120,left:150,right:150},
+        children:[ new Paragraph({ spacing:{line:400},
+          children:[T(placeholder||'', {size:18, color:GRAY, italics:true})] }) ] }) ] }) ],
+  });
+}
+// 라벨 + 기입 칸이 반복되는 머리 표
+function headBox(pairs) {
+  return table(['구분','내용'], pairs, [1800,6400], 420);
+}
+const CHK = '□';
 
 const docs = [];
 
@@ -269,7 +292,7 @@ e.push(h2('제1조 (연봉액)'),
     ['월 지급액 (원)','','',''],
     ['인상률 (%)','—','',''],
     ['평가 등급','—','','—'],
-  ], [2000,2100,2100,2000]),
+  ], [2000,2100,2100,2000], 500),
   gap(150),
   hang('① 연봉액은 12로 나누어 매월 균등하게 지급하며, 지급일은 당월 말일로 한다.'),
   hang('② 월 지급액은 기본급과 식대로 구성한다. 식대는 「소득세법」이 정한 한도까지 비과세로 처리한다.'),
@@ -293,6 +316,168 @@ e.push(gap(320),
   new Paragraph({ alignment:AlignmentType.RIGHT, children:[T('(각 서명 또는 인)', {size:18, color:GRAY})] }));
 
 docs.push({ name:'마인드_연봉계약서.docx', body:e });
+
+
+// ══════════════════ 5. 자기평가서 ══════════════════
+const f = [];
+const AREAS = [
+  ['직무 성과', 40, '산출물의 완성도와 품질 / 일정 준수와 진행 관리 / 클라이언트 요구 파악과 대응'],
+  ['직무 역량', 30, '사용자 조사와 화면 설계의 깊이 / 디자인 시스템 구축·운용 / 도구 숙련도와 새로운 방법의 습득'],
+  ['협업과 태도', 20, '팀·직무 간 소통과 정보 공유 / 피드백 수용과 반영'],
+  ['기여와 성장', 10, '업무 방식·프로세스 개선 제안 / 학습 내용의 공유와 후배 지원'],
+];
+f.push(
+  P_(CO.name, {size:19, color:GRAY, after:60}),
+  new Paragraph({ spacing:{after:60}, children:[T('자기평가서', {size:32, bold:true})] }),
+  new Paragraph({ spacing:{after:260}, border:{bottom:{...med, space:8}}, children:[T('')] }),
+  P_('연봉조정 운영기준 4항제1호에 따라 본인이 작성합니다. 점수보다 근거가 중요합니다. 기억나는 대로 구체적인 작업과 상황을 적어 주세요.', {size:19, color:GRAY, after:220}),
+  headBox([['성명',''],['평가기간','          년      월  ~          년      월'],['작성일','          년      월      일']]),
+);
+f.push(h2('1. 이번 1년의 주요 작업'),
+  table(['작업 / 프로젝트','맡은 역할','기간','결과'], [
+    ['','','',''],['','','',''],['','','',''],['','','',''],['','','',''],
+  ], [2900,2000,1500,1800], 620));
+
+f.push(h2('2. 영역별 자기평가'));
+AREAS.forEach(([name, pts, detail]) => {
+  f.push(
+    new Paragraph({ spacing:{before:240, after:60}, keepNext:true,
+      children:[T(`${name}   `, {bold:true, size:21}), T(`배점 ${pts}점`, {size:19, color:ACC}),
+                T('          자기점수         점', {size:19, color:GRAY})] }),
+    new Paragraph({ spacing:{after:100}, children:[T(detail, {size:17, color:GRAY})] }),
+    writeBox(760, '그렇게 판단한 근거를 적어 주세요.'),
+  );
+});
+f.push(new Paragraph({ spacing:{before:220},
+  children:[T('자기점수 합계          점', {bold:true, size:21})] }));
+
+f.push(new Paragraph({children:[new PageBreak()]}));
+f.push(h2('3. 스스로 평가하는 잘한 점과 아쉬운 점'),
+  P_('잘한 점', {size:19, color:GRAY, after:70}), writeBox(760),
+  gap(140),
+  P_('아쉬운 점 · 보완하고 싶은 점', {size:19, color:GRAY, after:70}), writeBox(760));
+
+f.push(h2('4. 다음 1년의 목표'),
+  P_('무엇을 어느 수준까지 하고 싶은지 세 가지만 적어 주세요.', {size:19, color:GRAY, after:100}),
+  table(['','목표','어떻게 확인할 수 있나'], [
+    ['1','',''],['2','',''],['3','',''],
+  ], [700,3600,3900], 700));
+
+f.push(h2('5. 회사에 바라는 점'),
+  P_('업무 환경, 필요한 지원, 배우고 싶은 것 등 무엇이든 좋습니다. 비워 두셔도 됩니다.', {size:19, color:GRAY, after:100}),
+  writeBox(900));
+
+f.push(gap(300),
+  P_('        년        월        일', {align:AlignmentType.CENTER, after:0}),
+  signRow('작 성 자', '', '서  명', '(서명 또는 인)'),
+  new Paragraph({ spacing:{before:240}, border:{top:{...thin, space:8}},
+    children:[T('휴가 사용, 출산·육아휴직, 성별·연령 등 차별 금지 사유, 괴롭힘 신고, 과거 연봉 합의가 이루어지지 않았던 사실은 평가에 반영되지 않습니다. (연봉조정 운영기준 5항)', {size:17, color:GRAY})] }));
+
+docs.push({ name:'마인드_연봉조정_자기평가서.docx', body:f });
+
+// ══════════════════ 6. 회사평가표 ══════════════════
+const g = [];
+g.push(
+  P_(CO.name, {size:19, color:GRAY, after:60}),
+  new Paragraph({ spacing:{after:60}, children:[T('회사평가표', {size:32, bold:true})] }),
+  new Paragraph({ spacing:{after:260}, border:{bottom:{...med, space:8}}, children:[T('')] }),
+  P_('연봉조정 운영기준 4항제2호에 따라 대표가 작성합니다. 면담 전까지는 공개하지 않습니다.', {size:19, color:ACC, after:220}),
+  headBox([['성명',''],['입사일',''],['평가기간','          년      월  ~          년      월'],['평가자','대표    ' + CO.ceo]]),
+);
+g.push(h2('1. 영역별 평가'));
+AREAS.forEach(([name, pts, detail]) => {
+  g.push(
+    new Paragraph({ spacing:{before:240, after:60}, keepNext:true,
+      children:[T(`${name}   `, {bold:true, size:21}), T(`배점 ${pts}점`, {size:19, color:ACC}),
+                T('          자기점수         점          회사점수         점', {size:19, color:GRAY})] }),
+    new Paragraph({ spacing:{after:100}, children:[T(detail, {size:17, color:GRAY})] }),
+    writeBox(700, '점수의 근거가 된 구체적인 상황이나 산출물을 적습니다. 인상이나 태도가 아니라 관찰한 사실을 씁니다.'),
+  );
+});
+
+g.push(h2('2. 총점과 등급'),
+  table(['자기평가 총점','회사평가 총점','등급','권장 인상률'], [['      점','      점','','']], [2050,2050,2050,2050], 520),
+  gap(140),
+  table(['등급','총점','인상률'], [
+    ['S','90 ~ 100','8 ~ 12%'], ['A','80 ~ 89','5 ~ 8%'], ['B','65 ~ 79','3 ~ 5%'],
+    ['C','50 ~ 64','0 ~ 3%'], ['D','49 이하','동결'],
+  ], [1400,3400,3400]));
+
+g.push(h2('3. 총평'),
+  P_('면담에서 그대로 읽어 줄 수 있는 문장으로 적습니다.', {size:19, color:GRAY, after:100}),
+  writeBox(900));
+
+g.push(h2('4. 다음 1년에 기대하는 것'),
+  writeBox(760));
+
+g.push(gap(280),
+  P_('        년        월        일', {align:AlignmentType.CENTER, after:0}),
+  signRow('평 가 자', '대표  ' + CO.ceo, '서  명', '(서명 또는 인)'),
+  new Paragraph({ spacing:{before:240}, border:{top:{...thin, space:8}},
+    children:[T('D등급이라도 연봉을 감액할 수 없습니다. 동결이 하한입니다. (취업규칙 제34조제5항)', {size:17, color:GRAY})] }));
+
+docs.push({ name:'마인드_연봉조정_회사평가표.docx', body:g });
+
+// ══════════════════ 7. 면담기록서 ══════════════════
+const h = [];
+h.push(
+  P_(CO.name, {size:19, color:GRAY, after:60}),
+  new Paragraph({ spacing:{after:60}, children:[T('연봉조정 면담기록서', {size:32, bold:true})] }),
+  new Paragraph({ spacing:{after:260}, border:{bottom:{...med, space:8}}, children:[T('')] }),
+  P_('연봉조정 운영기준 4항제3호에 따라 면담 자리에서 함께 작성하고, 양측이 서명하여 회사가 3년간 보관합니다.', {size:19, color:GRAY, after:220}),
+  headBox([['성명',''],['면담일시','          년      월      일           시'],['장소',''],['참석자','대표    ' + CO.ceo + ' ,']]),
+);
+
+h.push(h2('1. 평가 대조'),
+  table(['영역','배점','자기평가','회사평가','차이'], [
+    ['직무 성과','40','','',''], ['직무 역량','30','','',''],
+    ['협업과 태도','20','','',''], ['기여와 성장','10','','',''],
+    ['합계','100','','',''],
+  ], [2200,1000,1700,1700,1600], 480),
+  gap(140),
+  P_('점수 차이가 큰 영역을 먼저 이야기합니다. 어느 쪽이 맞는지 가리는 자리가 아니라, 같은 일을 서로 다르게 본 이유를 확인하는 자리입니다.', {size:19, color:GRAY}));
+
+h.push(h2('2. 면담에서 나눈 이야기'),
+  P_('회사가 전달한 내용', {size:19, color:GRAY, after:70}), writeBox(820),
+  gap(140),
+  P_('본인이 말한 내용', {size:19, color:GRAY, after:70}), writeBox(820));
+
+h.push(new Paragraph({children:[new PageBreak()]}));
+h.push(h2('3. 다음 1년의 목표 (합의)'),
+  table(['','목표','확인 방법','시기'], [
+    ['1','','',''], ['2','','',''], ['3','','',''],
+  ], [700,3500,2400,1600], 700));
+
+h.push(h2('4. 연봉 결정'),
+  table(['구분','내용'], [
+    ['평가 등급',''],
+    ['현 연봉','                                    원'],
+    ['조정 연봉','                                    원'],
+    ['인상률','                    %'],
+    ['월 지급액','                                    원'],
+    ['적용일','          년      월      일'],
+  ], [1800,6400], 480));
+
+h.push(h2('5. 합의 여부'),
+  new Paragraph({ spacing:{after:110}, indent:{left:200},
+    children:[T(CHK + '  합 의', {bold:true, size:22}),
+              T('        위 제4항의 연봉에 합의하였다. 연봉계약서를 작성한다.', {size:19})] }),
+  new Paragraph({ spacing:{after:130}, indent:{left:200},
+    children:[T(CHK + '  미합의', {bold:true, size:22}),
+              T('        합의에 이르지 못하였다.', {size:19})] }),
+  new Paragraph({ spacing:{after:110}, indent:{left:480},
+    children:[T('미합의인 경우, 취업규칙 제34조제6항에 따라 종전 연봉이 계속 적용되며, 합의하지 아니하였다는 사실을 이유로 어떠한 불리한 처우도 하지 아니한다. 다음 조정 시기에 다시 협의한다.', {size:19, color:ACC})] }),
+  gap(80),
+  P_('미합의 사유 (해당하는 경우에만)', {size:19, color:GRAY, after:70}),
+  writeBox(560));
+
+h.push(gap(300),
+  P_('이 기록서는 2통을 작성하여 회사와 본인이 각각 1통씩 보관한다.', {after:300}),
+  P_('        년        월        일', {align:AlignmentType.CENTER, after:0}),
+  signRow('회  사', '대표  ' + CO.ceo, '본  인', ''),
+  new Paragraph({ alignment:AlignmentType.RIGHT, children:[T('(각 서명 또는 인)', {size:18, color:GRAY})] }));
+
+docs.push({ name:'마인드_연봉조정_면담기록서.docx', body:h });
 
 // ══════════════════ 출력 ══════════════════
 (async () => {
