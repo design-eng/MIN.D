@@ -10,6 +10,57 @@
 
 두 과목은 별개입니다. 생성기는 공용이고 콘텐츠 파일만 다릅니다.
 
+## 파일 바로가기
+
+저장소 웹에서 pptx는 미리보기가 안 됩니다. 링크를 열고 **Download** 또는 **View raw**를 누르세요.
+폴더째 받으려면 저장소 상단 **Code → Download ZIP**이 빠릅니다.
+
+### 포트폴리오제작 · 실내·산업디자인학과 3학년 · 90분 × 15주
+
+| 주차 | 주제 | 파일 |
+|---|---|---|
+| 1주 | OT 및 포트폴리오 이해 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_01%EC%A3%BC%EC%B0%A8_OT.pptx) |
+| 2주 | 자기 역량 분석 및 방향 설정 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_02%EC%A3%BC%EC%B0%A8_%EC%9E%90%EA%B8%B0%EC%97%AD%EB%9F%89%EB%B6%84%EC%84%9D.pptx) |
+| 3주 | 우수 포트폴리오 벤치마킹 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_03%EC%A3%BC%EC%B0%A8_%EB%B2%A4%EC%B9%98%EB%A7%88%ED%82%B9.pptx) |
+| 4주 | 스토리라인 기획 Ⅰ | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_04%EC%A3%BC%EC%B0%A8_%EC%8A%A4%ED%86%A0%EB%A6%AC%EB%9D%BC%EC%9D%B8%EA%B8%B0%ED%9A%8D1.pptx) |
+| 5주 | 스토리라인 기획 Ⅱ — 개별 피드백 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_05%EC%A3%BC%EC%B0%A8_%EC%8A%A4%ED%86%A0%EB%A6%AC%EB%9D%BC%EC%9D%B8%EA%B8%B0%ED%9A%8D2.pptx) |
+| 6주 | 콘텐츠 구조화 Ⅰ | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_06%EC%A3%BC%EC%B0%A8_%EC%BD%98%ED%85%90%EC%B8%A0%EA%B5%AC%EC%A1%B0%ED%99%941.pptx) |
+| 7주 | 콘텐츠 구조화 Ⅱ | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_07%EC%A3%BC%EC%B0%A8_%EC%BD%98%ED%85%90%EC%B8%A0%EA%B5%AC%EC%A1%B0%ED%99%942.pptx) |
+| 8주 | 중간 발표 및 피드백 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_08%EC%A3%BC%EC%B0%A8_%EC%A4%91%EA%B0%84%EB%B0%9C%ED%91%9C.pptx) |
+| 9주 | 비주얼 아이덴티티 / 레이아웃 기획 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_09%EC%A3%BC%EC%B0%A8_%EB%B9%84%EC%A3%BC%EC%96%BC%EC%95%84%EC%9D%B4%EB%8D%B4%ED%8B%B0%ED%8B%B0.pptx) |
+| 10주 | 편집디자인 실습 Ⅰ | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_10%EC%A3%BC%EC%B0%A8_%ED%8E%B8%EC%A7%91%EB%94%94%EC%9E%90%EC%9D%B81.pptx) |
+| 11주 | 편집디자인 실습 Ⅱ | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_11%EC%A3%BC%EC%B0%A8_%ED%8E%B8%EC%A7%91%EB%94%94%EC%9E%90%EC%9D%B82.pptx) |
+| 12주 | 온라인 포트폴리오 제작 실습 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_12%EC%A3%BC%EC%B0%A8_%EC%98%A8%EB%9D%BC%EC%9D%B8%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4.pptx) |
+| 13주 | 이력서 연계 및 피칭 준비 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_13%EC%A3%BC%EC%B0%A8_%EC%9D%B4%EB%A0%A5%EC%84%9C%EC%97%B0%EA%B3%84%EC%99%80%ED%94%BC%EC%B9%AD.pptx) |
+| 14주 | 최종 리허설 및 동료 피드백 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_14%EC%A3%BC%EC%B0%A8_%EB%A6%AC%ED%97%88%EC%84%A4.pptx) |
+| 15주 | 기말 발표 및 종합 평가 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_15%EC%A3%BC%EC%B0%A8_%EA%B8%B0%EB%A7%90%EB%B0%9C%ED%91%9C.pptx) |
+
+### 서비스디자인 · 학부 3학년 · 3시간 × 15주
+
+| 주차 | 주제 | 파일 |
+|---|---|---|
+| 1주 | 오리엔테이션 & 서비스디자인 개관 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_01%EC%A3%BC%EC%B0%A8_%EC%98%A4%EB%A6%AC%EC%97%94%ED%85%8C%EC%9D%B4%EC%85%98.pptx) |
+| 2주 | 리서치 설계와 주제 후보 도출 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_02%EC%A3%BC%EC%B0%A8_%EB%A6%AC%EC%84%9C%EC%B9%98%EC%84%A4%EA%B3%84.pptx) |
+| 3주 | 필드 리서치 실습 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_03%EC%A3%BC%EC%B0%A8_%ED%95%84%EB%93%9C%EB%A6%AC%EC%84%9C%EC%B9%98.pptx) |
+| 4주 | 리서치 합성 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_04%EC%A3%BC%EC%B0%A8_%EB%A6%AC%EC%84%9C%EC%B9%98%ED%95%A9%EC%84%B1.pptx) |
+| — | 과목 개요 덱 (30장) | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_15%EC%A3%BC_%EA%B0%95%EC%9D%98%EC%9E%90%EB%A3%8C.pptx) |
+
+5–15주차는 미작성입니다.
+
+### 원본 · 생성기
+
+| 파일 | 용도 |
+|---|---|
+| [scripts/portfolio-content.js](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/scripts/portfolio-content.js) | **포트폴리오제작 15주 강의 본문** — 내용 수정은 여기서 |
+| [scripts/week-content.js](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/scripts/week-content.js) | 서비스디자인 주차별 강의 본문 |
+| [scripts/build-week.js](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/scripts/build-week.js) | 주차별 덱 생성기 (두 과목 공용) |
+| [scripts/build-deck.js](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/scripts/build-deck.js) | 과목 개요 덱 생성기 |
+
+> pptx는 위 생성기의 산출물입니다. 내용을 고칠 때는 pptx가 아니라 `*-content.js`를 고치고
+> `node scripts/build-week.js --portfolio 8` 처럼 다시 뽑는 것이 원칙입니다.
+> pptx를 직접 편집하면 다음 재생성 때 덮어써집니다.
+
+---
 ## 결과물
 
 | 파일 | 설명 |
