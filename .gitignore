@@ -1,4 +1,9 @@
 node_modules/
+
+# 렌더·검수 중간물
 *.pdf
 slide-*.jpg
 thumbnails*.jpg
+
+# 배포용 묶음 — dist/ 안의 pptx에서 언제든 다시 만들 수 있는 파생물
+dist/*.zip
