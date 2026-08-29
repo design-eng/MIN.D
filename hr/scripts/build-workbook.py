@@ -224,26 +224,29 @@ lv.freeze_panes = 'C5'
 
 for r in range(EMP_FIRST, EMP_LAST + 1):
     e = f'직원명부!'
+    # 산정 기준일. 퇴사자는 기준일이 아니라 퇴사일에서 근속을 멈춰야 한다.
+    # 이것을 넣지 않으면 퇴사자의 근속과 연차 발생일수가 계속 늘어난다.
+    D = f'IF({e}G{r}="",$B$3,MIN($B$3,{e}G{r}))'
     body_cell(lv, r, 1, f'=IF({e}A{r}="","",{e}A{r})', auto=True)
     body_cell(lv, r, 2, f'=IF({e}B{r}="","",{e}B{r})', auto=True)
     body_cell(lv, r, 3, f'=IF({e}C{r}="","",{e}C{r})', fmt='yyyy-mm-dd', auto=True)
     body_cell(lv, r, 4, f'=IF({e}F{r}="","",{e}F{r})', auto=True)
     # 근속  "N년 M개월"
     body_cell(lv, r, 5,
-        f'=IF(C{r}="","",DATEDIF(C{r},$B$3,"Y")&"년 "&DATEDIF(C{r},$B$3,"YM")&"개월")', auto=True)
+        f'=IF(C{r}="","",DATEDIF(C{r},{D},"Y")&"년 "&DATEDIF(C{r},{D},"YM")&"개월")', auto=True)
     # 산정기간 시작
     body_cell(lv, r, 6,
-        f'=IF(C{r}="","",IF(DATEDIF(C{r},$B$3,"Y")<1,C{r},EDATE(C{r},DATEDIF(C{r},$B$3,"Y")*12)))',
+        f'=IF(C{r}="","",IF(DATEDIF(C{r},{D},"Y")<1,C{r},EDATE(C{r},DATEDIF(C{r},{D},"Y")*12)))',
         fmt='yyyy-mm-dd', auto=True)
     # 산정기간 종료
     body_cell(lv, r, 7,
-        f'=IF(C{r}="","",EDATE(C{r},(DATEDIF(C{r},$B$3,"Y")+1)*12)-1)',
+        f'=IF(C{r}="","",EDATE(C{r},(DATEDIF(C{r},{D},"Y")+1)*12)-1)',
         fmt='yyyy-mm-dd', auto=True)
     # 발생일수
     body_cell(lv, r, 8,
-        f'=IF(C{r}="","",IF(DATEDIF(C{r},$B$3,"Y")<1,'
-        f'MIN(11,DATEDIF(C{r},$B$3,"M")),'
-        f'MIN(25,15+INT((DATEDIF(C{r},$B$3,"Y")-1)/2))))', fmt='0.0', auto=True)
+        f'=IF(C{r}="","",IF(DATEDIF(C{r},{D},"Y")<1,'
+        f'MIN(11,DATEDIF(C{r},{D},"M")),'
+        f'MIN(25,15+INT((DATEDIF(C{r},{D},"Y")-1)/2))))', fmt='0.0', auto=True)
     # 이월 (입력)
     body_cell(lv, r, 9, fmt='0.0')
     # 총 부여
@@ -260,7 +263,8 @@ for r in range(EMP_FIRST, EMP_LAST + 1):
     c.font = Font(name=F, size=9, bold=True, color=INK)
     # 소멸까지
     body_cell(lv, r, 13,
-        f'=IF(C{r}="","",IF(G{r}-$B$3<0,"기간종료",G{r}-$B$3&"일"))', auto=True)
+        f'=IF(C{r}="","",IF({e}G{r}<>"","퇴사",'
+        f'IF(G{r}-$B$3<0,"기간종료",G{r}-$B$3&"일")))', auto=True)
 
 nrow = EMP_LAST + 2
 lv.cell(row=nrow, column=1,
