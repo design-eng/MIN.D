@@ -151,6 +151,48 @@ td input[type=time]{font:inherit; font-size:.83rem; background:none; border:1px 
 td input[type=time]:hover{border-color:var(--line-2); background:var(--well)}
 td input[type=time]:focus{border-color:var(--accent); background:var(--card); outline:none}
 .empty{padding:2.2rem 1rem; text-align:center; color:var(--graphite); font-size:.88rem}
+/* ─ 휴가 ─ */
+.leave-note{display:flex; align-items:center; justify-content:center; gap:.5rem;
+  margin-top:.9rem; font-size:.85rem; color:var(--sub)}
+.leave-note button{background:none; border:0; color:var(--sub); font-weight:500;
+  padding:.35rem .1rem; border-bottom:1px solid var(--line-2)}
+.leave-note button:hover{color:var(--ink); border-bottom-color:var(--ink)}
+.pill.s-leave{color:var(--accent); background:var(--rest-bg)}
+:root:not([data-theme="light"]) .pill.s-leave,
+:root[data-theme="dark"] .pill.s-leave{background:#2E1B14}
+
+.sec{margin-top:1.6rem}
+.sec h2{font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--graphite); font-weight:600; margin-bottom:.6rem}
+.annual{display:grid; grid-template-columns:repeat(4,1fr); background:var(--card);
+  border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:.7rem}
+.annual div{padding:.75rem .4rem; text-align:center; border-right:1px solid var(--line)}
+.annual div:last-child{border-right:0}
+.annual dt{font-size:.67rem; color:var(--graphite); letter-spacing:.03em; margin-bottom:.2rem}
+.annual dd{margin:0; font-size:1.25rem; font-weight:300; letter-spacing:-.02em}
+.annual dd small{font-size:.72rem; font-weight:400; color:var(--graphite); margin-left:.1rem}
+.annual .rest dd{color:var(--accent); font-weight:500}
+.annual .due dd{font-size:.95rem; font-weight:500; padding-top:.22rem}
+
+.addform{display:flex; gap:.4rem; margin-bottom:.7rem; flex-wrap:wrap}
+.addform input,.addform select{font:inherit; font-size:.83rem; background:var(--card);
+  color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:.42rem .55rem}
+.addform input{flex:1 1 8rem; min-width:0; font-variant-numeric:tabular-nums}
+.addform select{flex:0 1 7rem}
+.addform button{background:var(--ink); color:var(--ground); border:1px solid var(--ink);
+  border-radius:8px; padding:.42rem .9rem; font-size:.83rem; font-weight:600}
+.addform button:hover{filter:brightness(1.15)}
+.lv{list-style:none; margin:0; padding:0; border:1px solid var(--line);
+  border-radius:12px; background:var(--card); overflow:hidden}
+.lv li{display:flex; align-items:center; gap:.6rem; padding:.55rem .85rem;
+  border-bottom:1px solid var(--line); font-size:.86rem}
+.lv li:last-child{border-bottom:0}
+.lv .dt{font-variant-numeric:tabular-nums; min-width:6.4rem}
+.lv .ty{color:var(--sub); flex:1}
+.lv .dy{color:var(--graphite); font-size:.8rem}
+.lv .rm{background:none; border:0; color:var(--graphite); font-size:1rem; padding:0 .2rem; line-height:1}
+.lv .rm:hover{color:var(--accent)}
+.lv .none{color:var(--graphite); justify-content:center; padding:1.3rem}
 .foot{margin-top:1rem; font-size:.76rem; color:var(--graphite); line-height:1.7}
 [hidden]{display:none!important}
 </style>
@@ -188,6 +230,9 @@ td input[type=time]:focus{border-color:var(--accent); background:var(--card); ou
       <div><dt>보상휴가</dt><dd id="tComp" class="zero">—</dd></div>
     </dl>
 
+    <p class="leave-note"><span id="leaveHint">오늘 쉬시나요?</span>
+      <button id="markLeave">휴가로 기록</button></p>
+
     <div class="linkrow"><button class="link" id="goHistory">내 근태 내역 보기</button></div>
   </section>
 
@@ -209,6 +254,9 @@ td input[type=time]:focus{border-color:var(--accent); background:var(--card); ou
       <div class="tile accent"><dt>보상휴가 발생</dt><dd class="num"><span id="sComp">0</span><small>시간</small></dd></div>
     </dl>
 
+    <p class="leave-note" style="justify-content:flex-end;margin:0 0 .55rem">
+      <button id="copySheet">관리대장에 붙여넣을 형식으로 복사</button></p>
+
     <div class="scroll">
       <table>
         <thead><tr>
@@ -218,6 +266,23 @@ td input[type=time]:focus{border-color:var(--accent); background:var(--card); ou
       </table>
       <div class="empty" id="emptyRow" hidden>이 달에는 아직 기록이 없습니다.</div>
     </div>
+
+    <section class="sec">
+      <h2>연차</h2>
+      <dl class="annual">
+        <div><dt>발생</dt><dd class="num"><span id="aGen">0</span><small>일</small></dd></div>
+        <div><dt>사용</dt><dd class="num"><span id="aUse">0</span><small>일</small></dd></div>
+        <div class="rest"><dt>잔여</dt><dd class="num"><span id="aLeft">0</span><small>일</small></dd></div>
+        <div class="due"><dt>소멸까지</dt><dd class="num" id="aDue">—</dd></div>
+      </dl>
+
+      <div class="addform">
+        <input type="date" id="lvDate" aria-label="휴가 날짜">
+        <select id="lvType" aria-label="휴가 종류"></select>
+        <button id="lvAdd">추가</button>
+      </div>
+      <ul class="lv" id="lvList"></ul>
+    </section>
 
     <p class="foot">
       시각을 눌러 직접 고칠 수 있습니다. 휴게를 한 번도 누르지 않은 날은 근로기준법 제54조에 따라
@@ -231,7 +296,17 @@ td input[type=time]:focus{border-color:var(--accent); background:var(--card); ou
 (function(){
 "use strict";
 var TZ="Asia/Seoul";
-var DEFAULT_ROSTER=[{id:"M001",name:"강성아"}];
+var DEFAULT_ROSTER=[{id:"M001",name:"강성아",joined:"2026-01-12"}];
+// 취업규칙 제22조·제25조·제26조. half=반일이라 그날도 출퇴근을 찍는다.
+var LEAVE_TYPES=[
+  {k:"연차",  d:1,   annual:true},
+  {k:"반차",  d:0.5, annual:true, half:true},
+  {k:"경조휴가",d:1},
+  {k:"병가",  d:1},
+  {k:"공가",  d:1},
+  {k:"무급휴가",d:1}
+];
+function lvType(k){ return LEAVE_TYPES.filter(function(t){return t.k===k;})[0]||LEAVE_TYPES[0]; }
 var WD=["일","월","화","수","목","금","토"];
 var HOLIDAYS={ // 취업규칙 제20조제1항제3호 — 유급휴일
  "2026-09-24":1,"2026-09-25":1,"2026-09-26":1,"2026-10-03":1,"2026-10-05":1,
@@ -240,6 +315,7 @@ var HOLIDAYS={ // 취업규칙 제20조제1항제3호 — 유급휴일
 
 var db=null, roster=DEFAULT_ROSTER.slice(), emp=null;
 var month=null, doc=null, days={}, unsub=null, tick=null;
+var leave={}, lvDoc=null, lvUnsub=null;
 
 /* ── 시간 유틸 (전부 Asia/Seoul 기준) ── */
 function seoulParts(d){
@@ -259,6 +335,33 @@ function hrsText(h){
 }
 function dowOf(ymd){ var p=ymd.split("-"); return new Date(Date.UTC(+p[0],+p[1]-1,+p[2])).getUTCDay(); }
 
+function ymdUTC(y){var p=y.split("-");return Date.UTC(+p[0],+p[1]-1,+p[2]);}
+function shiftY(y,n){var p=y.split("-");return (+p[0]+n)+"-"+p[1]+"-"+p[2];}
+function shiftD(y,n){var d=new Date(ymdUTC(y)+n*86400000);
+  return d.toISOString().slice(0,10);}
+function monthsB(a,b){var A=a.split("-").map(Number),B=b.split("-").map(Number);
+  var m=(B[0]-A[0])*12+(B[1]-A[1]); if(B[2]<A[2])m--; return Math.max(0,m);}
+function daysB(a,b){return Math.round((ymdUTC(b)-ymdUTC(a))/86400000);}
+
+/* 연차 — 관리대장 「연차현황」 시트와 같은 산식 (취업규칙 제22조) */
+function annual(){
+  var j=emp&&emp.joined, t=today();
+  if(!j) return null;
+  var Y=Math.floor(monthsB(j,t)/12);
+  var start = Y<1 ? j : shiftY(j,Y);
+  var end   = shiftD(shiftY(j,Y+1),-1);
+  var gen = Y<1 ? Math.min(11,monthsB(j,t))
+                : Math.min(25, 15+Math.floor((Y-1)/2));
+  var used=0;
+  Object.keys(leave).forEach(function(k){
+    var L=leave[k]; if(!L) return;
+    if(!lvType(L.type).annual) return;
+    if(k>=start && k<=end) used+=(L.days||1);
+  });
+  return {start:start,end:end,gen:gen,used:Math.round(used*10)/10,
+          left:Math.round((gen-used)*10)/10, due:daysB(t,end)};
+}
+
 /* ── 계산 : 관리대장 수식과 동일 ── */
 function calc(ymd,r){
   r=r||{};
@@ -277,7 +380,9 @@ function calc(ymd,r){
   res.ot=Math.round(Math.max(0,res.work-8)*100)/100;
   var om=o%1440;
   res.night = om>=1320 ? (om-1320)/60 : (om<360 ? (om+1440-1320)/60 : 0);
-  res.night=Math.round(res.night*100)/100;
+  // 재실시간을 넘는 야간은 있을 수 없다. 관리대장은 퇴근 시각만 보므로
+  // 새벽에 잠깐 들렀다 가는 경우에 값이 부풀 수 있어 여기서 막는다.
+  res.night=Math.round(Math.min(res.night, stay/60)*100)/100;
   var d=dowOf(ymd), holiday = (d===0)||HOLIDAYS[ymd];   // 일요일·공휴일 = 휴일근로
   res.comp = holiday ? Math.min(res.work,8)*1.5 + Math.max(0,res.work-8)*2
                      : res.ot*1.5;
@@ -288,6 +393,25 @@ function calc(ymd,r){
 /* ── db ── */
 function monthOf(ymd){ return ymd.slice(0,7); }
 function pathFor(m){ return "records/"+emp.id+"_"+m; }
+
+function watchLeave(){
+  if(lvUnsub){ lvUnsub(); lvUnsub=null; }
+  leave={};
+  if(!db){ return; }
+  lvDoc=db.doc("leave/"+emp.id);
+  lvUnsub=lvDoc.onSnapshot(function(snap){
+    leave=(snap.exists && snap.data() && snap.data().days) || {};
+    render();
+  }, function(){});
+}
+function saveLeave(ymd,val){
+  if(val) leave[ymd]=val; else delete leave[ymd];
+  render();
+  if(!db){ say("저장할 수 없습니다. 이 화면을 claude.ai에서 열어 주세요.",true); return; }
+  lvDoc.set({emp:emp.id,name:emp.name,days:leave}).catch(function(){
+    say("휴가를 저장하지 못했습니다. 잠시 뒤 다시 눌러 주세요.",true);
+  });
+}
 
 function watch(m){
   if(unsub){ unsub(); unsub=null; }
@@ -355,14 +479,20 @@ function render(){
   document.getElementById("todayLabel").textContent =
     (+pt[1])+"월 "+(+pt[2])+"일 "+WD[dw]+"요일";
 
-  var st = r.in==null ? "off" : (c.open ? "rest" : (r.out!=null ? "done" : "work"));
+  var L=leave[ymd], full = L && !lvType(L.type).half;
+  var st = full ? "leave"
+         : (r.in==null ? "off" : (c.open ? "rest" : (r.out!=null ? "done" : "work")));
   var pill=document.getElementById("statePill");
   pill.className="pill s-"+st;
   document.getElementById("stateText").textContent =
-    ({off:"출근 전",work:"근무 중",rest:"휴게 중",done:"퇴근"})[st];
+    st==="leave" ? L.type
+    : ({off:"출근 전",work:"근무 중",rest:"휴게 중",done:"퇴근"})[st]
+      + (L ? " · "+L.type : "");
 
   var big=document.getElementById("clockBig"), since=document.getElementById("sinceText");
-  if(st==="off"){ big.innerHTML=hhmm(p.min); since.textContent="출근을 누르면 기록이 시작됩니다."; }
+  if(st==="leave"){ big.innerHTML='오늘은 <small>쉽니다</small>';
+    since.textContent=L.type+" "+(L.days||1)+"일. 출퇴근을 찍지 않아도 됩니다."; }
+  else if(st==="off"){ big.innerHTML=hhmm(p.min); since.textContent="출근을 누르면 기록이 시작됩니다."; }
   else if(st==="rest"){ var el=p.min-r.bs; if(el<0)el+=1440;
     big.innerHTML=hhmm(r.bs)+' <small>부터 휴게</small>'; since.textContent=hrsText(el/60)+" 경과"; }
   else if(st==="done"){ big.innerHTML=hhmm(r.in)+' <small>–</small> '+hhmm(r.out);
@@ -372,7 +502,8 @@ function render(){
     big.innerHTML=hhmm(r.in)+' <small>출근</small>';
     since.textContent="재실 "+hrsText(w/60)+(bk?" · 휴게 "+hrsText(bk/60):""); }
 
-  var can={in:st==="off", bs:st==="work", be:st==="rest", out:st==="work"||st==="done"};
+  var can= st==="leave" ? {in:0,bs:0,be:0,out:0}
+    : {in:st==="off", bs:st==="work", be:st==="rest", out:st==="work"||st==="done"};
   set("bIn",can.in, st==="off"?"go":"");
   set("bBs",can.bs,"");
   set("bBe",can.be, st==="rest"?"warm":"");
@@ -380,6 +511,10 @@ function render(){
 
   val("tWork",c.work,"시간"); val("tBreak",c.break,"시간");
   val("tOt",c.ot,"시간",true); val("tComp",c.comp,"시간",true);
+
+  document.getElementById("leaveHint").textContent =
+    L ? "오늘은 "+L.type+"으로 기록되어 있습니다." : "오늘 쉬시나요?";
+  document.getElementById("markLeave").textContent = L ? "휴가 취소" : "휴가로 기록";
 
   if(!document.getElementById("viewHistory").hidden) renderHistory();
 }
@@ -398,12 +533,16 @@ function renderHistory(){
   document.getElementById("mLabel").textContent=(+pt[0])+"년 "+(+pt[1])+"월";
   var keys=Object.keys(days).sort(), tb=document.getElementById("rows"), out="";
   var sd=0,sw=0,so=0,sc=0, tdy=today();
+  Object.keys(leave).forEach(function(k){ if(k.slice(0,7)===month && keys.indexOf(k)<0) keys.push(k); });
+  keys.sort();
   keys.forEach(function(k){
-    var c=calc(k,days[k]); if(c.in==null&&c.out==null) return;
+    var c=calc(k,days[k]), L=leave[k];
+    if(c.in==null&&c.out==null&&!L) return;
+    if(L && lvType(L.type).annual===undefined){} 
     var d=dowOf(k), dd=(+k.split("-")[2]);
     if(c.work>0){ sd++; sw+=c.work; so+=c.ot; sc+=c.comp; }
     out+='<tr class="'+((d===0||d===6||HOLIDAYS[k])?"we ":"")+(k===tdy?"today-row":"")+'">'
-      +'<td class="d">'+dd+'일 '+WD[d]+'</td>'
+      +'<td class="d">'+dd+'일 '+WD[d]+(L?' <b style="color:var(--accent);font-weight:600">'+L.type+'</b>':'')+'</td>'
       +tcell(k,"in",c.in)+tcell(k,"out",c.out)
       +cell(c.break)+cell(c.work)+cell(c.ot,1)+cell(c.night)+cell(c.comp,1)+'</tr>';
   });
@@ -413,6 +552,7 @@ function renderHistory(){
   document.getElementById("sWork").textContent=Math.round(sw*10)/10;
   document.getElementById("sOt").textContent=Math.round(so*10)/10;
   document.getElementById("sComp").textContent=Math.round(sc*10)/10;
+  renderAnnual();
   Array.prototype.forEach.call(tb.querySelectorAll("input[type=time]"),function(el){
     el.addEventListener("change",function(){
       var r=rec(el.dataset.d); r[el.dataset.f]=toMin(el.value)||null; save(el.dataset.d,r);
@@ -420,6 +560,57 @@ function renderHistory(){
     });
   });
 }
+/* 관리대장 「근태기록」 E:G(출근·퇴근·휴게) 열에 그대로 붙여넣는 형식.
+   그 달 1일부터 말일까지 빠짐없이 한 줄씩 내보내므로 날짜가 어긋나지 않는다. */
+function sheetTSV(){
+  var y=+month.slice(0,4), m=+month.slice(5,7);
+  var last=new Date(Date.UTC(y,m,0)).getUTCDate(), rows=[];
+  for(var d=1; d<=last; d++){
+    var k=month+"-"+String(d).padStart(2,"0"), r=days[k]||{}, c=calc(k,r);
+    rows.push([ r.in==null?"":hhmm(r.in), r.out==null?"":hhmm(r.out),
+                (r.in!=null&&r.out!=null)?String(Math.round(c.break*100)/100):"" ].join("\t"));
+  }
+  return rows.join("\n");
+}
+function copyText(t,ok){
+  function fallback(){
+    var a=document.createElement("textarea");
+    a.value=t; a.style.position="fixed"; a.style.opacity="0";
+    document.body.appendChild(a); a.select();
+    try{ document.execCommand("copy"); say(ok); }
+    catch(e){ say("복사하지 못했습니다. 표를 직접 옮겨 주세요.",true); }
+    document.body.removeChild(a);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(function(){say(ok);},fallback);
+  } else fallback();
+}
+
+function renderAnnual(){
+  var a=annual();
+  document.getElementById("aGen").textContent = a?a.gen:"—";
+  document.getElementById("aUse").textContent = a?a.used:"—";
+  document.getElementById("aLeft").textContent = a?a.left:"—";
+  document.getElementById("aDue").textContent =
+    a ? (a.due<0 ? "기간종료" : a.due+"일") : "—";
+
+  var keys=Object.keys(leave).sort(), ul=document.getElementById("lvList");
+  if(!keys.length){ ul.innerHTML='<li class="none">기록된 휴가가 없습니다.</li>'; return; }
+  ul.innerHTML=keys.reverse().map(function(k){
+    var L=leave[k], p=k.split("-"), d=dowOf(k);
+    return '<li><span class="dt">'+(+p[1])+'월 '+(+p[2])+'일 '+WD[d]+'</span>'
+      +'<span class="ty">'+L.type+'</span>'
+      +'<span class="dy">'+(L.days||1)+'일</span>'
+      +'<button class="rm" data-k="'+k+'" aria-label="'+k+' 휴가 삭제">×</button></li>';
+  }).join("");
+  Array.prototype.forEach.call(ul.querySelectorAll(".rm"),function(b){
+    b.addEventListener("click",function(){
+      saveLeave(b.dataset.k,null);
+      say(b.dataset.k.slice(5)+" 휴가 기록을 지웠습니다.");
+    });
+  });
+}
+
 function tcell(k,f,v){
   return '<td><input type="time" data-d="'+k+'" data-f="'+f+'" value="'
     +(v==null?"":hhmm(v))+'" aria-label="'+k+" "+(f==="in"?"출근":"퇴근")+'"></td>';
@@ -451,7 +642,7 @@ function fillWho(){
   s.addEventListener("change",function(){
     emp=roster.filter(function(e){return e.id===s.value;})[0];
     try{ localStorage.setItem("mind.emp",emp.id); }catch(_){}
-    say(""); watch(monthOf(today()));
+    say(""); watchLeave(); watch(monthOf(today()));
   });
 }
 
@@ -459,12 +650,39 @@ document.getElementById("bIn").addEventListener("click",function(){punch("in");}
 document.getElementById("bBs").addEventListener("click",function(){punch("bs");});
 document.getElementById("bBe").addEventListener("click",function(){punch("be");});
 document.getElementById("bOut").addEventListener("click",function(){punch("out");});
+document.getElementById("markLeave").addEventListener("click",function(){
+  var t=today();
+  if(leave[t]){ saveLeave(t,null); say("오늘 휴가 기록을 지웠습니다."); return; }
+  show(true);
+  var di=document.getElementById("lvDate");
+  di.value=t; di.focus();
+  say("아래 「연차」에서 종류를 고르고 추가를 누르세요.");
+});
+document.getElementById("lvAdd").addEventListener("click",function(){
+  var d=document.getElementById("lvDate").value, t=document.getElementById("lvType").value;
+  if(!d){ say("휴가 날짜를 골라 주세요.",true); return; }
+  var ty=lvType(t);
+  saveLeave(d,{type:ty.k,days:ty.d});
+  if(monthOf(d)!==month) watch(monthOf(d));
+  say(d.slice(5)+" "+ty.k+" "+ty.d+"일로 기록했습니다.");
+});
 document.getElementById("goHistory").addEventListener("click",function(){show(true);});
 document.getElementById("goClock").addEventListener("click",function(){show(false);});
+document.getElementById("copySheet").addEventListener("click",function(){
+  var pt=month.split("-");
+  copyText(sheetTSV(), "복사했습니다. 관리대장 「근태기록」 시트에서 "
+    +(+pt[0])+"-"+pt[1]+"-01 행의 「출근」 칸(E열)을 클릭하고 붙여넣으세요.");
+  show(false);
+});
 document.getElementById("mPrev").addEventListener("click",function(){shift(-1);});
 document.getElementById("mNext").addEventListener("click",function(){shift(1);});
 
+document.getElementById("lvType").innerHTML =
+  LEAVE_TYPES.map(function(t){return '<option value="'+t.k+'">'+t.k+'</option>';}).join("");
+document.getElementById("lvDate").value=nowP().date;
+
 fillWho();
+watchLeave();
 watch(monthOf(today()));
 say("");
 tick=setInterval(render,30000);
@@ -478,8 +696,8 @@ CL.then(function(x){
     if(s.exists && s.data() && (s.data().list||[]).length){
       roster=s.data().list; fillWho();
     } else { db.doc("config/roster").set({list:DEFAULT_ROSTER}).catch(function(){}); }
-    watch(monthOf(today()));
-  }).catch(function(){ watch(monthOf(today())); });
+    watchLeave(); watch(monthOf(today()));
+  }).catch(function(){ watchLeave(); watch(monthOf(today())); });
 }).catch(function(){});
 })();
 </script>
