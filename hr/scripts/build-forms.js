@@ -479,6 +479,65 @@ h.push(gap(300),
 
 docs.push({ name:'마인드_연봉조정_면담기록서.docx', body:h });
 
+
+// ══════════════════ 8. 업무 프로세스 ══════════════════
+const w = [];
+w.push(
+  P_(CO.name, {size:19, color:GRAY, after:60}),
+  new Paragraph({ spacing:{after:60}, children:[T('업무 프로세스', {size:32, bold:true})] }),
+  new Paragraph({ spacing:{after:300}, border:{bottom:{...med, space:8}}, children:[T('')] }),
+  gap(60),
+  P_('최종 정리일    2026년 8월 6일', {size:19, color:GRAY, after:200}),
+  hang('이 문서는 업무 수행 방식에 관한 사내 기준이다. 근로조건을 정한 취업규칙과는 별개이며, 사원은 취업규칙 제10조(복무의무)에 따라 이 기준을 준수한다.'),
+);
+
+w.push(h2('1. UX · UI 기초 업무 지시사항'),
+  new Paragraph({ spacing:{before:200, after:60}, children:[T('산출물 사이즈 규칙', {bold:true, size:21})] }),
+  hang('모든 디자인 산출물의 수치는 소수점 없이 정수로 작업한다. 특별한 사유가 없는 한 4의 배수를 적용하며, 컴포넌트 크기·위치·간격 등 전반에 동일하게 적용한다.'),
+  new Paragraph({ spacing:{before:200, after:60}, children:[T('사전 리서치', {bold:true, size:21})] }),
+  hang('디자인을 진행하기 전에 사전 리서치를 반드시 수행한다.'),
+  new Paragraph({ spacing:{before:200, after:60}, children:[T('진행 중인 프로젝트에 투입되는 경우', {bold:true, size:21})] }),
+  hang('힐스테이트·디에이치·쿠쿠 등 이미 진행 중인 프로젝트에 투입되는 경우, 기존 화면을 충분히 숙지한 후 작업을 시작한다.'));
+
+w.push(h2('2. KOLON 모바일 유지보수 프로세스'),
+  ho('1. 의뢰를 확인하는 즉시 코멘트로 접수를 회신한다. 이모티콘이나 "확인했습니다" 정도면 충분하다.'),
+  ho('2. 유지보수 의뢰를 받으면 완료 기한을 반드시 확인한다.'),
+  ho('3. 작업 기간의 2분의 1 시점에 1차 내부 컨펌을 진행한다.'));
+
+w.push(h2('3. 파일명 형식'),
+  new Paragraph({ spacing:{after:150}, alignment:AlignmentType.CENTER,
+    children:[T('업체명 _ 프로젝트명 _ 아젠다명 _ 버전 _ 날짜', {bold:true, size:24})] }),
+  table(['구성요소','설명','예시'], [
+    ['업체명','클라이언트·발주사 이름','코오롱, 현대건설'],
+    ['프로젝트명','프로젝트 명칭','헌인마을, myHILLS'],
+    ['아젠다명','작업 내용·화면명','홈화면개선, 유지보수'],
+    ['버전','버전 번호','v1, v2'],
+    ['날짜','작업일자 (YYYYMMDD)','20260806'],
+  ], [1600,3400,3200]),
+  gap(160),
+  new Paragraph({ indent:{left:200},
+    children:[T('예시    ', {size:19, color:GRAY}),
+              T('코오롱_헌인마을_홈화면개선_v1_20260806', {size:20, bold:true})] }));
+
+w.push(h2('4. 자료 공유'),
+  hang('개인 저장소는 사용하지 아니한다. OneDrive 등 개인 클라우드에 업무 자료를 두지 않는다.'),
+  hang('개인 자료를 제외한 모든 업무 자료는 회사 내 공유 드라이브에만 저장한다.'),
+  new Paragraph({ spacing:{before:180, after:0}, indent:{left:200},
+    border:{left:{style:BorderStyle.SINGLE, size:6, color:LINE, space:10}},
+    children:[T('클라이언트 자료와 미공개 프로젝트 정보는 취업규칙 제15조(비밀유지)의 대상이다. 개인 저장소에 두면 회사가 접근·회수할 수 없어 퇴직 시 반납 의무를 이행할 수 없다.', {size:19, color:GRAY})] }));
+
+w.push(h2('5. 일정 관리'),
+  table(['업무 유형','처리 방법'], [
+    ['즉시 처리할 업무','담당받은 즉시 처리한 후 업무일지에 기록한다'],
+    ['시일이 필요한 업무','미리 알림에 등록하고 완료 예정일을 기재하여 공유한다'],
+  ], [2400,5800]));
+
+w.push(gap(400),
+  P_(CO.name, {align:AlignmentType.CENTER, bold:true, size:22, after:100}),
+  P_('대표    ' + CO.ceo, {align:AlignmentType.CENTER, size:20}));
+
+docs.push({ name:'마인드_업무프로세스.docx', body:w });
+
 // ══════════════════ 출력 ══════════════════
 (async () => {
   for (const doc of docs) {
