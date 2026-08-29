@@ -6,7 +6,7 @@ from openpyxl.utils import get_column_letter
 
 F = '맑은 고딕'
 INK, GRAY, BLUE, ACC = '14161B', '6B7280', '0000FF', 'C2410C'
-SURF, YEL, BAND = 'F4F5F7', 'FFF9DB', 'E8EAED'
+SURF, YEL, BAND, SOFT_FILL = 'F4F5F7', 'FFF9DB', 'E8EAED', 'FAFBFC'
 
 thin = Side(style='thin', color='D4D6DB')
 med  = Side(style='medium', color='14161B')
@@ -73,6 +73,7 @@ guide = [
     ('휴가대장', '휴가를 쓸 때마다 한 줄씩 기록합니다. 이 기록이 연차현황의 「사용」 일수가 됩니다.'),
     ('근태기록', '출근·퇴근 시각을 매일 기록합니다. 근무시간과 연장시간은 자동으로 계산됩니다.'),
     ('월별집계', '조회할 연월 하나만 바꾸면 그 달의 근무일수·지각·결근·연차사용이 직원별로 집계됩니다.'),
+    ('프로젝트집계', '근태기록의 「프로젝트」 칸을 모아 프로젝트별 투입시간을 집계합니다. 견적의 근거가 됩니다.'),
     ('코드표', '드롭다운 목록의 원본입니다. 항목을 늘리려면 여기에 추가합니다.'),
     ('', ''),
     ('연차 계산 기준', ''),
@@ -314,8 +315,9 @@ at.sheet_view.showGridLines = False
 title_block(at, '근태기록', '출퇴근 시각을 매일 기록합니다. 근로기준법 제42조에 따라 3년간 보존해야 합니다.')
 legend(at, 3, '시각은 09:00 형식으로 입력합니다.  ·  휴게시간은 시간 단위 숫자(1 = 1시간)로 넣습니다.  ·  '
               '자정을 넘겨 퇴근한 경우에도 퇴근 시각만 그대로 적으면 근무시간이 맞게 계산됩니다.')
-hdr = ['날짜', '요일', '사번', '성명', '출근', '퇴근', '휴게(h)', '근무시간', '연장시간', '근태구분', '비고']
-header_row(at, 4, hdr, [13, 7, 10, 11, 9, 9, 10, 11, 11, 12, 28], auto_cols=(2, 4, 8, 9))
+hdr = ['날짜', '요일', '사번', '성명', '출근', '퇴근', '휴게(h)', '근무시간', '연장시간',
+       '근태구분', '프로젝트', '비고']
+header_row(at, 4, hdr, [13, 7, 10, 11, 9, 9, 10, 11, 11, 12, 18, 24], auto_cols=(2, 4, 8, 9))
 at.freeze_panes = 'E5'
 
 for r in range(AT_FIRST, AT_LAST + 1):
@@ -333,10 +335,12 @@ for r in range(AT_FIRST, AT_LAST + 1):
         f'=IF(OR(E{r}="",F{r}=""),"",ROUND(MOD(F{r}-E{r},1)*24-N(G{r}),2))', fmt='0.00', auto=True)
     body_cell(at, r, 9, f'=IF(H{r}="","",ROUND(MAX(0,H{r}-8),2))', fmt='0.00', auto=True)
     body_cell(at, r, 10)
-    body_cell(at, r, 11, center=False)
+    body_cell(at, r, 11)                     # 프로젝트
+    body_cell(at, r, 12, center=False)       # 비고
 
 exa = [datetime.date(2026, 5, 6), None, 'M001', None,
-       datetime.time(9, 0), datetime.time(18, 30), 1, None, None, '정상', '마감 대응']
+       datetime.time(9, 0), datetime.time(18, 30), 1, None, None, '정상',
+       '코오롱 헌인마을', '마감 대응']
 for i, v in enumerate(exa, start=1):
     if i in (2, 4, 8, 9) or v is None:
         continue
@@ -356,7 +360,10 @@ at.cell(row=nrow, column=1,
 at.cell(row=nrow + 1, column=1,
         value='· 5인 미만 사업장에는 가산수당 지급의무가 법으로 강제되지 않지만, 마인드는 근로계약과 통일하기 위해 '
               '취업규칙으로 정해 지급합니다. 5명 이상이 되면 여기에 주 12시간 연장 한도가 더해집니다.')
-for i in range(2):
+at.cell(row=nrow + 2, column=1,
+        value='· 「프로젝트」 칸에 그날 주로 작업한 프로젝트명을 적으면 프로젝트집계 시트에서 투입시간이 자동으로 모입니다. '
+              '프로젝트명은 매번 같은 표기를 쓰세요. 띄어쓰기가 다르면 다른 프로젝트로 집계됩니다.')
+for i in range(3):
     at.cell(row=nrow + i, column=1).font = Font(name=F, size=9, color=GRAY)
 
 # ============================================================
@@ -416,7 +423,68 @@ sm.cell(row=nrow + 1, column=1,
 for i in range(2):
     sm.cell(row=nrow + i, column=1).font = Font(name=F, size=9, color=GRAY)
 
-wb.move_sheet('코드표', offset=5)
+# ============================================================
+# 7. 프로젝트집계
+# ============================================================
+pj = wb.create_sheet('프로젝트집계')
+pj.sheet_view.showGridLines = False
+title_block(pj, '프로젝트집계', '근태기록의 「프로젝트」 칸을 모아 투입시간을 집계합니다. 다음 견적의 근거가 됩니다.')
+pj['A3'] = '조회 기간'
+pj['A3'].font = Font(name=F, size=9, bold=True, color=INK)
+for col, val in (('B', datetime.date(2026, 1, 1)), ('C', datetime.date(2026, 12, 31))):
+    c = pj[col + '3']
+    c.value = val
+    c.font = Font(name=F, size=10, bold=True, color=BLUE)
+    c.number_format = 'yyyy-mm-dd'
+    c.fill = PatternFill('solid', fgColor=YEL)
+    c.border = BOX
+    c.alignment = Alignment(horizontal='center')
+pj['D3'] = '← 시작일과 종료일. 이 기간에 기록된 근무시간만 집계합니다.'
+pj['D3'].font = Font(name=F, size=9, color=GRAY)
+
+PJ_FIRST, PJ_LAST = 5, 34
+header_row(pj, 4, ['프로젝트', '총 근무시간', '연장시간', '근무일수', '인건비 환산', '비고'],
+           [26, 13, 12, 11, 15, 30], auto_cols=(2, 3, 4, 5))
+pj.freeze_panes = 'B5'
+
+AK = f'근태기록!$K${AT_FIRST}:$K${AT_LAST}'
+AA = f'근태기록!$A${AT_FIRST}:$A${AT_LAST}'
+AH = f'근태기록!$H${AT_FIRST}:$H${AT_LAST}'
+AI = f'근태기록!$I${AT_FIRST}:$I${AT_LAST}'
+PER = f'{AA},">="&$B$3,{AA},"<="&$C$3'
+
+for r in range(PJ_FIRST, PJ_LAST + 1):
+    body_cell(pj, r, 1, center=False)
+    body_cell(pj, r, 2, f'=IF($A{r}="","",SUMIFS({AH},{AK},$A{r},{PER}))',
+              fmt='0.00', auto=True)
+    body_cell(pj, r, 3, f'=IF($A{r}="","",SUMIFS({AI},{AK},$A{r},{PER}))',
+              fmt='0.00', auto=True)
+    body_cell(pj, r, 4, f'=IF($A{r}="","",COUNTIFS({AK},$A{r},{PER},{AH},">0"))',
+              fmt='0', auto=True)
+    body_cell(pj, r, 5, f'=IF(OR($A{r}="",$B$36=""),"",ROUND(B{r}*$B$36,0))',
+              fmt='#,##0', auto=True)
+    body_cell(pj, r, 6, center=False)
+
+pj['A36'] = '시간당 단가 (원)'
+pj['A36'].font = Font(name=F, size=9, bold=True, color=INK)
+pj['B36'] = '=IFERROR(ROUND(직원명부!I5/209,0),"")'
+pj['B36'].font = Font(name=F, size=10, bold=True, color=INK)
+pj['B36'].number_format = '#,##0'
+pj['B36'].fill = PatternFill('solid', fgColor=SOFT_FILL)
+pj['B36'].border = BOX
+pj['B36'].alignment = Alignment(horizontal='center')
+pj['C36'] = '← 직원명부 첫 사원의 월 지급액 ÷ 209시간. 인원이 여럿이면 평균 단가를 직접 넣으세요.'
+pj['C36'].font = Font(name=F, size=9, color=GRAY)
+
+for i, t in enumerate([
+    '· 프로젝트명은 근태기록의 「프로젝트」 칸에 적은 것과 글자가 정확히 같아야 집계됩니다.',
+    '· 「인건비 환산」은 원가 감각을 잡기 위한 값입니다. 4대보험 회사부담분과 간접비가 빠져 있어 '
+    '실제 원가는 이보다 높습니다. 견적에 그대로 쓰지 마세요.',
+    '· 프로젝트가 끝나면 총 근무시간을 견적서와 대조해 두세요. 다음 견적의 근거가 됩니다.',
+], start=38):
+    pj.cell(row=i, column=1, value=t).font = Font(name=F, size=9, color=GRAY)
+
+wb.move_sheet('코드표', offset=6)
 wb.calculation.fullCalcOnLoad = True   # 파일을 열 때 엑셀이 전체 수식을 다시 계산하도록
 import os
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '마인드_근태연차_관리대장.xlsx')

@@ -38,7 +38,7 @@ for i, row in enumerate(ROSTER, start=EMP_FIRST):
 
 # 휴가대장·근태기록의 예시 행 삭제 — 실제 기록은 회사가 채운다
 for sheet, first, cols in (('휴가대장', LV_FIRST, [2, 4, 5, 6, 7, 8, 9]),
-                           ('근태기록', AT_FIRST, [1, 3, 5, 6, 7, 10, 11])):
+                           ('근태기록', AT_FIRST, [1, 3, 5, 6, 7, 10, 11, 12])):
     ws = wb[sheet]
     for c in cols:
         ws.cell(row=first, column=c).value = None
