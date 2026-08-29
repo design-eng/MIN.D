@@ -4,9 +4,13 @@
  * 구글 시트로 옮긴 「마인드_근태연차_관리대장」에 붙여 넣고 초기설정() 을 한 번 실행한다.
  * 「출퇴근」 시트가 만들어지고, 체크박스를 누르면 근태기록 시트에 시각이 들어간다.
  *
- * 체크박스를 쓰는 이유 — 그림에 스크립트를 연결한 버튼은 데스크톱에서만 동작하고
- * 모바일 구글 시트 앱에서는 눌리지 않는다. 체크박스 편집은 onEdit 로 잡히므로
- * 휴대폰에서도 그대로 동작한다. 데스크톱에서는 상단 「근태」 메뉴도 함께 쓸 수 있다.
+ * 체크박스를 기본으로 삼는 이유가 둘 있다.
+ *   1. 체크박스 편집은 단순 트리거(onEdit)로 잡히므로 사원이 최초 권한 승인 절차를
+ *      거치지 않고 바로 쓸 수 있다. 상단 「근태」 메뉴는 사람마다 첫 사용 때
+ *      한 번 승인 창이 뜬다.
+ *   2. 그림에 스크립트를 연결한 버튼은 모바일 구글 시트 앱에서 눌리지 않는다.
+ *      회사 노트북에서만 쓴다면 버튼을 따로 만들어 붙여도 되지만, 그림 삽입은
+ *      스크립트로 못 하므로 사람이 직접 넣어야 한다.
  */
 
 const TZ = 'Asia/Seoul';
@@ -25,8 +29,8 @@ const C_DATE = 1, C_NO = 3, C_IN = 5, C_OUT = 6, C_BREAK = 7;
 const C_WORK = 8, C_OT = 9, C_NIGHT = 10, C_COMP = 11, C_TYPE = 12;
 
 // 출퇴근 시트 자리
-const P_NAME = 'B3', P_IN = 'B4', P_OUT = 'B5', P_MSG = 'B7';
-const MAP_HEAD = 10;         // 계정 매핑표 머리글 행
+const P_NAME = 'B4', P_IN = 'B5', P_OUT = 'B6', P_MSG = 'B8';
+const MAP_HEAD = 18;         // 계정 매핑표 머리글 행
 
 
 /* ══════════════ 최초 1회 ══════════════ */
@@ -41,19 +45,20 @@ function 초기설정() {
   ss.moveActiveSheet(1);
   p.clear();
   p.setHiddenGridlines(true);
-  p.setColumnWidth(1, 110);
-  p.setColumnWidth(2, 190);
-  p.setColumnWidth(3, 260);
+  p.setColumnWidth(1, 90);
+  p.setColumnWidth(2, 520);
+  p.setColumnWidth(3, 300);
 
   p.getRange('A1').setValue('출퇴근').setFontSize(16).setFontWeight('bold');
-  p.getRange('A2').setValue('체크박스를 누르면 근태기록 시트에 시각이 기록됩니다. 휴대폰에서도 됩니다.')
+  p.getRange('A2').setValue('체크박스를 누르면 근태기록 시트에 오늘 날짜의 출퇴근 시각이 들어갑니다.')
     .setFontSize(9).setFontColor('#6B7280');
 
-  const labels = [['이름', ''], ['출근', ''], ['퇴근', '']];
-  p.getRange(3, 1, 3, 2).setValues(labels);
-  p.getRange(3, 1, 3, 1).setFontWeight('bold');
-  p.getRange('A7').setValue('상태').setFontWeight('bold');
+  p.getRange(4, 1, 3, 1).setValues([['이름'], ['출근'], ['퇴근']]).setFontWeight('bold');
+  p.getRange('A8').setValue('상태').setFontWeight('bold');
   p.getRange(P_MSG).setFontColor('#6B7280').setWrap(true);
+  p.getRange('C5').setValue('← 자리에 앉으면 누르세요').setFontSize(9).setFontColor('#6B7280');
+  p.getRange('C6').setValue('← 나갈 때 누르세요. 휴게시간은 자동으로 들어갑니다')
+    .setFontSize(9).setFontColor('#6B7280');
 
   // 이름 목록 — 직원명부에서 가져온다
   const emp = readRoster(ss);
@@ -68,12 +73,23 @@ function 초기설정() {
   p.getRange(P_IN).setDataValidation(cb).setValue(false);
   p.getRange(P_OUT).setDataValidation(cb).setValue(false);
 
+  // 사용 방법 — 쓰는 자리에 붙여 둔다
+  p.getRange('A10').setValue('사용 방법').setFontWeight('bold').setFontSize(11);
+  const how = [
+    ['1', '출근하면 이 시트를 열고 「출근」 체크박스를 누릅니다. 누른 시각이 기록됩니다.'],
+    ['2', '퇴근할 때 「퇴근」 체크박스를 누릅니다. 휴게시간·근무시간·연장시간이 자동 계산됩니다.'],
+    ['3', '체크는 눌린 뒤 바로 풀립니다. 정상입니다. 결과는 아래 「상태」 줄에서 확인하세요.'],
+    ['4', '누르는 것을 잊었거나 시각이 틀렸으면 근태기록 시트에서 직접 고치면 됩니다.'],
+    ['5', '휴게를 한 시간과 다르게 썼다면 근태기록의 「휴게(h)」 칸을 고쳐 주세요.'],
+  ];
+  p.getRange(11, 1, how.length, 2).setValues(how);
+  p.getRange(11, 1, how.length, 1).setFontColor('#6B7280').setHorizontalAlignment('center');
+  p.getRange(11, 2, how.length, 1).setFontSize(9).setWrap(false);
+
   // 계정 매핑 — 회사 구글 계정으로 자동 식별하려면 여기에 이메일을 적는다
-  p.getRange(MAP_HEAD - 1, 1).setValue('계정 매핑')
-    .setFontWeight('bold').setFontSize(11);
-  p.getRange(MAP_HEAD - 1, 2, 1, 2).merge();
-  p.getRange(MAP_HEAD - 1, 3)
-    .setValue('구글 계정을 적어 두면 이름을 고르지 않아도 본인으로 기록됩니다.')
+  p.getRange(MAP_HEAD - 1, 1).setValue('계정 매핑').setFontWeight('bold').setFontSize(11);
+  p.getRange(MAP_HEAD - 1, 2)
+    .setValue('회사 구글 계정을 적어 두면 이름을 고르지 않아도 본인으로 기록됩니다.')
     .setFontSize(9).setFontColor('#6B7280');
   p.getRange(MAP_HEAD, 1, 1, 3).setValues([['사번', '성명', '구글 계정']])
     .setFontWeight('bold').setBackground('#F4F5F7');
