@@ -1,0 +1,393 @@
+<title>마인드 업무 프로세스</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&display=swap">
+
+<style>
+  :root{
+    --ink:#14161B; --ink-2:#3A3E46; --graphite:#6B7280; --faint:#9CA0A8;
+    --surface:#F4F5F7; --ground:#FCFCFB; --rule:#E3E1DE; --rule-soft:#EDECEA;
+    --accent:#FF4A1C; --accent-soft:#FFF1EC; --ghost:#EFEDEA;
+    --sans:'Pretendard','IBM Plex Sans KR',system-ui,-apple-system,'Malgun Gothic',sans-serif;
+    --mono:'IBM Plex Mono','SFMono-Regular',ui-monospace,monospace;
+    --s1:.35rem; --s2:.7rem; --s3:1.1rem; --s4:1.8rem; --s5:2.8rem; --s6:4.4rem;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ink:#F2F1EF; --ink-2:#C8C6C2; --graphite:#9B9EA6; --faint:#71757D;
+      --surface:#1C1F25; --ground:#131519; --rule:#2C2F36; --rule-soft:#22252B;
+      --accent:#FF6B44; --accent-soft:#2A1C17; --ghost:#1E2128;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#F2F1EF; --ink-2:#C8C6C2; --graphite:#9B9EA6; --faint:#71757D;
+    --surface:#1C1F25; --ground:#131519; --rule:#2C2F36; --rule-soft:#22252B;
+    --accent:#FF6B44; --accent-soft:#2A1C17; --ghost:#1E2128;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.75;
+    -webkit-font-smoothing:antialiased; word-break:keep-all;
+  }
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+  .shell{max-width:1080px;margin:0 auto;padding:clamp(2rem,5vw,4.5rem) clamp(1.15rem,4vw,3rem) 5rem}
+
+  .mast{
+    display:flex;flex-wrap:wrap;align-items:flex-end;gap:var(--s3) var(--s5);
+    padding-bottom:var(--s4);border-bottom:1px solid var(--ink);
+  }
+  .mast-id{flex:1 1 18rem}
+  .studio{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 var(--s2);
+  }
+  h1{
+    font-size:clamp(2.1rem,6vw,3.4rem);font-weight:200;letter-spacing:-.02em;
+    line-height:1.08;margin:0;text-wrap:balance;
+  }
+  h1 b{font-weight:600}
+  .mast-meta{
+    display:grid;gap:var(--s1);font-family:var(--mono);font-size:.74rem;
+    line-height:1.6;color:var(--graphite);
+  }
+  .mast-meta span{display:block}
+  .mast-meta a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+  .mast-meta a:hover{border-bottom-color:var(--accent)}
+
+  .lede{margin:var(--s4) 0 0;max-width:62ch;font-size:1.02rem;color:var(--ink-2)}
+
+  .body-grid{display:grid;grid-template-columns:1fr;gap:var(--s5);margin-top:var(--s6)}
+  @media (min-width:920px){
+    .body-grid{grid-template-columns:9.5rem 1fr;gap:var(--s6)}
+    .index{position:sticky;top:var(--s4);align-self:start}
+  }
+  .index ol{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2)}
+  .index a{display:flex;gap:.6rem;align-items:baseline;text-decoration:none;font-size:.82rem;color:var(--graphite);transition:color .15s}
+  .index a:hover{color:var(--accent)}
+  .index .n{font-family:var(--mono);font-size:.68rem;color:var(--faint);font-variant-numeric:tabular-nums}
+  .index .cap{
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--faint);margin:0 0 var(--s3);padding-bottom:var(--s2);border-bottom:1px solid var(--rule);
+  }
+
+  .content{min-width:0;display:grid;gap:var(--s6)}
+  section{scroll-margin-top:1.5rem}
+  .sec-head{
+    display:grid;grid-template-columns:auto 1fr;align-items:baseline;gap:0 var(--s3);
+    padding-bottom:var(--s2);border-bottom:1px solid var(--ink);margin-bottom:var(--s3);
+  }
+  .sec-num{
+    font-family:var(--mono);font-weight:400;font-size:clamp(2.4rem,7vw,3.6rem);
+    line-height:.85;color:var(--ghost);font-variant-numeric:tabular-nums;user-select:none;
+  }
+  h2{margin:0;font-size:clamp(1.15rem,3vw,1.4rem);font-weight:600;letter-spacing:-.01em}
+  .sec-body{max-width:66ch}
+  .sec-body > * + *{margin-top:var(--s3)}
+  p{margin:0}
+  h3{margin:var(--s4) 0 0;font-size:.95rem;font-weight:600;letter-spacing:.01em}
+  h3 + *{margin-top:var(--s2)}
+
+  .facts{margin:var(--s3) 0 0;display:grid;border-top:1px solid var(--rule)}
+  .facts div{
+    display:grid;grid-template-columns:9.5rem 1fr;gap:0 var(--s3);
+    padding:.62rem 0;border-bottom:1px solid var(--rule-soft);align-items:baseline;
+  }
+  @media (max-width:520px){.facts div{grid-template-columns:1fr;gap:2px;padding:.55rem 0}}
+  .facts dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--graphite)}
+  .facts dd{margin:0;font-size:.94rem}
+  .facts dd em{font-style:normal;color:var(--graphite);font-size:.86rem}
+
+  ol.steps{counter-reset:s;list-style:none;margin:var(--s3) 0 0;padding:0;display:grid;gap:var(--s3)}
+  ol.steps li{
+    counter-increment:s;display:grid;grid-template-columns:2.2rem 1fr;gap:var(--s2);
+    padding-bottom:var(--s3);border-bottom:1px solid var(--rule-soft);
+  }
+  ol.steps li:last-child{border-bottom:0;padding-bottom:0}
+  ol.steps li::before{
+    content:counter(s,decimal-leading-zero);
+    font-family:var(--mono);font-size:.8rem;font-weight:500;color:var(--accent);
+    font-variant-numeric:tabular-nums;line-height:1.9;
+  }
+  ol.steps b{display:block;font-weight:600;font-size:.98rem}
+  ol.steps span{display:block;color:var(--graphite);font-size:.9rem;margin-top:2px}
+
+  .tbl-wrap{overflow-x:auto;margin-top:var(--s3)}
+  table{border-collapse:collapse;width:100%;min-width:26rem;font-size:.9rem}
+  th,td{padding:.55rem .8rem .55rem 0;text-align:left;vertical-align:baseline}
+  th{
+    font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.08em;
+    color:var(--graphite);border-bottom:1px solid var(--ink);
+  }
+  td{border-bottom:1px solid var(--rule-soft)}
+  td:last-child,th:last-child{padding-right:0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--surface);padding:.1em .35em;border-radius:2px}
+
+  .note{margin-top:var(--s3);padding-left:var(--s3);border-left:1px solid var(--rule);font-size:.88rem;color:var(--graphite)}
+  .note b{color:var(--ink);font-weight:500}
+  .flag{
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent);display:block;margin-bottom:var(--s1);
+  }
+
+  /* ── 파일명 만들기 ── */
+  .builder{margin-top:var(--s3);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:var(--s3) 0}
+  .builder .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));gap:var(--s2) var(--s3)}
+  .builder label{display:block}
+  .builder .lbl{
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--faint);display:block;margin-bottom:.25rem;
+  }
+  .builder input{
+    width:100%;font-family:var(--sans);font-size:.92rem;color:var(--ink);
+    background:transparent;border:0;border-bottom:1px solid var(--rule);
+    padding:.3rem 0;border-radius:0;
+  }
+  .builder input:focus{outline:none;border-bottom-color:var(--accent)}
+  .out{
+    margin-top:var(--s3);display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2) var(--s3);
+    background:var(--surface);padding:var(--s2) var(--s3);border-radius:3px;
+  }
+  #filename{
+    font-family:var(--mono);font-size:1rem;font-weight:500;color:var(--ink);
+    flex:1 1 16rem;word-break:break-all;
+  }
+  #copy{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ground);background:var(--ink);border:0;border-radius:2px;
+    padding:.5rem .9rem;cursor:pointer;transition:background .15s;
+  }
+  #copy:hover{background:var(--accent)}
+  #copy[data-done="1"]{background:var(--accent)}
+
+  .good-bad{display:grid;gap:var(--s2);margin-top:var(--s3)}
+  .good-bad div{display:grid;grid-template-columns:1.6rem 1fr;gap:var(--s2);align-items:baseline;font-size:.9rem}
+  .good-bad .m{font-family:var(--mono);font-size:.8rem}
+  .good-bad .ok .m{color:var(--accent)}
+  .good-bad .no .m{color:var(--faint)}
+  .good-bad .no span{color:var(--graphite);text-decoration:line-through;text-decoration-color:var(--faint)}
+  .good-bad code{background:none;padding:0}
+
+  footer{
+    margin-top:var(--s6);padding-top:var(--s3);border-top:1px solid var(--ink);
+    display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);justify-content:space-between;
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.05em;color:var(--faint);
+  }
+  footer a{color:var(--accent);text-decoration:none}
+</style>
+
+<div class="shell">
+
+  <header class="mast">
+    <div class="mast-id">
+      <p class="studio">마인드 &middot; MIND</p>
+      <h1>업무<br><b>프로세스</b></h1>
+    </div>
+    <div class="mast-meta">
+      <span>최종 정리 &nbsp;2026년 8월 6일</span>
+      <span>대상 &nbsp;마인드 전 직원</span>
+      <span>함께 보기 &nbsp;<a href="https://claude.ai/code/artifact/ca4c5900-1324-4995-a4ab-85f872946133">근무 정책 안내서</a></span>
+    </div>
+  </header>
+
+  <p class="lede">
+    일하는 방식에 관한 사내 기준입니다. 휴가·급여 같은 근로조건은 별도의 근무 정책 안내서에 있고,
+    이 문서는 <b>무엇을 어떻게 만들고 어디에 두는지</b>를 다룹니다.
+  </p>
+
+  <div class="body-grid">
+
+    <nav class="index" aria-label="목차">
+      <p class="cap">목차</p>
+      <ol>
+        <li><a href="#s1"><span class="n">01</span><span>산출물 규칙</span></a></li>
+        <li><a href="#s2"><span class="n">02</span><span>프로젝트 투입</span></a></li>
+        <li><a href="#s3"><span class="n">03</span><span>KOLON 유지보수</span></a></li>
+        <li><a href="#s4"><span class="n">04</span><span>파일명</span></a></li>
+        <li><a href="#s5"><span class="n">05</span><span>자료 공유</span></a></li>
+        <li><a href="#s6"><span class="n">06</span><span>일정 관리</span></a></li>
+      </ol>
+    </nav>
+
+    <main class="content">
+
+      <section id="s1">
+        <div class="sec-head"><span class="sec-num">01</span><h2>산출물 규칙</h2></div>
+        <div class="sec-body">
+          <dl class="facts">
+            <div><dt>수치</dt><dd>소수점 없이 <b>정수</b>로 작업</dd></div>
+            <div><dt>단위</dt><dd>특별한 사유가 없는 한 <b>4의 배수</b></dd></div>
+            <div><dt>적용 범위</dt><dd>컴포넌트 크기 · 위치 · 간격 <em>— 전반에 동일하게</em></dd></div>
+          </dl>
+          <p><code>16</code> <code>24</code> <code>32</code> <code>48</code>은 되고, <code>15</code> <code>22.5</code> <code>30</code>은 쓰지 않습니다.</p>
+
+          <h3>사전 리서치</h3>
+          <p>디자인을 진행하기 전에 <b>사전 리서치를 반드시 수행</b>합니다. 화면부터 그리기 시작하지 않습니다.</p>
+        </div>
+      </section>
+
+      <section id="s2">
+        <div class="sec-head"><span class="sec-num">02</span><h2>프로젝트 투입</h2></div>
+        <div class="sec-body">
+          <p>힐스테이트·디에이치·쿠쿠처럼 <b>이미 진행 중인 프로젝트</b>에 투입되는 경우, 기존 화면을 충분히 숙지한 뒤에 작업을 시작합니다.</p>
+          <div class="note">
+            먼저 만들어진 화면의 규칙을 따라가는 것이 우선입니다. 기존 방식이 잘못돼 보인다면 바꾸기 전에 먼저 이야기해 주세요.
+          </div>
+        </div>
+      </section>
+
+      <section id="s3">
+        <div class="sec-head"><span class="sec-num">03</span><h2>KOLON 모바일 유지보수</h2></div>
+        <div class="sec-body">
+          <ol class="steps">
+            <li><b>접수 회신</b><span>의뢰를 확인하는 즉시 코멘트로 회신합니다. 이모티콘이나 "확인했습니다" 정도면 충분합니다. 읽고 가만히 있는 것이 가장 나쁩니다.</span></li>
+            <li><b>기한 확인</b><span>유지보수 의뢰를 받으면 완료 기한을 반드시 확인합니다.</span></li>
+            <li><b>중간 컨펌</b><span>작업 기간의 <b>절반</b> 시점에 1차 내부 컨펌을 진행합니다. 다 끝내고 보여주지 않습니다.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="s4">
+        <div class="sec-head"><span class="sec-num">04</span><h2>파일명</h2></div>
+        <div class="sec-body">
+          <p>다섯 조각을 밑줄로 잇습니다. 아래에 채워 넣으면 만들어집니다.</p>
+
+          <div class="builder">
+            <div class="fields">
+              <label><span class="lbl">업체명</span><input id="f0" value="코오롱" autocomplete="off"></label>
+              <label><span class="lbl">프로젝트명</span><input id="f1" value="헌인마을" autocomplete="off"></label>
+              <label><span class="lbl">아젠다명</span><input id="f2" value="홈화면개선" autocomplete="off"></label>
+              <label><span class="lbl">버전</span><input id="f3" value="v1" autocomplete="off"></label>
+              <label><span class="lbl">날짜</span><input id="f4" type="date"></label>
+            </div>
+            <div class="out">
+              <span id="filename">코오롱_헌인마을_홈화면개선_v1_20260806</span>
+              <button id="copy" type="button">복사</button>
+            </div>
+          </div>
+
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th scope="col">구성요소</th><th scope="col">설명</th><th scope="col">예시</th></tr></thead>
+              <tbody>
+                <tr><td>업체명</td><td>클라이언트·발주사 이름</td><td>코오롱, 현대건설</td></tr>
+                <tr><td>프로젝트명</td><td>프로젝트 명칭</td><td>헌인마을, myHILLS</td></tr>
+                <tr><td>아젠다명</td><td>작업 내용·화면명</td><td>홈화면개선, 유지보수</td></tr>
+                <tr><td>버전</td><td>버전 번호</td><td>v1, v2</td></tr>
+                <tr><td>날짜</td><td>작업일자 (YYYYMMDD)</td><td>20260806</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="good-bad">
+            <div class="ok"><span class="m">○</span><span><code>코오롱_헌인마을_홈화면개선_v1_20260806</code></span></div>
+            <div class="no"><span class="m">×</span><span><code>홈화면개선_최종.fig</code></span></div>
+            <div class="no"><span class="m">×</span><span><code>코오롱 헌인마을 홈화면 v1 (수정).fig</code></span></div>
+            <div class="no"><span class="m">×</span><span><code>헌인마을_홈화면개선_v1_8월6일</code></span></div>
+          </div>
+          <div class="note">
+            「최종」「진짜최종」은 버전이 아닙니다. 버전은 <code>v1</code> <code>v2</code>로 올리고, 날짜는 항상 <code>YYYYMMDD</code> 여덟 자리로 씁니다. 그래야 파일이 이름순으로 정렬됐을 때 시간순이 됩니다.
+          </div>
+        </div>
+      </section>
+
+      <section id="s5">
+        <div class="sec-head"><span class="sec-num">05</span><h2>자료 공유</h2></div>
+        <div class="sec-body">
+          <p><b>개인 저장소는 사용하지 않습니다.</b> OneDrive를 비롯한 개인 클라우드에 업무 자료를 두지 않습니다.</p>
+          <p>개인 자료를 제외한 <b>모든 업무 자료는 회사 공유 드라이브에만</b> 저장합니다.</p>
+          <div class="note">
+            <span class="flag">왜 이렇게 하나</span>
+            클라이언트 자료와 미공개 프로젝트 정보는 <b>취업규칙 제15조(비밀유지)</b>의 대상입니다.
+            업무 자료가 개인 클라우드에 있으면 회사가 접근하거나 회수할 수 없어, 퇴직할 때 자료를 반납하는 것도 불가능해집니다.
+            담당자가 자리를 비운 사이 급한 요청이 와도 아무도 파일을 열 수 없습니다.
+          </div>
+        </div>
+      </section>
+
+      <section id="s6">
+        <div class="sec-head"><span class="sec-num">06</span><h2>일정 관리</h2></div>
+        <div class="sec-body">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th scope="col">업무 유형</th><th scope="col">처리 방법</th></tr></thead>
+              <tbody>
+                <tr><td>즉시 처리할 업무</td><td>담당받은 즉시 처리하고, <b>업무일지에 기록</b>합니다</td></tr>
+                <tr><td>시일이 필요한 업무</td><td><b>미리 알림에 등록</b>하고 완료 예정일을 기재해 공유합니다</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>기준은 하나입니다. <b>내 머릿속에만 있는 일이 없게 하는 것.</b> 지금 끝낼 수 있으면 끝내고 남기고, 시간이 걸리면 언제까지인지를 먼저 알립니다.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <span>마인드 &nbsp;업무 프로세스 &nbsp;· &nbsp;2026-08-06</span>
+    <span><a href="https://claude.ai/code/artifact/ca4c5900-1324-4995-a4ab-85f872946133">근무 정책 안내서 &rarr;</a></span>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var ids = ['f0', 'f1', 'f2', 'f3', 'f4'];
+    var out = document.getElementById('filename');
+    var btn = document.getElementById('copy');
+    var dateEl = document.getElementById('f4');
+
+    dateEl.value = '2026-08-06';
+
+    function compact(d) {
+      if (!d) return '';
+      return d.replace(/-/g, '');
+    }
+    function clean(s) {
+      return (s || '').trim().replace(/\s+/g, '');
+    }
+    function build() {
+      var parts = ids.map(function (id, i) {
+        var v = document.getElementById(id).value;
+        return i === 4 ? compact(v) : clean(v);
+      }).filter(function (p) { return p !== ''; });
+      out.textContent = parts.length ? parts.join('_') : '—';
+    }
+    ids.forEach(function (id) {
+      document.getElementById(id).addEventListener('input', build);
+    });
+    build();
+
+    btn.addEventListener('click', function () {
+      var text = out.textContent;
+      function done() {
+        btn.textContent = '복사됨';
+        btn.setAttribute('data-done', '1');
+        setTimeout(function () {
+          btn.textContent = '복사';
+          btn.removeAttribute('data-done');
+        }, 1600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else {
+        fallback();
+      }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'absolute';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) { /* 복사 불가 환경 */ }
+        document.body.removeChild(ta);
+      }
+    });
+  })();
+</script>
