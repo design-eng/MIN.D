@@ -134,7 +134,13 @@ const C_DATE = 1, C_NO = 3, C_IN = 5, C_OUT = 6, C_BREAK = 7;
 const C_WORK = 8, C_OT = 9, C_NIGHT = 10, C_COMP = 11, C_TYPE = 12;
 
 // 출퇴근 시트 자리
-const P_NAME = 'B4', P_IN = 'B5', P_BS = 'B6', P_BE = 'B7', P_OUT = 'B8', P_MSG = 'B10';
+const P_NAME = 'B4', P_IN = 'B5', P_BS = 'B6', P_BE = 'B7', P_OUT = 'B8';
+const P_LV = 'B9', P_LVTYPE = 'C9', P_MSG = 'B10';
+const SH_LEAVE = '휴가대장';
+const LV_FIRST = 5, LV_LAST = 504;
+// 휴가대장 열 : B 사번 · D 사용일자 · E 휴가종류 · F 일수 · G 사유 · I 신청일
+// 종일 휴가(일수 1)는 그날 출퇴근을 찍지 않는다. 반차는 반나절 근무가 있다.
+const LEAVE_KINDS = [['연차',1],['반차',0.5],['경조휴가',1],['병가',1],['공가',1],['무급휴가',1]];
 const HOW_HEAD = 12;         // 사용 방법 머리글 행
 const MAP_HEAD = 21;         // 계정 매핑표 머리글 행 (D열에 휴게 시작 시각을 임시 보관)
 
@@ -164,8 +170,8 @@ function 출퇴근시트만들기() {
   p.getRange('A2').setValue('체크박스를 누르면 근태기록 시트에 오늘 날짜의 시각이 들어갑니다.')
     .setFontSize(9).setFontColor('#6B7280');
 
-  p.getRange(4, 1, 5, 1)
-    .setValues([['이름'], ['출근'], ['휴게 시작'], ['휴게 종료'], ['퇴근']])
+  p.getRange(4, 1, 6, 1)
+    .setValues([['이름'], ['출근'], ['휴게 시작'], ['휴게 종료'], ['퇴근'], ['휴가']])
     .setFontWeight('bold');
   p.getRange('A10').setValue('상태').setFontWeight('bold');
   p.getRange(P_MSG).setFontColor('#6B7280').setWrap(true);
@@ -177,6 +183,8 @@ function 출퇴근시트만들기() {
     ['← 나갈 때. 근무·연장·야간 시간이 계산됩니다'],
   ];
   p.getRange(5, 3, 4, 1).setValues(hints).setFontSize(9).setFontColor('#6B7280');
+  p.getRange('D9').setValue('← 종류를 고르고 체크하면 휴가대장에 기록됩니다')
+    .setFontSize(9).setFontColor('#6B7280');
 
   // 이름 목록 — 직원명부에서 가져온다
   const emp = readRoster(ss);
@@ -188,9 +196,13 @@ function 출퇴근시트만들기() {
   }
 
   const cb = SpreadsheetApp.newDataValidation().requireCheckbox().build();
-  [P_IN, P_BS, P_BE, P_OUT].forEach(function (a1) {
+  [P_IN, P_BS, P_BE, P_OUT, P_LV].forEach(function (a1) {
     p.getRange(a1).setDataValidation(cb).setValue(false);
   });
+  p.getRange(P_LVTYPE).setDataValidation(
+    SpreadsheetApp.newDataValidation()
+      .requireValueInList(LEAVE_KINDS.map(function (k) { return k[0]; }), true).build());
+  p.getRange(P_LVTYPE).setValue('연차').setHorizontalAlignment('center');
 
   // 사용 방법 — 쓰는 자리에 붙여 둔다
   p.getRange(HOW_HEAD, 1).setValue('사용 방법').setFontWeight('bold').setFontSize(11);
@@ -199,9 +211,10 @@ function 출퇴근시트만들기() {
     ['2', '점심 먹으러 나갈 때 「휴게 시작」, 돌아와서 「휴게 종료」 를 누릅니다.'],
     ['3', '저녁까지 일해서 한 번 더 쉬었다면 그때도 같은 방식으로 두 번 누릅니다. 합산됩니다.'],
     ['4', '퇴근할 때 「퇴근」 을 누릅니다. 근무·연장·야간 시간이 자동 계산됩니다.'],
-    ['5', '휴게를 한 번도 누르지 않고 퇴근하면 법정 기준(8시간 이상 1시간)으로 자동 입력됩니다.'],
-    ['6', '체크는 눌린 뒤 바로 풀립니다. 정상입니다. 결과는 「상태」 줄에서 확인하세요.'],
-    ['7', '잊었거나 시각이 틀렸으면 근태기록 시트에서 직접 고치면 됩니다.'],
+    ['5', '휴가 쓰는 날은 종류를 고르고 「휴가」를 체크합니다. 그날은 출퇴근을 찍지 않아도 됩니다.'],
+    ['6', '휴게를 한 번도 누르지 않고 퇴근하면 법정 기준(8시간 이상 1시간)으로 자동 입력됩니다.'],
+    ['7', '체크는 눌린 뒤 바로 풀립니다. 정상입니다. 결과는 「상태」 줄에서 확인하세요.'],
+    ['8', '잊었거나 시각이 틀렸으면 근태기록 시트에서 직접 고치면 됩니다.'],
   ];
   p.getRange(HOW_HEAD + 1, 1, how.length, 2).setValues(how);
   p.getRange(HOW_HEAD + 1, 1, how.length, 1).setFontColor('#6B7280').setHorizontalAlignment('center');
@@ -237,6 +250,8 @@ function onOpen() {
     .addItem('휴게 시작', '휴게시작')
     .addItem('휴게 종료', '휴게종료')
     .addItem('퇴근', '퇴근')
+    .addSeparator()
+    .addItem('오늘 휴가', '휴가')
     .addToUi();
 }
 
@@ -246,10 +261,59 @@ function onEdit(e) {
   if (sh.getName() !== SH_PUNCH) return;
   if (e.range.getValue() !== true) return;
   const a1 = e.range.getA1Notation();
-  const kind = a1 === P_IN ? 'in' : a1 === P_BS ? 'bs' : a1 === P_BE ? 'be' : a1 === P_OUT ? 'out' : null;
+  const kind = a1 === P_IN ? 'in' : a1 === P_BS ? 'bs' : a1 === P_BE ? 'be'
+             : a1 === P_OUT ? 'out' : a1 === P_LV ? 'leave' : null;
   if (!kind) return;
   sh.getRange(a1).setValue(false);
+  if (kind === 'leave') { 휴가(); return; }
   punch_(kind);
+}
+
+/** 오늘을 휴가로 기록한다. 이미 기록돼 있으면 지운다. */
+function 휴가() {
+  const ss = SpreadsheetApp.getActive();
+  const p = ss.getSheetByName(SH_PUNCH), lg = ss.getSheetByName(SH_LEAVE);
+  if (!lg) { status_(p, '휴가대장 시트를 찾지 못했습니다.'); return; }
+
+  const who = resolveEmp_(ss, p);
+  if (!who) { status_(p, '누구인지 알 수 없습니다. 이름을 골라 주세요.'); return; }
+
+  const now = new Date();
+  const ymd = Utilities.formatDate(now, TZ, 'yyyy-MM-dd');
+  const n = LV_LAST - LV_FIRST + 1;
+  const v = lg.getRange(LV_FIRST, 2, n, 5).getValues();     // B..F
+
+  for (let i = 0; i < n; i++) {
+    const d = v[i][2];
+    if (String(v[i][0]) === String(who.no) && d instanceof Date
+        && Utilities.formatDate(d, TZ, 'yyyy-MM-dd') === ymd) {
+      lg.getRange(LV_FIRST + i, 2, 1, 8).clearContent();     // B..I
+      status_(p, '오늘 휴가 기록을 지웠습니다.');
+      return;
+    }
+  }
+
+  let row = 0;
+  for (let i = 0; i < n; i++) if (v[i][0] === '' || v[i][0] === null) { row = LV_FIRST + i; break; }
+  if (!row) { status_(p, '휴가대장이 가득 찼습니다. 대표에게 알려 주세요.'); return; }
+
+  const label = p.getRange(P_LVTYPE).getValue() || '연차';
+  const kind = LEAVE_KINDS.filter(function (k) { return k[0] === label; })[0] || LEAVE_KINDS[0];
+
+  lg.getRange(row, 2).setValue(who.no);
+  lg.getRange(row, 4).setValue(new Date(ymd + 'T00:00:00+09:00')).setNumberFormat('yyyy-mm-dd');
+  lg.getRange(row, 5).setValue(kind[0]);
+  lg.getRange(row, 6).setValue(kind[1]);
+  lg.getRange(row, 9).setValue(new Date(ymd + 'T00:00:00+09:00')).setNumberFormat('yyyy-mm-dd');
+
+  // 근태기록에도 같은 날짜에 표시해 둔다
+  const at = ss.getSheetByName(SH_AT);
+  const r = at ? findRow_(at, ymd, who.no) : 0;
+  if (r) at.getRange(r, C_TYPE).setValue('휴가');
+
+  status_(p, ymd.slice(5) + ' ' + kind[0] + ' ' + kind[1] + '일로 기록했습니다.'
+    + (kind[1] >= 1 ? ' 오늘은 출퇴근을 찍지 않아도 됩니다.'
+                    : ' 반차이므로 근무한 시간은 찍어 주세요.'));
 }
 
 function 출근() { punch_('in'); }
