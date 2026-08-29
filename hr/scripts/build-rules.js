@@ -9,8 +9,8 @@ const CO = {
   name:    '마인드(MIN.D)',
   ceo:     '최 민 숙',
   addr:    '서울시 양천구 목동동로 293 현대 41타워 1314호',
-  enacted: '2026년 8월 27일',
-  effect:  '2026년 9월 1일',
+  enacted: '2026년 8월 31일',
+  effect:  '2026년 10월 1일',
 };
 // node build-rules.js --final  →  부속 검토 메모를 뺀 배포용
 const FINAL = process.argv.includes('--final');

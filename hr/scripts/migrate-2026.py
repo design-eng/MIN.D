@@ -90,7 +90,7 @@ for c in (2, 4, 5, 6, 7, 8, 9):
 # ── 4. 조회 기준일을 시행일에 맞춘다 ──────────────────────
 # 취업규칙과 보상휴가제 서면합의의 시행일이 2026년 9월 1일이다.
 dst['월별집계']['B3'] = datetime.date(2026, 9, 1)
-dst['보상휴가']['B3'] = datetime.date(2026, 9, 1)
+dst['보상휴가']['B3'] = datetime.date(2026, 10, 1)   # 보상휴가제 시행일
 
 dst.calculation.fullCalcOnLoad = True
 dst.save(DEST)
