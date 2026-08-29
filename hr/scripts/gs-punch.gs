@@ -379,3 +379,95 @@ function mins_(hours) {
 function status_(p, msg) {
   if (p) p.getRange(P_MSG).setValue(Utilities.formatDate(new Date(), TZ, 'HH:mm') + '  ' + msg);
 }
+
+
+/* ══════════════ 미기록 알림 ══════════════
+ *
+ * 완전 자동 기록은 회사 와이파이·GPS·출입문 같은 관찰 장치가 있어야 가능하다.
+ * 그 대신 「누르는 것을 잊는 일」을 막는다. 아침에 출근 기록이 없거나 저녁에
+ * 퇴근 기록이 없으면 본인에게 메일이 간다.
+ *
+ * 알림설치() 를 한 번 실행하면 켜지고, 알림해제() 로 끈다.
+ * 실행하기 전에는 아무 메일도 나가지 않는다.
+ */
+
+function 알림설치() {
+  알림해제();
+  ScriptApp.newTrigger('출근확인').timeBased().atHour(9).nearMinute(20).everyDays(1).create();
+  ScriptApp.newTrigger('퇴근확인').timeBased().atHour(18).nearMinute(40).everyDays(1).create();
+  SpreadsheetApp.getUi().alert(
+    '알림을 켰습니다.\n\n평일 09:20 에 출근 기록이 없으면, 18:40 에 퇴근 기록이 없으면\n'
+    + '「출퇴근」 시트의 계정 매핑표에 적힌 주소로 메일이 갑니다.\n\n'
+    + '주소가 비어 있으면 그 사람에게는 보내지 않습니다.');
+}
+
+function 알림해제() {
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    var f = t.getHandlerFunction();
+    if (f === '출근확인' || f === '퇴근확인') ScriptApp.deleteTrigger(t);
+  });
+}
+
+function 출근확인() { remind_('in'); }
+function 퇴근확인() { remind_('out'); }
+
+/** 오늘 쉬는 날인지 — 주말·공휴일·휴가대장에 기록된 종일 휴가 */
+function offToday_(ss, ymd, empNo) {
+  var d = new Date(ymd + 'T00:00:00+09:00').getDay();
+  if (d === 0 || d === 6) return true;
+  var lg = ss.getSheetByName('휴가대장');
+  if (!lg) return false;
+  var v = lg.getRange(5, 2, 500, 5).getValues();          // B 사번 … F 일수
+  for (var i = 0; i < v.length; i++) {
+    if (String(v[i][0]) !== String(empNo)) continue;
+    var dt = v[i][2];                                      // D 사용일자
+    if (!(dt instanceof Date)) continue;
+    if (Utilities.formatDate(dt, TZ, 'yyyy-MM-dd') !== ymd) continue;
+    if (Number(v[i][4]) >= 1) return true;                 // 반차는 근무가 있다
+  }
+  return false;
+}
+
+function remind_(kind) {
+  var ss = SpreadsheetApp.getActive();
+  var at = ss.getSheetByName(SH_AT), p = ss.getSheetByName(SH_PUNCH);
+  if (!at || !p) return;
+
+  var ymd = Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd');
+  var n = Math.max(0, p.getLastRow() - MAP_HEAD);
+  if (!n) return;
+  var map = p.getRange(MAP_HEAD + 1, 1, n, 3).getValues();  // 사번 · 성명 · 계정
+
+  var rows = at.getRange(AT_FIRST, 1, AT_LAST - AT_FIRST + 1, C_OUT).getValues();
+
+  map.forEach(function (m) {
+    var no = m[0], name = m[1], mail = String(m[2] || '').trim();
+    if (!no || !mail) return;
+    if (offToday_(ss, ymd, no)) return;
+
+    var found = null;
+    for (var i = 0; i < rows.length; i++) {
+      var d = rows[i][C_DATE - 1];
+      if (d instanceof Date && Utilities.formatDate(d, TZ, 'yyyy-MM-dd') === ymd
+          && String(rows[i][C_NO - 1]) === String(no)) { found = rows[i]; break; }
+    }
+    var hasIn  = found && found[C_IN - 1] !== '';
+    var hasOut = found && found[C_OUT - 1] !== '';
+
+    var subject, body;
+    if (kind === 'in') {
+      if (hasIn) return;
+      subject = '[마인드] 오늘 출근 기록이 없습니다';
+      body = name + ' 님,\n\n오늘(' + ymd + ') 출근 기록이 아직 없습니다.\n'
+        + '「출퇴근」 시트에서 출근을 눌러 주세요. 이미 근무 중이시면 시각을 직접 고치셔도 됩니다.\n\n'
+        + ss.getUrl();
+    } else {
+      if (!hasIn || hasOut) return;
+      subject = '[마인드] 오늘 퇴근 기록이 없습니다';
+      body = name + ' 님,\n\n오늘(' + ymd + ') 출근은 기록되었으나 퇴근이 남아 있지 않습니다.\n'
+        + '퇴근하실 때 눌러 주세요. 이미 퇴근하셨다면 근태기록 시트에서 시각을 적어 주시면 됩니다.\n\n'
+        + ss.getUrl();
+    }
+    try { MailApp.sendEmail(mail, subject, body); } catch (e) {}
+  });
+}
