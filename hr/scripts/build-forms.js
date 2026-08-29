@@ -29,9 +29,13 @@ function table(head, rows, widths, rowHeight) {
     width:{size:w,type:WidthType.DXA},
     shading: opt.head?{type:ShadingType.CLEAR,fill:SURF,color:'auto'}:undefined,
     margins:{top:95,bottom:95,left:130,right:130},
-    children:[new Paragraph({
-      alignment:(opt.center && String(text).length<=22)?AlignmentType.CENTER:AlignmentType.LEFT,
-      spacing:{line:264}, children:[T(text,{bold:!!opt.head,size:19})]})],
+    // OOXML 의 <w:t> 안에서는 개행 문자가 줄바꿈으로 렌더되지 않는다.
+    // 줄을 나누려면 문단 자체를 나눠야 한다.
+    children: String(text).split('\n').map(function (line) {
+      return new Paragraph({
+        alignment:(opt.center && String(text).length<=22)?AlignmentType.CENTER:AlignmentType.LEFT,
+        spacing:{line:264}, children:[T(line,{bold:!!opt.head,size:19})]});
+    }),
   });
   return new Table({
     width:{size:widths.reduce((a,b)=>a+b,0),type:WidthType.DXA}, columnWidths:widths,
@@ -55,7 +59,9 @@ function signRow(labelA, nameA, labelB, nameB) {
       width:{size:[1500,2600,1500,2600][i],type:WidthType.DXA},
       margins:{top:260,bottom:120,left:0,right:130},
       borders: i%2===1 ? {bottom:{style:BorderStyle.SINGLE,size:4,color:LINE}} : undefined,
-      children:[new Paragraph({children:[T(t,{size:20,bold:i%2===0,color:i%2===0?GRAY:INK})]})]})) }) ],
+      children: String(t).split('\n').map(function (line) {
+        return new Paragraph({children:[T(line,{size:20,bold:i%2===0,color:i%2===0?GRAY:INK})]});
+      })})) }) ],
   });
 }
 
