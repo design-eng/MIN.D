@@ -8,6 +8,7 @@ thumbnails*.jpg
 # 배포용 묶음 — 원본에서 언제든 다시 만들 수 있는 파생물
 dist/*.zip
 /마인드_인사문서.zip
+/MIN.D_HR_*.zip
 
 # HR 문서 작업 중 생성되는 검증 파일
 hr/**/verify*.xlsx
