@@ -166,6 +166,9 @@
   .content{min-width:0;display:grid;gap:var(--s6)}
 
   section{scroll-margin-top:1.5rem}
+  /* 그리드 항목의 기본 min-width:auto 때문에 표의 최소 폭이 그대로 밀고 나온다.
+     0 으로 풀어야 tbl-wrap 의 가로 스크롤이 제 역할을 한다. */
+  .content > section, .sec-body{min-width:0}
   .sec-head{
     display:grid;
     grid-template-columns:auto 1fr;

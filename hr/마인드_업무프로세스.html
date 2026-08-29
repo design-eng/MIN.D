@@ -76,6 +76,9 @@
 
   .content{min-width:0;display:grid;gap:var(--s6)}
   section{scroll-margin-top:1.5rem}
+  /* 그리드 항목의 기본 min-width:auto 때문에 표의 최소 폭이 그대로 밀고 나온다.
+     0 으로 풀어야 tbl-wrap 의 가로 스크롤이 제 역할을 한다. */
+  .content > section, .sec-body{min-width:0}
   .sec-head{
     display:grid;grid-template-columns:auto 1fr;align-items:baseline;gap:0 var(--s3);
     padding-bottom:var(--s2);border-bottom:1px solid var(--ink);margin-bottom:var(--s3);
@@ -112,8 +115,14 @@
     font-family:var(--mono);font-size:.8rem;font-weight:500;color:var(--accent);
     font-variant-numeric:tabular-nums;line-height:1.9;
   }
-  ol.steps b{display:block;font-weight:600;font-size:.98rem}
-  ol.steps span{display:block;color:var(--graphite);font-size:.9rem;margin-top:2px}
+  /* li 는 2열 그리드(번호 | 내용)이고 항목이 셋이므로, 라벨과 설명을 모두 2열에
+     명시적으로 배치해야 한다. 지정하지 않으면 설명이 2행 1열(2.2rem)로 밀려
+     한 단어씩 끊긴다. */
+  ol.steps > li > b,
+  ol.steps > li > span{grid-column:2}
+  ol.steps > li > b{display:block;font-weight:600;font-size:.98rem}
+  ol.steps > li > span{display:block;color:var(--graphite);font-size:.9rem;margin-top:2px}
+  ol.steps > li > span b{display:inline;font-weight:600;font-size:inherit;color:var(--ink)}
 
   .tbl-wrap{overflow-x:auto;margin-top:var(--s3)}
   table{border-collapse:collapse;width:100%;min-width:26rem;font-size:.9rem}
@@ -221,15 +230,57 @@
       <section id="s1">
         <div class="sec-head"><span class="sec-num">01</span><h2>산출물 규칙</h2></div>
         <div class="sec-body">
+          <h3>공통 — 수치</h3>
           <dl class="facts">
             <div><dt>수치</dt><dd>소수점 없이 <b>정수</b>로 작업</dd></div>
             <div><dt>단위</dt><dd>특별한 사유가 없는 한 <b>4의 배수</b></dd></div>
-            <div><dt>적용 범위</dt><dd>컴포넌트 크기 · 위치 · 간격 <em>— 전반에 동일하게</em></dd></div>
+            <div><dt>적용 범위</dt><dd>크기 · 위치 · 간격 · 반지름 · 선 두께 <em>— 전반에 동일하게</em></dd></div>
           </dl>
-          <p><code>16</code> <code>24</code> <code>32</code> <code>48</code>은 되고, <code>15</code> <code>22.5</code> <code>30</code>은 쓰지 않습니다.</p>
+          <p><code>16</code> <code>24</code> <code>32</code> <code>48</code>은 되고, <code>15</code> <code>22.5</code> <code>30</code>은 쓰지 않습니다. 폰트 크기와 행간은 예외로 두되, 이때도 정수를 씁니다.</p>
 
           <h3>사전 리서치</h3>
           <p>디자인을 진행하기 전에 <b>사전 리서치를 반드시 수행</b>합니다. 화면부터 그리기 시작하지 않습니다.</p>
+
+          <h3>피그마 작업</h3>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th scope="col">항목</th><th scope="col">규칙</th></tr></thead>
+              <tbody>
+                <tr><td>레이어 이름</td><td>자동 생성 이름을 그대로 두지 않습니다. <code>Frame 1</code> <code>Rectangle 12</code> <code>Group 5</code> 금지. 역할이 드러나는 이름을 붙입니다</td></tr>
+                <tr><td>그룹 대신 프레임</td><td>그룹은 오토레이아웃과 제약을 쓸 수 없습니다. 묶을 때는 프레임을 씁니다</td></tr>
+                <tr><td>오토레이아웃</td><td>간격과 여백은 오토레이아웃으로 잡습니다. 눈대중으로 좌표를 옮겨 맞추지 않습니다</td></tr>
+                <tr><td>컴포넌트</td><td><b>두 번 이상 반복되면 컴포넌트</b>로 만듭니다. 배리언트 속성명은 역할 기준으로 붙입니다 (<code>state=default/hover</code>)</td></tr>
+                <tr><td>스타일과 변수</td><td>색·타이포·이펙트는 등록해서 씁니다. 값을 직접 입력하지 않습니다</td></tr>
+                <tr><td>페이지 구성</td><td><code>표지</code> <code>작업중</code> <code>검토</code> <code>완료</code>로 나눕니다. <b>완료 페이지에는 확정본만</b> 둡니다</td></tr>
+                <tr><td>커버</td><td>파일 썸네일을 표지 프레임으로 지정합니다. 목록에서 무슨 파일인지 보이게 합니다</td></tr>
+                <tr><td>정리</td><td>숨긴 레이어, 쓰지 않는 컴포넌트, 빈 프레임을 지웁니다</td></tr>
+                <tr><td>개발 전달</td><td>간격이 오토레이아웃으로 잡혀 있어야 개발자가 보는 수치가 정확합니다. 좌표로 배치하면 그 수치가 나오지 않습니다</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="note">
+            <span class="flag">왜 이렇게 하나</span>
+            이 규칙들은 대부분 <b>나중에 남이 열었을 때</b>를 위한 것입니다. 레이어 이름과 페이지 구분이 없으면
+            담당자가 바뀌는 순간 파일을 처음부터 다시 읽어야 합니다.
+          </div>
+
+          <h3>산출물 관리</h3>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th scope="col">항목</th><th scope="col">규칙</th></tr></thead>
+              <tbody>
+                <tr><td>원본과 전달본</td><td>원본은 <code>03_디자인</code>, 전달본은 <code>04_납품</code>에 둡니다. 한 폴더에 섞지 않습니다</td></tr>
+                <tr><td>이미지 배수</td><td>프로젝트 시작 때 기준 배수를 정하고 끝까지 통일합니다 <em>(모바일은 보통 @2x·@3x)</em></td></tr>
+                <tr><td>포맷</td><td>사진 JPG · 투명이 필요한 UI 요소 PNG · 아이콘과 로고 SVG</td></tr>
+                <tr><td>컬러 모드</td><td>화면용 RGB, 인쇄용 CMYK. 한 산출물에 섞지 않습니다</td></tr>
+                <tr><td>이미지 포함</td><td>외부 링크가 아니라 파일에 포함시켜 전달합니다. 링크가 끊기면 상대는 빈 상자를 봅니다</td></tr>
+                <tr><td>전달 목록</td><td>무엇을 몇 개 보내는지 목록을 함께 전달합니다</td></tr>
+                <tr><td>버전</td><td>전달할 때마다 <code>v</code>를 올리고 이전 판을 지우지 않습니다</td></tr>
+                <tr><td>폰트</td><td>전달본에 폰트를 포함할 때는 라이선스를 먼저 확인합니다 <em>(07 참조)</em></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>파일명과 폴더 규칙은 <a href="#s5" style="color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor">05 파일과 폴더</a>, 전달 직전 점검은 <a href="#s6" style="color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor">06 납품 전 점검</a>에 있습니다.</p>
         </div>
       </section>
 
