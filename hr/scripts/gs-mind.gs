@@ -132,6 +132,16 @@ const EMP_LAST = 24;
 // 근태기록 열 번호
 const C_DATE = 1, C_NO = 3, C_IN = 5, C_OUT = 6, C_BREAK = 7;
 const C_WORK = 8, C_OT = 9, C_NIGHT = 10, C_COMP = 11, C_TYPE = 12;
+// 점심시작(O)·점심종료(P) 는 나중에 추가된 열이다. 없으면 건너뛴다.
+const C_LUNCH_S = 15, C_LUNCH_E = 16;
+
+/** 근태기록에 그 열이 실제로 있을 때만 쓴다 */
+function putIfCol_(at, row, col, value, fmt) {
+  if (at.getMaxColumns() < col) return;
+  var c = at.getRange(row, col);
+  c.setValue(value);
+  if (fmt) c.setNumberFormat(fmt);
+}
 
 // 출퇴근 시트 자리
 const P_NAME = 'B4', P_IN = 'B5', P_BS = 'B6', P_BE = 'B7', P_OUT = 'B8';
@@ -375,6 +385,7 @@ function breakStart_(p, at, row, who, frac, hhmm) {
     return;
   }
   cell.setValue(frac).setNumberFormat('hh:mm');
+  putIfCol_(at, row, C_LUNCH_S, frac, 'hh:mm');
   status_(p, '휴게 시작 ' + hhmm + '. 돌아오시면 「휴게 종료」 를 눌러 주세요.');
 }
 
@@ -393,6 +404,7 @@ function breakEnd_(p, at, row, who, frac, hhmm) {
   const prev = Number(at.getRange(row, C_BREAK).getValue()) || 0;
   const total = Math.round((prev + span) * 100) / 100;
   at.getRange(row, C_BREAK).setValue(total).setNumberFormat('0.00');
+  putIfCol_(at, row, C_LUNCH_E, frac, 'hh:mm');
   status_(p, '휴게 종료 ' + hhmm + '. 이번 휴게 ' + mins_(span)
     + (prev > 0 ? ', 오늘 합계 ' + mins_(total) : '') + ' 입니다.');
 }
