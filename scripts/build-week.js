@@ -11,9 +11,13 @@
  */
 const pptxgen = require("pptxgenjs");
 const path = require("path");
-// 과목 선택: --portfolio 를 주면 포트폴리오제작, 없으면 서비스디자인
-const USE_PORTFOLIO = process.argv.includes("--portfolio");
-const { COURSE, WEEK_CONTENT } = require(USE_PORTFOLIO ? "./portfolio-content" : "./week-content");
+// 과목 선택 — 인자가 없으면 서비스디자인 1학기형(리서치 기반) 콘텐츠를 쓴다
+//   --portfolio  포트폴리오제작
+//   --design     서비스디자인 2학기 (디자이닝 중심)
+const CONTENT = process.argv.includes("--portfolio") ? "./portfolio-content"
+  : process.argv.includes("--design") ? "./design-content"
+  : "./week-content";
+const { COURSE, WEEK_CONTENT } = require(CONTENT);
 
 /* ── 디자인 토큰 ─────────────────────────────────────────── */
 const INK = "111111";      // 먹 — 헤드라인·다크 면
