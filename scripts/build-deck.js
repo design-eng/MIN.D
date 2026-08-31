@@ -13,18 +13,24 @@ const path = require("path");
 /* ────────────────────────────────────────────────────────────
    디자인 토큰
    ──────────────────────────────────────────────────────────── */
-const INK      = "14161B"; // 지배색 (60~70%)
-const INK_SOFT = "262A33";
-const GRAPHITE = "6B7280"; // 보조 텍스트
-const MUTED    = "9AA0AA";
-const LINE     = "E4E6EB";
-const SURFACE  = "F4F5F7";
+// 흑백 에디토리얼 — 컬러 없음. 강조는 무게·대문자·자간·괘선으로만 만든다.
+const INK      = "111111"; // 먹 — 헤드라인·다크 면
+const INK_SOFT = "1F1F1F";
+const GRAPHITE = "6E6E6E"; // 보조 텍스트
+const MUTED    = "9B9B9B";
+const LINE     = "DCDCDC";
+const LINE_D   = "333333"; // 다크 면 위 헤어라인
+const SURFACE  = "F2F2F2";
 const WHITE    = "FFFFFF";
-const ACCENT   = "FF4A1C"; // 단 하나의 강조색
+const GHOST    = "1B1B1B"; // 다크 면 위 대형 숫자
+const ACCENT   = "111111"; // 라이트 면 강조 = 먹
+const ACCENT_D = "FFFFFF"; // 다크 면 강조 = 흰색
+const BODY_D   = "B8B8B8"; // 다크 면 위 본문
 
 const F  = "Pretendard";
 const FL = "Pretendard Light";
 const FT = "Pretendard Thin";
+const FB = "Pretendard Black"; // 디스플레이 전용
 
 const SW = 13.333, SH = 7.5;   // LAYOUT_WIDE
 const M  = 0.7;                // 좌우 마진
@@ -48,58 +54,75 @@ let pageNo = 0;
 function slideLight() { const s = pres.addSlide(); s.background = { color: WHITE }; return s; }
 function slideDark()  { const s = pres.addSlide(); s.background = { color: INK };   return s; }
 
+// 상단 레일 — 작은 자간 라벨 두 개와 헤어라인
+function rail(s, onDark) {
+  const c = onDark ? "9A9A9A" : "8A8A8A";
+  s.addText("서비스디자인", {
+    x: M, y: 0.30, w: 5.0, h: 0.24,
+    fontSize: 9, color: c, fontFace: F, charSpacing: 1.2, margin: 0, valign: "middle",
+  });
+  s.addText("WONKWANG UNIV · 2026-2", {
+    x: SW - M - 5.0, y: 0.30, w: 5.0, h: 0.24,
+    fontSize: 9, color: c, fontFace: F, charSpacing: 2.0, align: "right", margin: 0, valign: "middle",
+  });
+  rule(s, M, 0.60, CW, onDark ? LINE_D : LINE);
+}
+
 function head(s, kicker, title, sub) {
+  rail(s);
   s.addText(kicker, {
-    x: M, y: 0.62, w: CW, h: 0.26,
-    fontSize: 11, bold: true, color: ACCENT, fontFace: F,
-    charSpacing: 1.4, margin: 0, valign: "middle",
+    x: M, y: 0.70, w: CW, h: 0.24,
+    fontSize: 9.5, color: "8A8A8A", fontFace: F,
+    charSpacing: 2.6, margin: 0, valign: "middle",
   });
   s.addText(title, {
-    x: M, y: 0.94, w: CW, h: 0.56,
-    fontSize: 28, bold: true, color: INK, fontFace: F, margin: 0, valign: "middle",
+    x: M, y: 0.94, w: CW, h: 0.52,
+    fontSize: 30, color: INK, fontFace: FB, margin: 0, valign: "middle",
   });
   if (sub) {
     s.addText(sub, {
-      x: M, y: 1.50, w: CW, h: 0.26,
-      fontSize: 12, color: GRAPHITE, fontFace: F, margin: 0, valign: "middle",
+      x: M, y: 1.50, w: CW, h: 0.24,
+      fontSize: 11.5, color: GRAPHITE, fontFace: F, margin: 0, valign: "middle",
     });
   }
 }
 
 function foot(s) {
   pageNo += 1;
+  rule(s, M, 6.88, CW);
   s.addText(DECK_TITLE, {
-    x: M, y: 6.94, w: 6, h: 0.28,
-    fontSize: 9, color: MUTED, fontFace: F, margin: 0, valign: "middle",
+    x: M, y: 6.98, w: 6, h: 0.26,
+    fontSize: 8.5, color: MUTED, fontFace: F, charSpacing: 0.4, margin: 0, valign: "middle",
   });
-  s.addText(String(pageNo).padStart(2, "0"), {
-    x: SW - M - 1.2, y: 6.94, w: 1.2, h: 0.28,
-    fontSize: 9, color: MUTED, fontFace: F, margin: 0, align: "right", valign: "middle",
+  s.addText("P." + String(pageNo).padStart(2, "0"), {
+    x: SW - M - 1.4, y: 6.98, w: 1.4, h: 0.26,
+    fontSize: 8.5, color: MUTED, fontFace: F, charSpacing: 1.4, margin: 0, align: "right", valign: "middle",
   });
 }
 
+// 번호 표식 — 참고 덱의 아웃라인 원. solid 를 주면 채운 원.
 function chip(s, x, y, label, opts = {}) {
   const size = opts.size || 0.34;
-  s.addShape(pres.ShapeType.roundRect, {
+  const onDark = !!opts.onDark;
+  const stroke = onDark ? WHITE : INK;
+  s.addShape(pres.ShapeType.ellipse, {
     x, y, w: size, h: size,
-    fill: { color: opts.fill || INK },
-    line: { color: opts.fill || INK, width: 0.5 },
-    rectRadius: 0.06,
+    fill: { color: opts.solid ? stroke : (opts.bg || (onDark ? INK : WHITE)) },
+    line: { color: stroke, width: 1 },
   });
   s.addText(label, {
     x, y, w: size, h: size,
-    fontSize: opts.fontSize || 11, bold: true,
-    color: opts.color || WHITE, fontFace: F,
+    fontSize: opts.fontSize || 10.5, bold: true,
+    color: opts.solid ? (onDark ? INK : WHITE) : stroke, fontFace: F,
     align: "center", valign: "middle", margin: 0,
   });
 }
 
 function card(s, x, y, w, h, opts = {}) {
-  s.addShape(pres.ShapeType.roundRect, {
+  s.addShape(pres.ShapeType.rect, {
     x, y, w, h,
     fill: { color: opts.fill || SURFACE },
     line: { color: opts.line || (opts.fill === INK ? INK : LINE), width: 1 },
-    rectRadius: 0.08,
   });
 }
 
@@ -121,31 +144,52 @@ function bullets(s, items, o) {
 
 function rule(s, x, y, w, color) {
   s.addShape(pres.ShapeType.rect, {
-    x, y, w, h: 0.01,
+    x, y, w, h: 0.008,
     fill: { color: color || LINE }, line: { color: color || LINE, width: 0 },
+  });
+}
+
+// 참고 덱의 시그니처 — 선으로 그린 아래 방향 화살표
+function arrow(s, x, y, size, color) {
+  const c = color || INK, lw = 1.25, cx = x + size / 2, hy = y + size * 0.6;
+  s.addShape(pres.ShapeType.line, { x: cx, y, w: 0, h: size, line: { color: c, width: lw } });
+  s.addShape(pres.ShapeType.line, { x, y: hy, w: size / 2, h: size * 0.4, line: { color: c, width: lw } });
+  s.addShape(pres.ShapeType.line, { x: cx, y: hy, w: size / 2, h: size * 0.4, line: { color: c, width: lw }, flipV: true });
+}
+
+// 오른쪽 가장자리 세로 캡션
+function edgeCaption(s, txt, color) {
+  s.addText(txt, {
+    x: SW - 1.92, y: 3.6, w: 3.0, h: 0.3, rotate: 270,
+    fontSize: 8.5, color: color || MUTED, fontFace: F, charSpacing: 2.6,
+    align: "center", valign: "middle", margin: 0,
   });
 }
 
 function divider(num, kicker, title, desc) {
   const s = slideDark();
+  rail(s, true);
   s.addText(num, {
-    x: SW - M - 4.2, y: 1.0, w: 4.2, h: 5.5,
-    fontSize: 255, color: INK_SOFT, fontFace: FT,
+    x: SW - M - 4.6, y: 1.90, w: 4.6, h: 3.6,
+    fontSize: 200, color: GHOST, fontFace: FB,
     align: "right", valign: "middle", margin: 0,
   });
+  arrow(s, M, 1.5, 0.66, WHITE);
   s.addText(kicker, {
-    x: M, y: 2.72, w: 8.0, h: 0.3,
-    fontSize: 11, bold: true, color: ACCENT, fontFace: F, charSpacing: 2, margin: 0, valign: "middle",
+    x: M, y: 2.86, w: 8.6, h: 0.28,
+    fontSize: 9.5, color: "9A9A9A", fontFace: F, charSpacing: 2.8, margin: 0, valign: "middle",
   });
   s.addText(title, {
-    x: M, y: 3.1, w: 8.0, h: 0.8,
-    fontSize: 42, bold: true, color: WHITE, fontFace: F, margin: 0, valign: "middle",
+    x: M, y: 3.16, w: 8.6, h: 0.86,
+    fontSize: 46, color: WHITE, fontFace: FB, margin: 0, valign: "middle",
   });
+  rule(s, M, 4.16, 2.4, WHITE);
   s.addText(desc, {
-    x: M, y: 4.0, w: 7.4, h: 0.6,
-    fontSize: 13.5, color: "AEB4BF", fontFace: F, margin: 0,
-    lineSpacingMultiple: 1.3, valign: "top",
+    x: M, y: 4.38, w: 7.6, h: 0.8,
+    fontSize: 13.5, color: BODY_D, fontFace: FL, margin: 0,
+    lineSpacingMultiple: 1.34, valign: "top",
   });
+  edgeCaption(s, "SECTION " + num, "7A7A7A");
   return s;
 }
 
@@ -234,17 +278,17 @@ const WEEKS = [
   });
   s.addText("WONKWANG UNIV. · 2026-2 · 학부 3학년", {
     x: M, y: 1.5, w: 7.5, h: 0.3,
-    fontSize: 12, bold: true, color: ACCENT, fontFace: F, charSpacing: 1.6, margin: 0,
+    fontSize: 12, bold: true, color: ACCENT_D, fontFace: F, charSpacing: 1.6, margin: 0,
   });
   s.addText("서비스디자인", {
     x: M, y: 1.96, w: 8.2, h: 1.05,
-    fontSize: 48, bold: true, color: WHITE, fontFace: F, margin: 0, valign: "middle",
+    fontSize: 48, color: WHITE, fontFace: FB, margin: 0, valign: "middle",
   });
   s.addText("프로세스를 한 바퀴 돌려, 전시 패널로 완결한다", {
     x: M, y: 3.06, w: 8.2, h: 0.5,
-    fontSize: 19, color: "C9CDD6", fontFace: FL, margin: 0, valign: "middle",
+    fontSize: 19, color: "C8C8C8", fontFace: FL, margin: 0, valign: "middle",
   });
-  rule(s, M, 3.9, 3.2, "3A3F4B");
+  rule(s, M, 3.9, 3.2, LINE_D);
   [
     ["운영", "주 3시간 × 15주 (총 45시간) · 실습형"],
     ["구성", "강의 40% / 실습 · 크리틱 60%"],
@@ -257,7 +301,7 @@ const WEEKS = [
     });
     s.addText(v, {
       x: M + 1.5, y, w: 6.8, h: 0.34,
-      fontSize: 12.5, color: "DDE0E6", fontFace: F, margin: 0, valign: "middle",
+      fontSize: 12.5, color: "DDDDDD", fontFace: F, margin: 0, valign: "middle",
     });
   });
   s.addNotes("1주차 오리엔테이션 첫 화면. 과목명보다 '전시 패널로 완결한다'는 목표를 먼저 각인시킬 것. 15주가 하나의 프로젝트를 처음부터 끝까지 도는 구조라는 점을 표지에서 이미 말해둔다.");
@@ -304,7 +348,7 @@ const WEEKS = [
   });
   s.addText("개인 프로젝트 기반 · 권장 20명 내외 · 실습실 · Figma 계정 · A0 출력 협력업체 필요", {
     x: M + 0.5, y: 5.72, w: CW - 1.0, h: 0.34,
-    fontSize: 11.5, color: "AEB4BF", fontFace: F, margin: 0, valign: "middle",
+    fontSize: 11.5, color: BODY_D, fontFace: F, margin: 0, valign: "middle",
   });
   foot(s);
   s.addNotes("숫자로 기대치를 맞추는 슬라이드. 특히 '주 3시간 중 강의는 1시간 남짓'이라는 점을 여기서 못 박아야 이후 실습 비중에 대한 저항이 줄어든다. 개인 프로젝트라는 점도 함께 공지.");
@@ -325,7 +369,7 @@ const WEEKS = [
   items.forEach(([n, t, d], i) => {
     const x = M + i * (cw + 0.4);
     card(s, x, BODY_TOP + 0.18, cw, 3.1);
-    chip(s, x + 0.42, BODY_TOP + 0.5, n, { fill: ACCENT, size: 0.4, fontSize: 12 });
+    chip(s, x + 0.42, BODY_TOP + 0.5, n, { size: 0.4, fontSize: 11.5 });
     s.addText(t, {
       x: x + 0.42, y: BODY_TOP + 1.04, w: cw - 0.84, h: 0.5,
       fontSize: 17, bold: true, color: INK, fontFace: F, margin: 0, valign: "top",
@@ -399,18 +443,18 @@ const WEEKS = [
     card(s, x, BODY_TOP + 0.14, cw, 3.5, heavy ? { fill: INK } : { fill: SURFACE });
     s.addText(n, {
       x: x + 0.42, y: BODY_TOP + 0.44, w: cw - 0.84, h: 0.6,
-      fontSize: 34, color: ACCENT, fontFace: FL, margin: 0, valign: "middle",
+      fontSize: 34, color: heavy ? WHITE : INK, fontFace: FL, margin: 0, valign: "middle",
     });
     s.addText(name, {
       x: x + 0.42, y: BODY_TOP + 1.12, w: cw - 0.84, h: 0.42,
-      fontSize: 22, bold: true, color: heavy ? WHITE : INK, fontFace: F, margin: 0, valign: "middle",
+      fontSize: 22, color: heavy ? WHITE : INK, fontFace: FB, margin: 0, valign: "middle",
     });
     s.addText(desc, {
       x: x + 0.42, y: BODY_TOP + 1.64, w: cw - 0.84, h: 0.8,
-      fontSize: 11.5, color: heavy ? "AEB4BF" : GRAPHITE, fontFace: F, margin: 0,
+      fontSize: 11.5, color: heavy ? BODY_D : GRAPHITE, fontFace: F, margin: 0,
       lineSpacingMultiple: 1.28, valign: "top",
     });
-    rule(s, x + 0.42, BODY_TOP + 2.56, cw - 0.84, heavy ? "3A3F4B" : "DCDEE3");
+    rule(s, x + 0.42, BODY_TOP + 2.56, cw - 0.84, heavy ? LINE_D : "D2D2D2");
     s.addText(tool, {
       x: x + 0.42, y: BODY_TOP + 2.7, w: cw - 0.84, h: 0.56,
       fontSize: 11, color: heavy ? WHITE : INK_SOFT, fontFace: F, margin: 0,
@@ -418,7 +462,7 @@ const WEEKS = [
     });
     s.addText(span, {
       x: x + 0.42, y: BODY_TOP + 3.0, w: cw - 0.84, h: 0.3,
-      fontSize: 10.5, bold: true, color: ACCENT, fontFace: F, margin: 0, valign: "middle",
+      fontSize: 10.5, bold: true, color: heavy ? "9A9A9A" : GRAPHITE, fontFace: F, margin: 0, valign: "middle",
     });
   });
   s.addText("대학원「컨셉트와 프로세스」와 같은 역량 축을 공유하되, 학부는 만들고 전달하는 쪽에 무게를 둡니다. 중복이 아니라 층위의 차이입니다.", {
@@ -448,9 +492,9 @@ const WEEKS = [
   });
   s.addText("900 × 1200 mm", {
     x: M + 0.52, y: BODY_TOP + 1.86, w: lw - 1.04, h: 0.4,
-    fontSize: 22, bold: true, color: WHITE, fontFace: F, margin: 0, valign: "middle",
+    fontSize: 22, color: WHITE, fontFace: FB, margin: 0, valign: "middle",
   });
-  rule(s, M + 0.52, BODY_TOP + 2.44, lw - 1.04, "3A3F4B");
+  rule(s, M + 0.52, BODY_TOP + 2.44, lw - 1.04, LINE_D);
   [
     ["색상", "CMYK 변환 필수"],
     ["해상도", "이미지 300dpi 이상"],
@@ -464,7 +508,7 @@ const WEEKS = [
     });
     s.addText(v, {
       x: M + 1.9, y, w: lw - 2.42, h: 0.34,
-      fontSize: 12.5, color: "DDE0E6", fontFace: F, margin: 0, valign: "middle",
+      fontSize: 12.5, color: "DDDDDD", fontFace: F, margin: 0, valign: "middle",
     });
   });
 
@@ -522,26 +566,26 @@ divider("01", "PART 01", "15주 커리큘럼",
     card(s, x, BODY_TOP + 0.14, cw, 4.08, dark ? { fill: INK } : { fill: SURFACE });
     s.addText("PHASE " + (pi + 1), {
       x: x + 0.4, y: BODY_TOP + 0.42, w: cw - 0.8, h: 0.26,
-      fontSize: 9.5, bold: true, color: ACCENT, fontFace: F, charSpacing: 1.4, margin: 0, valign: "middle",
+      fontSize: 9.5, bold: true, color: dark ? "9A9A9A" : GRAPHITE, fontFace: F, charSpacing: 1.4, margin: 0, valign: "middle",
     });
     s.addText(
       [
-        { text: ph.name, options: { fontSize: 22, bold: true, color: dark ? WHITE : INK, fontFace: F } },
+        { text: ph.name, options: { fontSize: 22, color: dark ? WHITE : INK, fontFace: FB } },
         { text: "   " + ph.span, options: { fontSize: 11.5, color: dark ? MUTED : GRAPHITE, fontFace: F } },
       ],
       { x: x + 0.4, y: BODY_TOP + 0.74, w: cw - 0.8, h: 0.44, margin: 0, valign: "middle" }
     );
     s.addText(ph.desc, {
       x: x + 0.4, y: BODY_TOP + 1.24, w: cw - 0.8, h: 0.58,
-      fontSize: 11, color: dark ? "AEB4BF" : GRAPHITE, fontFace: F, margin: 0,
+      fontSize: 11, color: dark ? BODY_D : GRAPHITE, fontFace: F, margin: 0,
       lineSpacingMultiple: 1.25, valign: "top",
     });
-    rule(s, x + 0.4, BODY_TOP + 1.92, cw - 0.8, dark ? "3A3F4B" : "DCDEE3");
+    rule(s, x + 0.4, BODY_TOP + 1.92, cw - 0.8, dark ? LINE_D : "D2D2D2");
     WEEKS.filter((w) => w.phase === pi).forEach((w, wi) => {
       const y = BODY_TOP + 2.02 + wi * 0.54;
       s.addText(w.n, {
         x: x + 0.4, y, w: 0.5, h: 0.5,
-        fontSize: 15, color: dark ? MUTED : "AAAFB8", fontFace: FL, margin: 0, valign: "middle",
+        fontSize: 15, color: dark ? MUTED : "A8A8A8", fontFace: FL, margin: 0, valign: "middle",
       });
       s.addText(w.title, {
         x: x + 0.94, y, w: cw - 1.34, h: 0.5,
@@ -576,25 +620,25 @@ divider("01", "PART 01", "15주 커리큘럼",
     card(s, x, BODY_TOP + 0.16, cw, 4.1, dark ? { fill: INK } : { fill: SURFACE });
     s.addText(
       [
-        { text: wk, options: { fontSize: 44, color: ACCENT, fontFace: FT } },
+        { text: wk, options: { fontSize: 44, color: dark ? WHITE : INK, fontFace: FT } },
         { text: "  주차", options: { fontSize: 13, color: dark ? MUTED : GRAPHITE, fontFace: F } },
       ],
       { x: x + 0.44, y: BODY_TOP + 0.5, w: cw - 0.88, h: 0.8, margin: 0, valign: "middle" }
     );
     s.addText(name, {
       x: x + 0.44, y: BODY_TOP + 1.4, w: cw - 0.88, h: 0.42,
-      fontSize: 20, bold: true, color: dark ? WHITE : INK, fontFace: F, margin: 0, valign: "middle",
+      fontSize: 20, color: dark ? WHITE : INK, fontFace: FB, margin: 0, valign: "middle",
     });
     s.addText(kind, {
       x: x + 0.44, y: BODY_TOP + 1.84, w: cw - 0.88, h: 0.3,
-      fontSize: 11, bold: true, color: ACCENT, fontFace: F, margin: 0, valign: "middle",
+      fontSize: 11, bold: true, color: dark ? "9A9A9A" : GRAPHITE, fontFace: F, margin: 0, valign: "middle",
     });
     s.addText(desc, {
       x: x + 0.44, y: BODY_TOP + 2.26, w: cw - 0.88, h: 1.3,
-      fontSize: 11.5, color: dark ? "AEB4BF" : GRAPHITE, fontFace: F, margin: 0,
+      fontSize: 11.5, color: dark ? BODY_D : GRAPHITE, fontFace: F, margin: 0,
       lineSpacingMultiple: 1.3, valign: "top",
     });
-    rule(s, x + 0.44, BODY_TOP + 3.62, cw - 0.88, dark ? "3A3F4B" : "DCDEE3");
+    rule(s, x + 0.44, BODY_TOP + 3.62, cw - 0.88, dark ? LINE_D : "D2D2D2");
     s.addText(tag, {
       x: x + 0.44, y: BODY_TOP + 3.76, w: cw - 0.88, h: 0.3,
       fontSize: 11, bold: true, color: dark ? WHITE : INK, fontFace: F, margin: 0, valign: "middle",
@@ -634,11 +678,10 @@ divider("01", "PART 01", "15주 커리큘럼",
   blocks.forEach(([mins, name, desc, val], i) => {
     const w = widths[i];
     const dark = i === 1 || i === 2;
-    s.addShape(pres.ShapeType.roundRect, {
+    s.addShape(pres.ShapeType.rect, {
       x, y: barY, w, h: 1.0,
       fill: { color: dark ? INK : SURFACE },
       line: { color: dark ? INK : LINE, width: 1 },
-      rectRadius: 0.08,
     });
     const narrow = w < 1.6;
     const inset = narrow ? 0.12 : 0.3;
@@ -720,7 +763,7 @@ WEEKS.forEach((w, idx) => {
       lineSpacingMultiple: 1.34, valign: "top",
     });
     if (w.milestone) {
-      rule(s, M + 0.5, BODY_TOP + 3.3, lw - 1.0, "3A3F4B");
+      rule(s, M + 0.5, BODY_TOP + 3.3, lw - 1.0, LINE_D);
       s.addText("검증점 주차", {
         x: M + 0.5, y: BODY_TOP + 3.46, w: lw - 1.0, h: 0.32,
         fontSize: 12, bold: true, color: ACCENT, fontFace: F, margin: 0, valign: "middle",
@@ -800,7 +843,7 @@ WEEKS.forEach((w, idx) => {
 
     const x3 = M + (colW + 0.42) * 2;
     card(s, x3, cy, colW, ch, { fill: SURFACE });
-    chip(s, x3 + 0.4, cy + 0.4, "3", { size: 0.32, fontSize: 10.5, fill: ACCENT });
+    chip(s, x3 + 0.4, cy + 0.4, "3", { size: 0.32, fontSize: 10 });
     s.addText("제출 산출물", {
       x: x3 + 0.82, y: cy + 0.4, w: colW - 1.2, h: 0.32,
       fontSize: 14, bold: true, color: INK, fontFace: F, margin: 0, valign: "middle",
@@ -847,7 +890,7 @@ WEEKS.forEach((w, idx) => {
     });
 
     card(s, rx, BODY_TOP + 2.32, rw, 2.1, { fill: INK });
-    chip(s, rx + 0.4, BODY_TOP + 2.68, "2", { size: 0.32, fontSize: 10.5, fill: ACCENT });
+    chip(s, rx + 0.4, BODY_TOP + 2.68, "2", { size: 0.32, fontSize: 10, onDark: true });
     s.addText("제출 산출물", {
       x: rx + 0.82, y: BODY_TOP + 2.68, w: rw - 1.2, h: 0.32,
       fontSize: 14, bold: true, color: WHITE, fontFace: F, margin: 0, valign: "middle",
@@ -910,17 +953,17 @@ divider("02", "PART 02", "평가와 운영",
       x: M + 6.8, y: y + 0.14, w: 1.1, h: 0.32,
       fontSize: 10.5, color: MUTED, fontFace: F, margin: 0, valign: "middle",
     });
-    s.addShape(pres.ShapeType.roundRect, {
+    s.addShape(pres.ShapeType.rect, {
       x: barX, y: y + 0.18, w: barMaxW, h: 0.14,
-      fill: { color: "EDEFF2" }, line: { color: "EDEFF2", width: 0 }, rectRadius: 0.03,
+      fill: { color: "EAEAEA" }, line: { color: "EAEAEA", width: 0 },
     });
-    s.addShape(pres.ShapeType.roundRect, {
+    s.addShape(pres.ShapeType.rect, {
       x: barX, y: y + 0.18, w: (barMaxW * pct) / 25, h: 0.14,
-      fill: { color: top ? ACCENT : INK }, line: { color: top ? ACCENT : INK, width: 0 }, rectRadius: 0.03,
+      fill: { color: top ? INK : "A8A8A8" }, line: { color: top ? INK : "A8A8A8", width: 0 },
     });
     s.addText(pct + "%", {
       x: SW - M - 0.85, y: y + 0.06, w: 0.85, h: 0.34,
-      fontSize: 14.5, bold: true, color: top ? ACCENT : INK, fontFace: F,
+      fontSize: 14.5, bold: true, color: top ? INK : GRAPHITE, fontFace: F,
       align: "right", margin: 0, valign: "middle",
     });
     if (i < rubric.length - 1) rule(s, M, y + rowH - 0.06, CW);
@@ -952,7 +995,7 @@ divider("02", "PART 02", "평가와 운영",
     card(s, x, BODY_TOP + 0.16, cw, 2.5, top ? { fill: INK } : { fill: SURFACE });
     s.addText(g, {
       x: x + 0.42, y: BODY_TOP + 0.42, w: cw - 0.84, h: 0.86,
-      fontSize: 54, color: top ? ACCENT : "AAAFB8", fontFace: FL, margin: 0, valign: "middle",
+      fontSize: 54, color: top ? WHITE : "A8A8A8", fontFace: FL, margin: 0, valign: "middle",
     });
     s.addText(name, {
       x: x + 0.42, y: BODY_TOP + 1.34, w: cw - 0.84, h: 0.36,
@@ -960,7 +1003,7 @@ divider("02", "PART 02", "평가와 운영",
     });
     s.addText(desc, {
       x: x + 0.42, y: BODY_TOP + 1.76, w: cw - 0.84, h: 0.66,
-      fontSize: 11.5, color: top ? "AEB4BF" : GRAPHITE, fontFace: F, margin: 0,
+      fontSize: 11.5, color: top ? BODY_D : GRAPHITE, fontFace: F, margin: 0,
       lineSpacingMultiple: 1.28, valign: "top",
     });
   });
@@ -1035,11 +1078,11 @@ divider("02", "PART 02", "평가와 운영",
   });
   s.addText("NEXT WEEK", {
     x: M, y: 1.5, w: 7.6, h: 0.3,
-    fontSize: 11, bold: true, color: ACCENT, fontFace: F, charSpacing: 2, margin: 0, valign: "middle",
+    fontSize: 11, bold: true, color: ACCENT_D, fontFace: F, charSpacing: 2, margin: 0, valign: "middle",
   });
   s.addText("다음 주까지 해올 것", {
     x: M, y: 1.9, w: 7.6, h: 0.7,
-    fontSize: 38, bold: true, color: WHITE, fontFace: F, margin: 0, valign: "middle",
+    fontSize: 38, color: WHITE, fontFace: FB, margin: 0, valign: "middle",
   });
   const todo = [
     ["01", "관심 영역 3개를 각각 한 문장으로 적어 온다"],
@@ -1048,13 +1091,13 @@ divider("02", "PART 02", "평가와 운영",
   ];
   todo.forEach(([n, t], i) => {
     const y = 2.95 + i * 0.62;
-    chip(s, M, y + 0.04, n, { size: 0.34, fontSize: 10.5, fill: ACCENT });
+    chip(s, M, y + 0.04, n, { size: 0.34, fontSize: 10.5, onDark: true });
     s.addText(t, {
       x: M + 0.62, y, w: 7.6, h: 0.42,
-      fontSize: 14, color: "DDE0E6", fontFace: F, margin: 0, valign: "middle",
+      fontSize: 14, color: "DDDDDD", fontFace: F, margin: 0, valign: "middle",
     });
   });
-  rule(s, M, 5.22, 7.6, "3A3F4B");
+  rule(s, M, 5.22, 7.6, LINE_D);
   s.addText("주제가 아직 없어도 괜찮습니다. 2주차에 후보 3안을 함께 좁혀 나갑니다.", {
     x: M, y: 5.46, w: 7.8, h: 0.44,
     fontSize: 15, bold: true, color: WHITE, fontFace: F, margin: 0, valign: "middle",

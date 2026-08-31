@@ -188,16 +188,23 @@ node scripts/build-week.js --portfolio 2    # 포트폴리오제작 특정 주�
 레이아웃은 `build-week.js`가 타입별(`cards3` · `rows` · `compare` · `twocol` ·
 `statement` · `steps` · `checklist` · `divider`)로 렌더합니다.
 
-### 디자인 토큰
+### 디자인 토큰 — 흑백 에디토리얼
 
-파일 상단에 정의되어 있습니다.
+파일 상단에 정의되어 있습니다. 참고로 받은 두 피그마 덱
+(Creatable Investment Pitch Deck / No.129 black-and-white minimalist title template)의
+공통 언어를 하나의 시스템으로 정리한 것입니다.
 
-- 색: 잉크 `#14161B`(지배색) · 서피스 `#F4F5F7` · 그래파이트 `#6B7280` · 강조 `#FF4A1C` 하나만
-- 폰트: **Pretendard** (큰 순번은 Thin/Light)
+- **컬러 없음.** 강조는 색이 아니라 무게 · 대문자 · 자간 · 괘선으로 만듭니다.
+  먹 `#111111` · 연회색 면 `#F2F2F2` · 보조 텍스트 `#6E6E6E` · 헤어라인 `#DCDCDC`
+- 폰트: **Pretendard** — 디스플레이는 Black, 본문은 Regular, 큰 숫자는 Light/Thin
 - 그리드: 13.333″ × 7.5″, 좌우 마진 0.7″, 콘텐츠 폭 11.933″
-- 모티프: 번호 칩(라운드 사각) + 대형 고스트 넘버. 장식용 컬러 바·타이틀 밑줄은 쓰지 않음
+- 구조: 상단 레일(과목명 / PHASE / WEEK + 헤어라인), 하단 헤어라인과 `P.00`
+- 모티프: 선으로 그린 아래 방향 화살표, 오른쪽 가장자리 세로 캡션,
+  아웃라인 번호 원, 대형 주차 숫자. 라운드 코너와 장식용 컬러 바는 쓰지 않음
 
-> Pretendard가 없는 PC에서는 시스템 기본 폰트로 대체됩니다. 발표 PC에 설치를 권장합니다.
+> 발표 PC에 **Pretendard 전 웨이트**(Thin~Black)를 설치해 주세요.
+> <https://github.com/orioncactus/pretendard/releases> 에서 받을 수 있습니다.
+> 없으면 Black/Light가 시스템 기본 폰트로 대체되어 굵기 대비가 사라집니다.
 
 ## 참고 자료 위치 (Google Drive)
 
