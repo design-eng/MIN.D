@@ -540,25 +540,33 @@ function buildWeek(wk) {
       head(s, b.kicker, b.title, b.sub);
       const colW = (CW - 0.44) / 2;
       const half = Math.ceil(b.items.length / 2);
+      // 항목이 많은 주차(16개까지)에서 행이 지면을 넘지 않도록 높이를 가변으로 둔다
+      const bottom = b.foot ? 6.02 : 6.55;
+      const step = Math.min(0.8, (bottom - BODY_TOP - 0.2) / half);
+      const rowH = step - 0.16;
+      const tight = step < 0.62;
+      const chipSize = tight ? 0.28 : 0.34;
       b.items.forEach((it, i) => {
         const col = i < half ? 0 : 1;
         const idx = i < half ? i : i - half;
         const x = M + col * (colW + 0.44);
-        const y = BODY_TOP + 0.2 + idx * 0.8;
+        const y = BODY_TOP + 0.2 + idx * step;
         s.addShape(pres.ShapeType.rect, {
-          x, y, w: colW, h: 0.64,
+          x, y, w: colW, h: rowH,
           fill: { color: SURFACE }, line: { color: SURFACE, width: 0 },
         });
-        chip(s, x + 0.3, y + 0.15, String(i + 1).padStart(2, "0"), { size: 0.34, fontSize: 9, bg: SURFACE });
+        chip(s, x + 0.3, y + (rowH - chipSize) / 2, String(i + 1).padStart(2, "0"),
+          { size: chipSize, fontSize: tight ? 8 : 9, bg: SURFACE });
         s.addText(it, {
-          x: x + 0.78, y, w: colW - 1.1, h: 0.64,
-          fontSize: 12, color: INK, fontFace: F, margin: 0, valign: "middle",
+          x: x + 0.3 + chipSize + 0.14, y, w: colW - (0.3 + chipSize + 0.14) - 0.3, h: rowH,
+          fontSize: tight ? 10.5 : 12, color: INK, fontFace: F, margin: 0, valign: "middle",
         });
       });
       if (b.foot) {
-        rule(s, M, 5.98, CW, INK);
+        const footY = BODY_TOP + 0.2 + half * step + 0.06;
+        rule(s, M, footY, CW, INK);
         s.addText(b.foot, {
-          x: M, y: 6.1, w: CW, h: 0.44,
+          x: M, y: footY + 0.12, w: CW, h: 0.44,
           fontSize: 12.5, bold: true, color: INK, fontFace: F, margin: 0, valign: "middle",
         });
       }
@@ -603,11 +611,12 @@ function buildWeek(wk) {
     const perItem = nT >= 6 ? 0.28 : 0.32;
     const ruleY = BODY_TOP + 2.06 + nT * perItem + 0.08;
     card(s, rx, BODY_TOP + 0.16, rw, ruleY + 0.9 - (BODY_TOP + 0.16), { fill: INK });
-    s.addText("NEXT WEEK", {
+    // 마지막 주차는 다음 주가 없으므로 콘텐츠가 kicker/label 로 문구를 덮어쓸 수 있다
+    s.addText(wk.next.kicker || "NEXT WEEK", {
       x: rx + 0.42, y: BODY_TOP + 0.46, w: rw - 0.84, h: 0.28,
       fontSize: 9.5, color: KICK_D, fontFace: F, charSpacing: 2.6, margin: 0, valign: "middle",
     });
-    s.addText(wk.next.n + "주차", {
+    s.addText(wk.next.label || wk.next.n + "주차", {
       x: rx + 0.42, y: BODY_TOP + 0.78, w: rw - 0.84, h: 0.44,
       fontSize: 26, color: WHITE, fontFace: FL, margin: 0, valign: "middle",
     });
