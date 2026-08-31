@@ -35,28 +35,37 @@
 | 14주 | 최종 리허설 및 동료 피드백 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_14%EC%A3%BC%EC%B0%A8_%EB%A6%AC%ED%97%88%EC%84%A4.pptx) |
 | 15주 | 기말 발표 및 종합 평가 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%EC%A0%9C%EC%9E%91_15%EC%A3%BC%EC%B0%A8_%EA%B8%B0%EB%A7%90%EB%B0%9C%ED%91%9C.pptx) |
 
-### 서비스디자인 · 학부 3학년 · 3시간 × 15주
+### 서비스디자인 2학기 · 디자이닝 중심 — 이번 학기 진행용
 
 | PART | 주차 | 주제 | 장수 | 파일 |
 |---|---|---|---|---|
-| **I 발견** | 1주 | 오리엔테이션 & 서비스디자인 개관 | 18 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_01%EC%A3%BC%EC%B0%A8_%EC%98%A4%EB%A6%AC%EC%97%94%ED%85%8C%EC%9D%B4%EC%85%98.pptx) |
-|  | 2주 | 리서치 설계와 주제 후보 도출 | 17 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_02%EC%A3%BC%EC%B0%A8_%EB%A6%AC%EC%84%9C%EC%B9%98%EC%84%A4%EA%B3%84.pptx) |
-|  | 3주 | 필드 리서치 실습 | 17 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_03%EC%A3%BC%EC%B0%A8_%ED%95%84%EB%93%9C%EB%A6%AC%EC%84%9C%EC%B9%98.pptx) |
-|  | 4주 | 리서치 합성 | 16 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_04%EC%A3%BC%EC%B0%A8_%EB%A6%AC%EC%84%9C%EC%B9%98%ED%95%A9%EC%84%B1.pptx) |
-| **II 정의** | 5주 | 문제 정의 | 17 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_05%EC%A3%BC%EC%B0%A8_%EB%AC%B8%EC%A0%9C%EC%A0%95%EC%9D%98.pptx) |
-|  | 6주 | 아이디에이션 | 15 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_06%EC%A3%BC%EC%B0%A8_%EC%95%84%EC%9D%B4%EB%94%94%EC%97%90%EC%9D%B4%EC%85%98.pptx) |
-|  | 7주 | 서비스 컨셉 구조화 | 15 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_07%EC%A3%BC%EC%B0%A8_%EC%BB%A8%EC%85%89%EA%B5%AC%EC%A1%B0%ED%99%94.pptx) |
-|  | 8주 | 중간 발표 | 14 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_08%EC%A3%BC%EC%B0%A8_%EC%A4%91%EA%B0%84%EB%B0%9C%ED%91%9C.pptx) |
-| **III 개발** | 9주 | 정보구조 & 와이어프레임 | 13 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_09%EC%A3%BC%EC%B0%A8_%EC%A0%95%EB%B3%B4%EA%B5%AC%EC%A1%B0.pptx) |
-|  | 10주 | UI 디자인 시스템 | 13 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_10%EC%A3%BC%EC%B0%A8_%EB%94%94%EC%9E%90%EC%9D%B8%EC%8B%9C%EC%8A%A4%ED%85%9C.pptx) |
-|  | 11주 | 화면 디자인 | 13 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_11%EC%A3%BC%EC%B0%A8_%ED%99%94%EB%A9%B4%EB%94%94%EC%9E%90%EC%9D%B8.pptx) |
-|  | 12주 | 프로토타입 & 사용성 테스트 | 14 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_12%EC%A3%BC%EC%B0%A8_%EC%82%AC%EC%9A%A9%EC%84%B1%ED%85%8C%EC%8A%A4%ED%8A%B8.pptx) |
-| **IV 전달** | 13주 | 패널 레이아웃 설계 | 13 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_13%EC%A3%BC%EC%B0%A8_%ED%8C%A8%EB%84%90%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83.pptx) |
-|  | 14주 | 패널 제작 & 인쇄 데이터 | 12 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_14%EC%A3%BC%EC%B0%A8_%EC%9D%B8%EC%87%84%EB%8D%B0%EC%9D%B4%ED%84%B0.pptx) |
-|  | 15주 | 최종 발표 & 아카이빙 | 13 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_15%EC%A3%BC%EC%B0%A8_%EC%B5%9C%EC%A2%85%EB%B0%9C%ED%91%9C.pptx) |
-| — | — | 과목 개요 덱 | 30 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_15%EC%A3%BC_%EA%B0%95%EC%9D%98%EC%9E%90%EB%A3%8C.pptx) |
+| **I 기준** | 1주 | 2학기 시작 · 개인 발표 | 15 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-2%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_2%ED%95%99%EA%B8%B0_01%EC%A3%BC%EC%B0%A8_%ED%95%99%EA%B8%B0%EC%8B%9C%EC%9E%91%EA%B3%BC%EA%B0%9C%EC%9D%B8%EB%B0%9C%ED%91%9C.pptx) |
+|  | 2주 | 하단 GNB · 수치로 짓는 컴포넌트 | 17 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-2%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_2%ED%95%99%EA%B8%B0_02%EC%A3%BC%EC%B0%A8_GNB%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8.pptx) |
 
-전체 흐름을 한 번에 보려면 → [15주 전체흐름 PDF (220쪽)](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_15%EC%A3%BC_%EC%A0%84%EC%B2%B4%ED%9D%90%EB%A6%84.pdf)
+3~15주차는 구조 확인 후 작성합니다. → [2학기 전체흐름 PDF (32쪽)](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_2%ED%95%99%EA%B8%B0_%EC%A0%84%EC%B2%B4%ED%9D%90%EB%A6%84.pdf)
+
+### 서비스디자인 1학기용 · 보관
+
+| PART | 주차 | 주제 | 장수 | 파일 |
+|---|---|---|---|---|
+| **I 발견** | 1주 | 오리엔테이션 & 서비스디자인 개관 | 18 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_01%EC%A3%BC%EC%B0%A8_%EC%98%A4%EB%A6%AC%EC%97%94%ED%85%8C%EC%9D%B4%EC%85%98.pptx) |
+|  | 2주 | 리서치 설계와 주제 후보 도출 | 17 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_02%EC%A3%BC%EC%B0%A8_%EB%A6%AC%EC%84%9C%EC%B9%98%EC%84%A4%EA%B3%84.pptx) |
+|  | 3주 | 필드 리서치 실습 | 17 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_03%EC%A3%BC%EC%B0%A8_%ED%95%84%EB%93%9C%EB%A6%AC%EC%84%9C%EC%B9%98.pptx) |
+|  | 4주 | 리서치 합성 | 16 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_04%EC%A3%BC%EC%B0%A8_%EB%A6%AC%EC%84%9C%EC%B9%98%ED%95%A9%EC%84%B1.pptx) |
+| **II 정의** | 5주 | 문제 정의 | 17 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_05%EC%A3%BC%EC%B0%A8_%EB%AC%B8%EC%A0%9C%EC%A0%95%EC%9D%98.pptx) |
+|  | 6주 | 아이디에이션 | 15 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_06%EC%A3%BC%EC%B0%A8_%EC%95%84%EC%9D%B4%EB%94%94%EC%97%90%EC%9D%B4%EC%85%98.pptx) |
+|  | 7주 | 서비스 컨셉 구조화 | 15 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_07%EC%A3%BC%EC%B0%A8_%EC%BB%A8%EC%85%89%EA%B5%AC%EC%A1%B0%ED%99%94.pptx) |
+|  | 8주 | 중간 발표 | 14 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_08%EC%A3%BC%EC%B0%A8_%EC%A4%91%EA%B0%84%EB%B0%9C%ED%91%9C.pptx) |
+| **III 개발** | 9주 | 정보구조 & 와이어프레임 | 13 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_09%EC%A3%BC%EC%B0%A8_%EC%A0%95%EB%B3%B4%EA%B5%AC%EC%A1%B0.pptx) |
+|  | 10주 | UI 디자인 시스템 | 13 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_10%EC%A3%BC%EC%B0%A8_%EB%94%94%EC%9E%90%EC%9D%B8%EC%8B%9C%EC%8A%A4%ED%85%9C.pptx) |
+|  | 11주 | 화면 디자인 | 13 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_11%EC%A3%BC%EC%B0%A8_%ED%99%94%EB%A9%B4%EB%94%94%EC%9E%90%EC%9D%B8.pptx) |
+|  | 12주 | 프로토타입 & 사용성 테스트 | 14 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_12%EC%A3%BC%EC%B0%A8_%EC%82%AC%EC%9A%A9%EC%84%B1%ED%85%8C%EC%8A%A4%ED%8A%B8.pptx) |
+| **IV 전달** | 13주 | 패널 레이아웃 설계 | 13 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_13%EC%A3%BC%EC%B0%A8_%ED%8C%A8%EB%84%90%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83.pptx) |
+|  | 14주 | 패널 제작 & 인쇄 데이터 | 12 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_14%EC%A3%BC%EC%B0%A8_%EC%9D%B8%EC%87%84%EB%8D%B0%EC%9D%B4%ED%84%B0.pptx) |
+|  | 15주 | 최종 발표 & 아카이빙 | 13 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/weeks-1%ED%95%99%EA%B8%B0/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_15%EC%A3%BC%EC%B0%A8_%EC%B5%9C%EC%A2%85%EB%B0%9C%ED%91%9C.pptx) |
+| — | — | 과목 개요 덱 | 30 | [pptx](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_15%EC%A3%BC_%EA%B0%9C%EC%9A%94.pptx) |
+
+→ [1학기 전체흐름 PDF (220쪽)](https://github.com/design-eng/MIN.D/blob/claude/class-materials-creation-2fvxqr/dist/%EC%84%9C%EB%B9%84%EC%8A%A4%EB%94%94%EC%9E%90%EC%9D%B8_1%ED%95%99%EA%B8%B0_15%EC%A3%BC_%EC%A0%84%EC%B2%B4%ED%9D%90%EB%A6%84.pdf)
 
 ### 원본 · 생성기
 
@@ -76,12 +85,14 @@
 
 | 파일 | 설명 |
 |---|---|
-| `dist/서비스디자인_15주_강의자료.pptx` | **과목 개요 덱** (30슬라이드) — 오리엔테이션·강의계획용 |
-| `dist/weeks/서비스디자인_NN주차_*.pptx` | **주차별 강의자료** 15개 (총 220장) — 실제 수업 진행용 |
+| `dist/서비스디자인_1학기_15주_개요.pptx` | **1학기용 개요 덱** (30장) — 보관 |
+| `dist/weeks-1학기/서비스디자인_1학기_NN주차_*.pptx` | **1학기용 보관** 15개 (총 220장) |
+| `dist/weeks-2학기/서비스디자인_2학기_NN주차_*.pptx` | **2학기 강의자료** — 이번 학기 진행용 |
 | `scripts/build-deck.js` | 개요 덱 생성기 |
 | `dist/weeks-포트폴리오제작/포트폴리오제작_NN주차_*.pptx` | **포트폴리오제작 주차별 강의자료** |
 | `scripts/build-week.js` | 주차별 덱 생성기 (레이아웃, 두 과목 공용) |
-| `scripts/week-content.js` | 서비스디자인 주차별 내용 |
+| `scripts/week-content.js` | 서비스디자인 1학기용 주차별 내용 (보관) |
+| `scripts/design-content.js` | 서비스디자인 2학기 주차별 내용 (진행 중) |
 | `scripts/portfolio-content.js` | 포트폴리오제작 주차별 내용 |
 
 주차별 자료의 **내용 출처**는 Google Drive 「학부_1~3주차」 슬라이드(2026-08-20 작성)입니다.
@@ -164,38 +175,48 @@ Drive에 해당 주차 원본이 생기면 그쪽을 기준으로 교체합니�
 시간 배분은 주차마다 다릅니다 — 1주 강의 60%, 2주 45%, 3주 40%. 원본 자료의
 실제 시각 배분(휴식 2회 포함)을 그대로 옮겼습니다.
 
-## ⚠️ 서비스디자인 — 학기 성격 정정 (2026-08-31)
+## 서비스디자인 — 학기 구분 (2026-08-31 정리)
 
-교수 확인 결과 **2026-2학기 서비스디자인은 디자이닝 중심 학기**입니다.
+**2026-2학기 서비스디자인은 디자이닝 중심 학기**입니다.
+1학기에 리서치 · 화면 기획 · 컨셉 정의가 이미 끝났고, 2학기는 졸업 전시회에 걸
+패널의 인쇄 데이터를 만드는 데까지가 과정입니다.
 
-- **1학기**에 리서치 · 화면 기획 · 컨셉 정의가 이미 끝났습니다.
-- **2학기**는 졸업 전시회에 걸 패널의 인쇄 데이터를 만드는 데까지가 과정입니다.
-- 1주차 — 1학기 산출물에 대한 개인 발표
-- 2주차 — 하단 GNB를 수치적 접근으로 규격화하고 컴포넌트 개념 설명
+리서치에서 컨셉 정의까지를 다루는 기존 15주 자료(220장)는 **1학기용으로 보관**합니다.
+내년 1학기에 다시 열어 편집해 쓸 자료이므로 지우지 않고, 파일명과 폴더를 학기로
+구분해 두었습니다.
 
-따라서 `scripts/week-content.js`의 **5~15주차(문제 정의 · 아이디에이션 ·
-블루프린트 · IA/와이어프레임)는 이번 학기 자료로 쓸 수 없습니다.** 해당 내용은
-1학기에 이미 다룬 범위입니다. 1~4주차의 근거였던 Drive 「학부_1~3주차」
-슬라이드(리서치 설계 · 필드 리서치)도 같은 이유로 1학기 자료로 보입니다.
-
-새 학기 성격에 맞춘 자료는 `scripts/design-content.js`에 따로 두었습니다.
-기존 `week-content.js`는 확인 전까지 지우지 않고 남겨 둡니다.
-
-| | 파일 | 산출 위치 | 상태 |
-|---|---|---|---|
-| 2학기 (디자이닝) | `scripts/design-content.js` | `dist/weeks-2학기/` | 1~2주차 작성 · 3~15주차 구조 확인 대기 |
-| 리서치 기반 (보류) | `scripts/week-content.js` | `dist/weeks/` | 15주 완성 · **이번 학기 미사용** |
+| | 콘텐츠 파일 | 산출 위치 | 파일명 접두 | 상태 |
+|---|---|---|---|---|
+| **2학기 · 디자이닝** | `scripts/design-content.js` | `dist/weeks-2학기/` | `서비스디자인_2학기_` | 1~2주차 작성 · 3~15주차 확인 대기 |
+| **1학기 · 리서치** | `scripts/week-content.js` | `dist/weeks-1학기/` | `서비스디자인_1학기_` | 15주 220장 완성 · **보관** |
 
 ```bash
 node scripts/build-week.js --design       # 2학기 디자이닝 중심
-node scripts/build-week.js                # 리서치 기반 (보류)
+node scripts/build-week.js                # 1학기용 보관본
+node scripts/build-deck.js                # 1학기용 개요 덱 (30장)
 ```
+
+### 1학기용 보관본 — 내년에 다시 열 때
+
+리서치 설계 · 필드 리서치 · 리서치 합성 · 문제 정의 · 아이디에이션 ·
+서비스 컨셉 구조화 · 중간 발표 · IA/와이어프레임 · 디자인 시스템 · 화면 디자인 ·
+프로토타입/사용성 테스트 · 패널 설계 · 인쇄 데이터 · 최종 발표 15주 전량입니다.
+
+내년에 편집할 때 먼저 볼 것 —
+
+- **1학기 범위를 어디까지로 자를지.** 지금은 15주가 리서치부터 패널 출력까지
+  한 바퀴를 다 돕니다. 1학기를 컨셉 정의까지로 끊는다면 9주차 이후(IA ·
+  디자인 시스템 · 화면 · 프로토타입 · 패널)는 2학기로 넘기고, 그 자리를
+  리서치와 정의 구간을 넓혀 채우는 편이 자연스럽습니다.
+- **발표 시간표.** 8 · 15주차가 수강 인원 8명 기준입니다.
+- **평가 배점.** 과정 35 / 중간 발표 20 / 결과물 45로 적혀 있습니다.
+  기획안의 "과정 45 + 결과 55"와 맞지 않는 문제는 아래 「검증한 것」 절 참고.
 
 ### 2학기 15주 구간 (제안 · 확인 대기)
 
 | 구간 | 주차 | 내용 |
 |---|---|---|
-| I 기준 | 1–2 | 1학기 결과 공유 · 화면 기준 폭 · 하단 GNB 규격화 |
+| I 기준 | 1–2 | 1학기 결과 공유 · 화면 기준 폭 · 하단 GNB 규격화 ✅ |
 | II 시스템 | 3–6 | 공통 요소 확장 · 컬러/타이포/간격 토큰 · 컴포넌트 세트 |
 | III 화면 | 7–11 | 핵심 화면 · 상태와 예외 · 프로토타입 (11주 화면 잠금) |
 | IV 패널 | 12–15 | B0 레이아웃 · 인쇄 데이터 (14주 마감) · 최종 발표 |

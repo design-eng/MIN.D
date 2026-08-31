@@ -1,5 +1,8 @@
 /**
- * 원광대학교 2026-2 · 학부 3학년「서비스디자인」— 15주 강의자료 덱 생성기
+ * 학부 3학년「서비스디자인」— 15주 개요 덱 생성기 【1학기용 · 보관】
+ *
+ * 리서치에서 컨셉 정의를 거쳐 전시 패널까지 한 학기에 다루는 구성이다.
+ * 2026-2학기(디자이닝 중심)에는 사용하지 않는다. 내년 1학기용 보관본.
  *   node scripts/build-deck.js
  *
  * 내용 근거: Drive「원광대_2026-2_커리큘럼_기획안」PART A (학부 3학년)
@@ -37,13 +40,13 @@ const M  = 0.7;                // 좌우 마진
 const CW = SW - M * 2;         // 11.933
 const BODY_TOP = 1.72;
 
-const DECK_TITLE = "서비스디자인 · 15주";
+const DECK_TITLE = "서비스디자인 · 15주 · 1학기용";
 
 const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE";
 pres.author = "MIN.D";
 pres.company = "MIN.D";
-pres.title = "원광대학교 2026-2 · 서비스디자인 (학부 3학년)";
+pres.title = "서비스디자인 15주 개요 (학부 3학년) · 1학기용";
 pres.subject = "주 3시간 × 15주 실습형 · 졸업 전시 패널 제작 커리큘럼 강의자료";
 
 let pageNo = 0;
@@ -1110,5 +1113,5 @@ divider("02", "PART 02", "평가와 운영",
 }
 
 /* ──────────────────────────────────────────────────────────── */
-const out = path.join(__dirname, "..", "dist", "서비스디자인_15주_강의자료.pptx");
+const out = path.join(__dirname, "..", "dist", "서비스디자인_1학기_15주_개요.pptx");
 pres.writeFile({ fileName: out }).then(() => console.log("생성 완료:", out));
