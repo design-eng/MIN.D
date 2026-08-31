@@ -177,6 +177,27 @@ Drive에 해당 주차 원본이 생기면 그쪽을 기준으로 교체합니�
 시간 배분은 주차마다 다릅니다 — 1주 강의 60%, 2주 45%, 3주 40%. 원본 자료의
 실제 시각 배분(휴식 2회 포함)을 그대로 옮겼습니다.
 
+## 발표 대본
+
+각 덱의 스피커 노트는 두 부분으로 나뉩니다.
+
+- **[말할 내용]** — 그 장표에서 실제로 말할 대본. 구어체로 씁니다.
+- **[운영 메모]** — 강사용 진행 메모. 어디서 막히는지, 무엇을 강조할지.
+
+같은 내용을 인쇄용 한 장짜리 문서로도 뽑습니다. 발표자 보기를 못 쓰는
+상황(온라인 화면 공유, 종이 진행표)에서 손에 들고 진행하기 위한 것입니다.
+
+```bash
+node scripts/build-script.js --portfolio 1    # HTML 생성
+node scripts/build-script.js --design 1
+# HTML → PDF (soffice 는 이 HTML 을 못 읽어 Chromium 을 쓴다)
+/opt/pw-browsers/chromium-1194/chrome-linux/chrome --headless --disable-gpu \
+  --no-sandbox --no-pdf-header-footer --print-to-pdf=out.pdf file:///절대경로.html
+```
+
+작성 현황 — 포트폴리오제작 1주차(17장), 서비스디자인 2학기 1주차(15장).
+나머지 주차는 `script` 필드가 비어 있고, 대본 문서에 "대본 미작성"으로 표시됩니다.
+
 ## 수업 일정 (교수님 구글 캘린더 · 2026-08-31 확인)
 
 개강주는 2026-09-01(화) 주간이며 이 주가 **1주차**입니다.

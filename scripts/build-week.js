@@ -156,6 +156,15 @@ function buildWeek(wk) {
     });
   }
 
+  // 스피커 노트 — 발표 대본과 강사용 운영 메모를 구분해 담는다.
+  // 발표자 보기에서 대본을 먼저 읽고, 아래에서 운영 메모를 확인하는 순서.
+  function notes(s, script, memo) {
+    const parts = [];
+    if (script) parts.push("[말할 내용]\n" + script);
+    if (memo) parts.push("[운영 메모]\n" + memo);
+    if (parts.length) s.addNotes(parts.join("\n\n"));
+  }
+
   function bullets(s, items, o) {
     const runs = items.map((t, i) => ({
       text: t,
@@ -205,7 +214,7 @@ function buildWeek(wk) {
       });
     edgeCaption(s, "WONKWANG UNIV · 2026-2");
     rule(s, M, FOOT_RULE, CW);
-    s.addNotes(wk.coverNote);
+    notes(s, wk.coverScript, wk.coverNote);
   }
 
   /* ── 2. 오늘의 진행 (실제 시각 시간표) ─────────────────── */
@@ -252,7 +261,7 @@ function buildWeek(wk) {
       rule(s, M, rowsEnd - 0.02, CW, INK);
     }
     foot(s);
-    s.addNotes(wk.flowNote);
+    notes(s, wk.flowScript, wk.flowNote);
   }
 
   /* ── 3~. 본문 — 콘텐츠 타입별 렌더 ──────────────────────── */
@@ -279,7 +288,7 @@ function buildWeek(wk) {
         fontSize: 13.5, color: BODY_D, fontFace: FL, margin: 0, lineSpacingMultiple: 1.34, valign: "top",
       });
       edgeCaption(s, "SECTION " + b.num, "7A7A7A");
-      if (b.note) s.addNotes(b.note);
+      notes(s, b.script, b.note);
     },
 
     cards3(b) {
@@ -309,7 +318,7 @@ function buildWeek(wk) {
         });
       }
       foot(s);
-      if (b.note) s.addNotes(b.note);
+      notes(s, b.script, b.note);
     },
 
     rows(b) {
@@ -347,7 +356,7 @@ function buildWeek(wk) {
         });
       }
       foot(s);
-      if (b.note) s.addNotes(b.note);
+      notes(s, b.script, b.note);
     },
 
     compare(b) {
@@ -388,7 +397,7 @@ function buildWeek(wk) {
         if (i < n - 1) { rule(s, M + 0.44, y + 0.66, colW - 0.88, "D2D2D2"); rule(s, M + colW + 0.88, y + 0.66, colW - 0.88, LINE); }
       });
       foot(s);
-      if (b.note) s.addNotes(b.note);
+      notes(s, b.script, b.note);
     },
 
     twocol(b) {
@@ -415,7 +424,7 @@ function buildWeek(wk) {
         fontSize: 12, color: GRAPHITE, fontFace: F, margin: 0, valign: "middle",
       });
       foot(s);
-      if (b.note) s.addNotes(b.note);
+      notes(s, b.script, b.note);
     },
 
     statement(b) {
@@ -435,7 +444,7 @@ function buildWeek(wk) {
         fontSize: 14, color: BODY_D, fontFace: FL, margin: 0, lineSpacingMultiple: 1.36, valign: "top",
       });
       edgeCaption(s, COURSE.name.toUpperCase() + " · " + WEEK_TAG, "7A7A7A");
-      if (b.note) s.addNotes(b.note);
+      notes(s, b.script, b.note);
     },
 
     steps(b) {
@@ -461,7 +470,7 @@ function buildWeek(wk) {
         });
       });
       foot(s);
-      if (b.note) s.addNotes(b.note);
+      notes(s, b.script, b.note);
     },
 
     cols(b) {
@@ -497,7 +506,7 @@ function buildWeek(wk) {
         });
       }
       foot(s);
-      if (b.note) s.addNotes(b.note);
+      notes(s, b.script, b.note);
     },
 
     casebox(b) {
@@ -536,7 +545,7 @@ function buildWeek(wk) {
         });
       }
       foot(s);
-      if (b.note) s.addNotes(b.note);
+      notes(s, b.script, b.note);
     },
 
     checklist(b) {
@@ -575,7 +584,7 @@ function buildWeek(wk) {
         });
       }
       foot(s);
-      if (b.note) s.addNotes(b.note);
+      notes(s, b.script, b.note);
     },
   };
 
@@ -643,7 +652,7 @@ function buildWeek(wk) {
       fontSize: 11, bold: true, color: WHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
     });
     foot(s);
-    s.addNotes(wk.homeworkNote);
+    notes(s, wk.homeworkScript, wk.homeworkNote);
   }
 
   const out = path.join(__dirname, "..", "dist", COURSE.outDir, `${COURSE.filePrefix}_${wk.n.padStart(2, "0")}주차_${wk.file}.pptx`);
