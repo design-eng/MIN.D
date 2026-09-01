@@ -178,6 +178,27 @@ Drive에 해당 주차 원본이 생기면 그쪽을 기준으로 교체합니�
 시간 배분은 주차마다 다릅니다 — 1주 강의 60%, 2주 45%, 3주 40%. 원본 자료의
 실제 시각 배분(휴식 2회 포함)을 그대로 옮겼습니다.
 
+## 수업 요약 — 한 회차를 A4 한 장으로
+
+덱을 펼치지 않고 수업 직전 3분 안에 그 주차를 파악하기 위한 문서입니다.
+대본이 "말할 내용"이라면 이쪽은 "무엇을 다루는가"입니다.
+
+담기는 것 — 목표 한 줄 · 진행 시간표 · **장표별 한 줄 요약** · 실습 타임박스 ·
+과제와 마감 · 다음 주 예고. 왼쪽에 진행과 실습, 오른쪽에 장표 흐름을 놓은 2단입니다.
+
+```bash
+node scripts/build-summary.js --portfolio      # 전 주차
+node scripts/build-summary.js --design 1       # 특정 주차
+node scripts/build-summary.js --phd 1
+# HTML → PDF (soffice 는 못 읽는다. Chromium 헤드리스를 쓴다)
+/opt/pw-browsers/chromium-*/chrome-linux/chrome --headless --disable-gpu \
+  --no-sandbox --no-pdf-header-footer --print-to-pdf=out.pdf file:///절대경로.html
+```
+
+**전 18개 주차가 A4 한 장**에 들어갑니다. 본문 장표가 14장을 넘는 주차는
+`body.dense` 로 조판을 한 단계 조여 한 장을 유지합니다. 장표 한 줄 요약은
+86자에서 자릅니다 — 자르지 않으면 statement 의 본문이 다섯 줄까지 늘어납니다.
+
 ## 발표 대본
 
 각 덱의 스피커 노트는 두 부분으로 나뉩니다.
