@@ -10,6 +10,7 @@ const path = require("path");
 
 const CONTENT = process.argv.includes("--portfolio") ? "./portfolio-content"
   : process.argv.includes("--design") ? "./design-content"
+  : process.argv.includes("--phd") ? "./phd-content"
   : "./week-content";
 const { COURSE, WEEK_CONTENT } = require(CONTENT);
 
