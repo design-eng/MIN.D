@@ -217,7 +217,7 @@ node scripts/build-script.js --design 1
   --no-sandbox --no-pdf-header-footer --print-to-pdf=out.pdf file:///절대경로.html
 ```
 
-작성 현황 — 포트폴리오제작 1주차(17장), 서비스디자인 2학기 1주차(15장).
+작성 현황 — 포트폴리오제작 1·2주차, 서비스디자인 2학기 1주차, 대학원 1주차.
 나머지 주차는 `script` 필드가 비어 있고, 대본 문서에 "대본 미작성"으로 표시됩니다.
 
 ## 대학원 박사「컨셉트와 프로세스」
@@ -292,7 +292,7 @@ node scripts/build-script.js --design 1
   --no-sandbox --no-pdf-header-footer --print-to-pdf=out.pdf file:///절대경로.html
 ```
 
-작성 현황 — 포트폴리오제작 1주차(17장), 서비스디자인 2학기 1주차(15장).
+작성 현황 — 포트폴리오제작 1·2주차, 서비스디자인 2학기 1주차, 대학원 1주차.
 나머지 주차는 `script` 필드가 비어 있고, 대본 문서에 "대본 미작성"으로 표시됩니다.
 
 ## 대학원 박사「컨셉트와 프로세스」
