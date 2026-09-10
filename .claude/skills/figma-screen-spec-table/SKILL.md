@@ -141,6 +141,32 @@ tbl.children.map((r,i)=>{const c=cells(r);
 
 미바인딩 Pretendard 만 사용자 작업으로 넘긴다 (덱 290·291·295 오타, 905장 표 전체가 이 경우).
 
+### ★ 미바인딩 Pretendard 도 되살릴 수 있다 — 임시 스타일로 Noto 전환
+
+되돌릴 스타일이 없어도, **Noto Sans KR 스타일을 새로 만들어 씌우면** 폰트가 바뀌면서 편집 가능해진다.
+
+```js
+const K = 1/0.703125;                       // ★ 스타일 값은 이 비율로 나뉘어 적용된다
+const st = figma.createTextStyle();
+st.name = "auto/" + n.fontSize.toFixed(2);
+st.fontName = {family:"Noto Sans KR", style:"Regular"};
+st.fontSize = n.fontSize * K;               // 보정하지 않으면 0.703125 배로 줄어든다
+st.lineHeight = n.lineHeight.unit === "PIXELS"
+  ? {unit:"PIXELS", value: n.lineHeight.value * K}
+  : n.lineHeight;                           // PERCENT 는 그대로
+st.letterSpacing = n.letterSpacing;         // 그대로
+await n.setTextStyleIdAsync(st.id);
+```
+
+**주의**
+- `n.fontSize = ...` 직접 대입은 **무시된다** (Pretendard 가 안 올라와서). 반드시 스타일 경유.
+- 스타일 적용 후 `setTextStyleIdAsync("")` 로 떼면 크기가 축소된 채 남는다. **떼지 말고 유지**한다.
+- 셀마다 메트릭이 제각각이다. `(fontSize, lineHeight, letterSpacing)` 로 묶어 그룹당 스타일 하나씩 만든다.
+  한 표 안에 6~7종이 나오는 게 보통이다.
+- 전환 후에는 Noto 라서 `characters` 직접 대입이 되고, 크기·행간도 직접 수정된다.
+
+실적용: 897·899 표(각 30·31셀)를 이 방식으로 전환 → 이후 자유 편집 가능.
+
 ---
 
 ## 4. 행 추가
