@@ -51,7 +51,7 @@ function buildWeek(wk) {
   pres.subject = COURSE.subject;
 
   const DECK_TITLE = `${COURSE.name} · ${wk.n}주차 ${wk.title}`;
-  const SESSION = COURSE.session;
+  const SESSION = wk.session || COURSE.session;  // 주차별 오버라이드 허용
   const WEEK_TAG = "WEEK " + wk.n.padStart(2, "0");
   let pageNo = 0;
 

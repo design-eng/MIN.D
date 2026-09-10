@@ -125,7 +125,7 @@ function build(wk) {
   <h1>${oneline(wk.title)}</h1>
   <p class="goal">${oneline(wk.goal)}</p>
   <div class="meta">
-    <span><b>진행</b> ${esc(COURSE.session)} · ${oneline(wk.ratio)}</span>
+    <span><b>진행</b> ${esc(wk.session || COURSE.session)} · ${oneline(wk.ratio)}</span>
     <span><b>산출물</b> ${oneline(wk.output)}</span>
   </div>
 
