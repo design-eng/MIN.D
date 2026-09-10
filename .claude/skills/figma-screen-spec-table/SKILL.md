@@ -363,7 +363,7 @@ b.length;
 | 282 | `3018:140435` | `3018:140439` (868) | 홈 _ 공지사항_상세페이지 — **마커 1~13**, 목업 3개 |
 | 283 | `40004105:489181` | `40004105:489195` (848) | 홈 _ 공지사항_「중요」 공지 상세 페이지 — 마커 1~9 |
 | 284 | `40001565:334946` | — | 상세페이지/확대사진 |
-| 905 | — | — | 기축_마이(입주 전) — 표 전체 미바인딩 Pretendard, **편집 불가** |
+| 905 | `40003540:531730` | `40003540:531733` (Frame 273, 행별 list 인스턴스) | 기축_마이(입주 전) — 미바인딩 Pretendard 였으나 **Noto Sans KR 전환 완료** |
 | 906 | `40003540:531743` | `40003540:531797` (642) | 기축_마이(입주 후) — Noto Sans KR, 편집 가능 |
 
 ### 용어 확정
@@ -379,3 +379,65 @@ t.insertCharacters(0, NEW, "AFTER");               // 0번 문자의 서식을 �
 t.deleteCharacters(NEW.length, NEW.length + cut);  // 옛 구간만 제거
 ```
 검증: `t.getRangeTextDecoration(i,i+1)` 로 구간을 다시 훑는다.
+
+---
+
+## 13. 2026-09-10 추가 — 미바인딩 Pretendard 전환 실전 보강
+
+### ★ 스타일을 갈아끼우면 취소선이 날아간다 (range fills 는 살아남는다)
+`setTextStyleIdAsync()` 는 **range text decoration 을 스타일 값(NONE)으로 덮어쓴다.**
+반면 `setRangeFills` 로 넣은 색(빨강 변수 alias 포함)은 **그대로 보존된다.**
+
+⇒ 전환 **전에** 구간을 떠 두고, 전환 **후에** 다시 칠한다:
+```js
+// 1) 전환 전 — 구간 기록
+const segs=[]; let cur=null;
+for(let i=0;i<t.characters.length;i++){
+  const d=t.getRangeTextDecoration(i,i+1);
+  if(!cur||cur.d!==d){cur={d,a:i,b:i+1};segs.push(cur);}else cur.b=i+1;
+}
+// 2) setTextStyleIdAsync(...) 로 Noto 전환 + 본문 수정
+// 3) 전환 후 — 복원
+for(const g of segs) if(g.d!=="NONE") t.setRangeTextDecoration(g.a,g.b,g.d);
+```
+빨강이 변수 바인딩이면 다시 칠할 때도 바인딩을 유지한다:
+```js
+const paint = figma.variables.setBoundVariableForPaint(
+  {type:"SOLID", color:{r:1,g:0.2314,b:0.1882}}, "color",
+  await figma.variables.getVariableByIdAsync("VariableID:...")
+);
+t.setRangeFills(a,b,[paint]);
+```
+
+### ★ 표가 「행마다 별도 인스턴스」인 슬라이드가 있다
+`PPT_form/list` 를 하나 잡고 끝내면 **1행만 읽힌다.**
+실제 구조가 이런 경우가 있다:
+```
+Frame 273 (VERTICAL, HUG)        ← 이게 표 컨테이너
+ ├ PPT_form/list  ← 0행
+ ├ PPT_form/list  ← 1행
+ ├ PPT_form/list  ← 2행
+ ├ PPT_form/list  ← 3행
+ └ PPT_form/list  ← 마감선(Rectangle 961 하나뿐, 높이 0.703125)
+```
+표를 잡기 전에 **x>1150 & width>400 인 컨테이너를 전부 나열**해 어느 쪽인지 먼저 확인한다.
+모두 auto-layout HUG 이므로 줄을 늘리면 행·표 높이가 자동으로 늘어난다.
+
+**행 추가**: 기존 행을 `clone()` → 마감선 **앞에** `insertChild`
+```js
+const nw = src.clone();
+const idx = f.children.findIndex(c=>c.id===CLOSING_LINE_ID);
+f.insertChild(idx<0?f.children.length:idx, nw);
+```
+
+### 마커 텍스트가 Pretendard Bold 인 경우
+`Number sign/left` (48×20, 리더선 포함) 는 내부 TEXT 가 **Pretendard Bold 12/20/0.15px**,
+단 **textStyleId 바인딩이 있다** ⇒ **스왑 기법으로 편집 가능**.
+(`Number`/`Number sign` 34×24 는 Inter Bold 라 직접 대입 가능 — 둘을 혼동하지 말 것.)
+마커 y = 대상 요소 그룹의 **세로 중앙 − (마커 height / 2)**.
+
+### 잔실수 방지
+- **`console.log` 는 응답에 나오지 않는다.** 반드시 `return` 으로 문자열을 돌려받는다.
+- `node.fontSize` 는 `figma.mixed`(symbol)일 수 있다 → `typeof x === "number"` 가드 없이 비교하면
+  `TypeError: cannot convert symbol to number`.
+- 폰트 미로드 에러가 나면 **그 호출 전체가 롤백**된다(clone 도 남지 않는다). 다시 통째로 실행하면 된다.
