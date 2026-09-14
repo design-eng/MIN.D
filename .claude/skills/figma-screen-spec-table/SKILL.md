@@ -474,3 +474,40 @@ y 는 변형과 무관하게 **대상 세로 중앙 − 12**.
 `Frame 2609093` / `Frame 273` 직속 자식인 행 인스턴스는 **`row.remove()` 로 삭제된다.**
 (인스턴스 *하위* 레이어만 삭제가 막힌다 — 둘을 혼동하지 말 것.)
 복제된 페이지에서 남는 행을 정리할 때 쓴다.
+
+---
+
+## 15. 내용 셀 줄 수를 늘릴 때 — `resize()` 가 조용히 무시되는 함정
+
+내용 셀(`Frame 2609099` 안의 TEXT, `textAutoResize = NONE`)의 높이를 `resize(484, 줄수*24)` 로
+바꾸려 할 때, **에러 없이 24 그대로 남는 경우**가 있다. 원인 두 가지:
+
+1. **폰트 미로드** — 셀이 Pretendard 인데 `loadFontAsync` 로 Pretendard 를 올리지 않았으면
+   레이아웃이 걸린 쓰기(`resize`, `textAutoResize`)가 **무시된다**. `textAutoResize` 는 그나마
+   `Cannot write to node with unloaded font "Pretendard Regular"` 로 에러를 내지만 `resize` 는 조용하다.
+   ⇒ 스왑 스타일을 씌운 상태에서 resize 하거나, 아래 2번 방법을 쓴다.
+2. **부모가 FIXED 로 잠김** — `Frame 2609099` 의 `counterAxisSizingMode` 가 `FIXED` 면 셀 높이가
+   그 값에 고정된다. 정상값은 **`AUTO`(HUG)** 이며, 진단·수정 중 실수로 FIXED 로 바꾸면 복구해도
+   한 번 잠긴 높이가 풀리지 않는다. **건드리지 말 것.**
+
+```js
+// 정상 행 vs 문제 행 비교 진단
+const t = 내용셀, p = t.parent;             // p.name === "Frame 2609099"
+t.layoutAlign      // 정상 2줄 행: STRETCH
+t.layoutSizingVertical  // 정상: FILL
+p.counterAxisSizingMode // 정상: AUTO   ← FIXED 면 이게 원인
+```
+
+**가장 확실한 방법 — 원하는 높이의 행을 통째로 clone 한다.**
+표 안에 이미 1줄(44) · 2줄(64) · 3줄(88) · 4줄(112) 행이 섞여 있으므로,
+필요한 줄 수의 행을 골라 `clone()` → `insertChild(원하는 위치)` → 번호·유형·내용만 덮어쓴다.
+resize 를 건드릴 일이 없어진다.
+
+```js
+const f = await figma.getNodeByIdAsync(표ID);
+const src = await figma.getNodeByIdAsync(원하는_줄수의_행ID);
+const nw = src.clone();
+f.insertChild(f.children.findIndex(c=>c.id===앞_행ID)+1, nw);
+// 삽입 후 전 행 번호 다시 매기기 (번호 셀은 Inter → 직접 대입)
+f.children.forEach((r,i)=>{ cells(r)[0].characters = String(i); });
+```
