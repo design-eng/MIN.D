@@ -548,3 +548,41 @@ await t.setTextStyleIdAsync(SWAP); t.characters = "시설 탭"; await t.setTextS
 ### 덱의 표기 관례 (566 에서 확인)
 - 기본 선택값은 **`Default : 전체`** 형식으로 별도 줄에 적는다.
 - 한 영역에 버튼이 여러 개면 **`알림, 전체보기 구성`** 처럼 먼저 구성을 적고 다음 줄에 `[Tap]` 동작.
+
+---
+
+## 17. 표가 두 종류다 — `PPT_form/list` (24행간) vs `PPT_list` (20행간)
+
+덱에는 행 규격이 다른 표가 섞여 있다. **작업 전에 행 높이를 먼저 재서 어느 쪽인지 판별할 것.**
+
+| 표 | 셀 행간 | 행 높이 | 내용 셀 | 예 |
+|---|---|---|---|---|
+| `PPT_form/list` / `Frame 2609093` | **24px** | 44 / 64 / 88 / 112 | `textAutoResize = NONE` → 줄 수만큼 **직접 resize** | 565 |
+| `PPT_list` / `Frame 273` | **20px** | 45 / 65 / 85 / 105 … (+20/줄) | `textAutoResize = HEIGHT` → **자동 확장, resize 불필요** | 566 |
+
+### ★ 자동 높이(HEIGHT) 셀에 스왑 기법을 쓸 때 — 행간이 같은 스왑 스타일을 써야 한다
+
+`ar = HEIGHT` 셀은 글자를 쓰는 **그 순간의 스타일**로 높이를 다시 잰다.
+행간 24짜리 `swap/14-24--6` 을 씌우고 쓰면 높이가 24/줄로 잡히고,
+원래 스타일(행간 20)로 되돌려도 **Pretendard 를 못 읽어 재측정이 안 되므로 24 가 그대로 남는다.**
+(45 → 49, 65 → 73 처럼 줄당 4px 씩 커진다.)
+
+⇒ **행간 20 표에는 행간 20 스왑 스타일을 쓴다.**
+
+```js
+let st = (await figma.getLocalTextStylesAsync()).find(s => s.name === "swap/14-20");
+if (!st) { st = figma.createTextStyle(); st.name = "swap/14-20";
+  st.fontName = {family:"Noto Sans KR", style:"Regular"};
+  st.fontSize = 14; st.lineHeight = {unit:"PIXELS", value:20};
+  st.letterSpacing = {unit:"PERCENT", value:0}; }
+```
+`swap/14-20` = `S:724a60d2217a3bb1915d563cabaf1991e66bea39,` (이미 만들어 둠)
+`swap/14-24--6` = `S:af58f9e59acb5f2cbc12bca96b549f2c8656294b,` (행간 24 표용)
+
+**이미 틀어진 높이를 되돌리는 법**: 맞는 스왑 스타일을 씌웠다가 바로 원래 스타일로 되돌린다
+(글자는 안 건드려도 재측정된다).
+```js
+const o = t.textStyleId;
+await t.setTextStyleIdAsync(SW20);
+await t.setTextStyleIdAsync(o);   // 높이가 20/줄로 복구
+```
