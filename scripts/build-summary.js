@@ -89,6 +89,7 @@ function build(wk) {
   tr { break-inside:avoid; }
   table { width:100%; border-collapse:collapse; }
   td { padding:2.4px 6px 2.4px 0; border-bottom:1px solid #EDEDED; vertical-align:top; }
+  .sch td { word-break:keep-all; overflow-wrap:break-word; }
   .sch td:first-child { width:20mm; font-variant-numeric:tabular-nums; font-weight:500; }
   .sch td em { display:block; font-style:normal; color:#8A8A8A; font-size:7.8pt; margin-top:1px; }
   .sch tr.rest td { color:#9B9B9B; font-weight:400; }
