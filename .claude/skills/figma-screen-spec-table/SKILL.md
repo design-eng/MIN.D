@@ -511,3 +511,40 @@ f.insertChild(f.children.findIndex(c=>c.id===앞_행ID)+1, nw);
 // 삽입 후 전 행 번호 다시 매기기 (번호 셀은 Inter → 직접 대입)
 f.children.forEach((r,i)=>{ cells(r)[0].characters = String(i); });
 ```
+
+---
+
+## 16. Pretendard 는 정말로 로드가 안 된다 (실측 확인)
+
+`figma.loadFontAsync({family:"Pretendard", style:"Regular"|"Medium"|"Bold"})` 는 전부 실패한다:
+
+```
+The font "Pretendard Medium" could not be loaded.
+The font family "Pretendard" does not exist.
+```
+
+**렌더는 정상으로 나온다** — Figma 렌더러는 Pretendard 를 가지고 있지만 플러그인 런타임에는 없다.
+"혹시 되지 않을까" 하고 다시 시도하지 말 것.
+
+플러그인에서 실제로 쓸 수 있는 글꼴:
+`Noto Sans KR` (Regular/Medium/SemiBold/Bold) · `Noto Sans CJK KR` · `Noto Sans` · `Inter`
+
+### 캡션(`PPT_text_regular`) 을 새로 달 때
+목업 위 캡션은 **Pretendard Medium 18 / `textStyleId` 없음** 이라 직접 대입도, 스왑 복원도 안 된다.
+파일에 **Pretendard Medium 18 텍스트 스타일이 없기** 때문이다 (113개 스타일 전수 확인).
+
+가장 가까운 것이 **`16/medium` = `S:30bcb35bcb7a6e0db62d3652b6c7a4d072aa51f6,`** (Pretendard Medium 16/24/−1px).
+이걸 복원 스타일로 쓰면 **글꼴 계열은 덱과 일치**하고 크기만 18→16 으로 작아진다.
+Noto 로 전환하면 크기는 지키지만 **혼자 다른 글꼴**이 되므로, 캡션은 16/medium 쪽이 낫다.
+
+```js
+const SWAP  = "S:af58f9e59acb5f2cbc12bca96b549f2c8656294b,"; // Noto 14/24/-6 (쓰기용)
+const PRE16 = "S:30bcb35bcb7a6e0db62d3652b6c7a4d072aa51f6,"; // Pretendard Medium 16 (복원용)
+const c = 기존캡션.clone(); slide.appendChild(c); c.x = 목업x; c.y = 목업y - 30;
+await t.setTextStyleIdAsync(SWAP); t.characters = "시설 탭"; await t.setTextStyleIdAsync(PRE16);
+```
+캡션 y 는 **목업 상단 − 30** (다른 장은 목업 250 / 캡션 218).
+
+### 덱의 표기 관례 (566 에서 확인)
+- 기본 선택값은 **`Default : 전체`** 형식으로 별도 줄에 적는다.
+- 한 영역에 버튼이 여러 개면 **`알림, 전체보기 구성`** 처럼 먼저 구성을 적고 다음 줄에 `[Tap]` 동작.
