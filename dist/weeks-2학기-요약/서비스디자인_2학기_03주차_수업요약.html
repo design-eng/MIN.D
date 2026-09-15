@@ -62,39 +62,44 @@
   body.denser ol li { padding:2px 0 2px 15px; }
   body.denser ol li span { font-size:8.2pt; }
   body.denser .next { padding:6px 9px; }
+  /* 18장을 넘으면 한 단계 더. A4 한 장이 이 문서의 조건이다. */
+  body.densest { font-size:7.9pt; line-height:1.28; }
+  body.densest .flow td { padding:0.8px 4px 0.8px 0; }
+  body.densest .flow td.t em { font-size:7pt; line-height:1.22; }
+  body.densest .sch td { padding:0.9px 4px 0.9px 0; }
+  body.densest h1 { font-size:14.5pt; }
+  body.densest .goal { font-size:8.6pt; }
+  body.densest section { margin-bottom:4px; }
+  body.densest .work { padding:3px 6px; margin-bottom:2px; }
+  body.densest ol li { padding:1.4px 0 1.4px 14px; }
   .two { display:flex; gap:9mm; align-items:flex-start; break-inside:avoid; }
   .two > * { flex:1; min-width:0; }
-</style></head><body class="dense denser">
+</style></head><body class="dense denser densest">
   <div class="rail"><span>서비스디자인 · 학부 3학년</span><span>WEEK 03 · 수업 요약</span></div>
   <div class="rule"></div>
   <h1>하단 GNB · 수치로 짓는 컴포넌트</h1>
   <p class="goal">모든 화면에 반복되는 하단 바를 수치로 정의하고, 한 번 고치면 전부 바뀌는 컴포넌트로 만듭니다.</p>
   <div class="meta">
-    <span><b>진행</b> 3시간 · 강의 35% · 실습 65% — 오늘 만든 규격이 학기 내내 기준이 됩니다</span>
-    <span><b>산출물</b> GNB 규격 명세서 · Figma Tab Item 컴포넌트 · 전 화면 인스턴스 적용</span>
+    <span><b>진행</b> 3시간 · 공유 15분 · 강의 45분 · 강의 40분 · 실습 55분 · 검증과 안내 15분</span>
+    <span><b>산출물</b> 와이어프레임 2개 선정 · GNB를 적용한 디자인 2장 · 컨펌</span>
   </div>
 
   <div class="cols">
     <div class="left">
-      <section><h2>진행</h2><table class="sch"><tr class=""><td>00:00–00:15</td><td>실측표 공유 — 내 화면은 지금 몇인가<em>2인 1조</em></td></tr><tr class=""><td>00:15–00:50</td><td>PART 1 — 수치는 어디서 오는가<em>강의 + 시연</em></td></tr><tr class=""><td>00:50–01:25</td><td>실습 1 — GNB 규격 명세 작성<em>개인 워크</em></td></tr><tr class="rest"><td>01:25–01:35</td><td>휴식</td></tr><tr class=""><td>01:35–02:05</td><td>PART 2 — 컴포넌트화<em>강의 + 시연</em></td></tr><tr class=""><td>02:05–02:45</td><td>실습 2 — Figma 컴포넌트 제작과 적용<em>개인 워크 + 순회</em></td></tr><tr class=""><td>02:45–03:00</td><td>검증 — 하나 바꿔 전부 바뀌는가<em>2인 1조</em></td></tr></table></section>
+      <section><h2>진행</h2><table class="sch"><tr class=""><td>00:00–00:15</td><td>실측표 공유 — 내 화면은 지금 몇인가<em>2인 1조</em></td></tr><tr class=""><td>00:15–01:00</td><td>PART 1 — 수치는 어디서 오는가<em>강의 + 도판</em></td></tr><tr class="rest"><td>01:00–01:10</td><td>휴식</td></tr><tr class=""><td>01:10–01:50</td><td>PART 2 — 컴포넌트화<em>강의 + 시연</em></td></tr><tr class=""><td>01:50–02:45</td><td>실습 — Figma 컴포넌트 제작과 적용<em>개인 워크 + 순회</em></td></tr><tr class=""><td>02:45–03:00</td><td>검증 · 과제 안내<em>2인 1조 + 안내</em></td></tr></table></section>
       <section><h2>실습</h2>
     <div class="work">
-      <b>실습 1 · GNB 규격 명세 작성</b>
-      <span>35분 · 개인 — 아직 Figma에서 만들지 않습니다. 표를 먼저 채웁니다.</span>
-      <p>8분 기준 고정  ·  12분 여섯 항목 채우기  ·  8분 상태 정의  ·  7분 합계 검산</p>
-    </div>
-    <div class="work">
       <b>실습 2 · 컴포넌트 제작과 적용</b>
-      <span>40분 · 개인 — 만드는 것보다 화면에 적용하는 것이 오늘의 목표입니다.</span>
-      <p>10분 Tab Item 만들기  ·  8분 배리언트와 프로퍼티  ·  10분 GNB 조립  ·  12분 전 화면 적용</p>
+      <span>55분 · 개인 — 만드는 것보다 화면에 적용하는 것이 오늘의 목표입니다.</span>
+      <p>15분 Tab Item 만들기  ·  10분 배리언트와 프로퍼티  ·  12분 GNB 조립  ·  18분 화면 2개에 적용</p>
     </div></section>
     </div>
     <div class="right">
-      <section><h2>오늘 다루는 것 — 본문 17장 (표지·과제 포함 19장)</h2>
+      <section><h2>오늘 다루는 것 — 본문 18장 (표지·과제 포함 20장)</h2>
         <table class="flow"><tr>
       <td class="p">02</td>
       <td class="k">정리</td>
-      <td class="t">오늘의 목표<em>오늘의 한 문장 — 디자인은 자유롭게 시작하지 않는다. 제약을 먼저 계산하고, 남는 자유도 안에서 결정한다.</em></td>
+      <td class="t">오늘의 목표<em>오늘의 한 문장 — 디자인은 자유롭게 시작하지 않는다. 제약을 먼저 계산하고, 남는 자유도 안에서 결…</em></td>
     </tr><tr>
       <td class="p">03</td>
       <td class="k">구간</td>
@@ -102,19 +107,19 @@
     </tr><tr>
       <td class="p">04</td>
       <td class="k">핵심</td>
-      <td class="t">"보기 좋아서 80으로 했어요"는 다음 사람이 이어 만들 수 없는 값입니다.<em>값의 근거가 취향이면 그 값을 바꿀 수도, 다른 화면에 적용할 수도 없습니다. 반대로 '터치 타깃 48을 보장하려면 콘…</em></td>
+      <td class="t">"보기 좋아서 80으로 했어요"는 다음 사람이 이해 할 수 없는 답변이다.<em>값의 근거가 취향이면 그 값을 바꿀 수도, 다른 화면에 적용할 수도 없습니다. 반대로 '터치 타깃 4…</em></td>
     </tr><tr>
       <td class="p">05</td>
       <td class="k">정리</td>
-      <td class="t">먼저 기준 화면을 하나로 고정합니다<em>이것을 정하지 않으면 뒤의 모든 수치가 흔들립니다.</em></td>
+      <td class="t">먼저 기준 화면을 하나로 선정.<em>이것을 정하지 않으면 뒤의 모든 수치가 흔들립니다.</em></td>
     </tr><tr>
       <td class="p">06</td>
       <td class="k">정리</td>
-      <td class="t">높이는 세 단계로 내려옵니다<em>손가락 → 콘텐츠 영역 → 전체 높이. 각 단계에 근거가 있습니다.</em></td>
+      <td class="t">높이는 세 단계로 구조화 됩니다.<em>손가락 → 콘텐츠 영역 → 전체 높이. 순으로 구조화 되며, 각 단계에 근거가 있는 사이즈 입니다.</em></td>
     </tr><tr>
       <td class="p">07</td>
       <td class="k">도판</td>
-      <td class="t">수치가 얹힌 GNB<em>앞 장에서 계산한 값이 실제 GNB에 어떻게 얹히는지입니다. 왼쪽은 화면 전체에서의 자리.</em></td>
+      <td class="t">수치가 반영된 GNB<em>앞 장에서 계산한 값이 실제 GNB에 어떻게 적용되는지 확인해 봅시다.</em></td>
     </tr><tr>
       <td class="p">08</td>
       <td class="k">정리</td>
@@ -133,37 +138,41 @@
       <td class="t">폭이 바뀌어도 규격은 그대로<em>같은 컴포넌트를 390과 360에 각각 붙였을 때입니다. 오늘 과제 세 번째가 이 검증입니다.</em></td>
     </tr><tr>
       <td class="p">12</td>
-      <td class="k">실습</td>
-      <td class="t">실습 1 · GNB 규격 명세 작성<em>35분 · 개인 — 아직 Figma에서 만들지 않습니다. 표를 먼저 채웁니다.</em></td>
-    </tr><tr>
-      <td class="p">13</td>
       <td class="k">구간</td>
       <td class="t">컴포넌트화<em>정한 수치를 한 곳에 담아 두고, 화면에서는 꺼내 쓰기만 합니다.</em></td>
     </tr><tr>
-      <td class="p">14</td>
-      <td class="k">정리</td>
-      <td class="t">세 층으로 쌓습니다<em>작은 것부터 만들어 올립니다. GNB를 통째로 그리면 안에 있는 것을 재사용할 수 없습니다.</em></td>
-    </tr><tr>
-      <td class="p">15</td>
+      <td class="p">13</td>
       <td class="k">정리</td>
       <td class="t">세 가지 장치<em>이 셋을 쓰면 값을 다시 입력할 일이 없어집니다.</em></td>
     </tr><tr>
+      <td class="p">14</td>
+      <td class="k">정리</td>
+      <td class="t">세 단계로 GNB 완성<em>① 가장 작은 단위부터 — 아이콘과 라벨</em></td>
+    </tr><tr>
+      <td class="p">15</td>
+      <td class="k">정리</td>
+      <td class="t">세 단계로 GNB 완성<em>② 오늘의 핵심 — Tab Item</em></td>
+    </tr><tr>
       <td class="p">16</td>
-      <td class="k">실습</td>
-      <td class="t">실습 2 · 컴포넌트 제작과 적용<em>40분 · 개인 — 만드는 것보다 화면에 적용하는 것이 오늘의 목표입니다.</em></td>
+      <td class="k">정리</td>
+      <td class="t">세 단계로 GNB 완성<em>③ 화면에 붙이는 것은 이것 하나 — GNB</em></td>
     </tr><tr>
       <td class="p">17</td>
+      <td class="k">실습</td>
+      <td class="t">실습 2 · 컴포넌트 제작과 적용<em>55분 · 개인 — 만드는 것보다 화면에 적용하는 것이 오늘의 목표입니다.</em></td>
+    </tr><tr>
+      <td class="p">18</td>
       <td class="k">정리</td>
       <td class="t">검증 — 하나 바꿔 전부 바뀌는가<em>마지막 15분. 2인 1조로 서로의 파일에서 확인합니다.</em></td>
     </tr><tr>
-      <td class="p">18</td>
+      <td class="p">19</td>
       <td class="k">점검</td>
-      <td class="t">제출물 점검표<em>4주차부터 나머지 공통 요소를 같은 방식으로 확장합니다.</em></td>
+      <td class="t">디자인 점검표<em>4주차부터 나머지 공통 요소를 같은 방식으로 적용합니다.</em></td>
     </tr></table></section>
     </div>
   </div>
   <section class="two">
-    <div><h2>과제</h2><ol><li><b>GNB 규격 명세서 확정</b><span>항목 · 값 · 근거 세 칸을 모두 채웁니다. 근거 칸이 '보기 좋아서'인 항목이 하나라도 있으면 다시 생각하세요.</span></li><li><b>전 화면 인스턴스 적용</b><span>1학기에 만든 모든 화면의 하단 바를 오늘 만든 컴포넌트 인스턴스로 교체합니다. 직접 그린 하단 바가 한 개도 남지 않아야 합니다.</span></li><li><b>360폭 검증</b><span>화면 폭 360 프레임을 하나 만들어 GNB를 붙여 봅니다. 깨지는 곳을 찾아 오토레이아웃 설정을 고치세요.</span></li></ol>
+    <div><h2>과제</h2><ol><li><b>와이어프레임 화면 2개 선정</b><span>각자 프로젝트의 와이어프레임 중 디자인으로 완성할 화면 2개를 고릅니다. 하단 GNB가 들어가는 핵심 화면을 우선합니다.</span></li><li><b>디자인 2장 완성</b><span>선정한 화면 2개를 오늘 만든 GNB 컴포넌트 인스턴스를 적용해 디자인으로 완성합니다. 360폭 프레임 기준으로 작업합니다.</span></li><li><b>컨펌 받기</b><span>완성한 디자인 2장을 4주차 수업 전까지 공유하고 컨펌을 받습니다. 피드백 반영 후 나머지 화면으로 확장합니다.</span></li></ol>
       <div class="due">제출 — 4주차 수업 시작 전까지 · Figma 링크 제출</div></div>
     <div><h2>다음</h2><div class="next">
       <b>04주차 공통 요소 확장</b>

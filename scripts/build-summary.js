@@ -27,7 +27,7 @@ function gist(b) {
             : b.type === "statement" ? b.body
             : b.foot) || "";
   const t = String(raw).replace(/\s+/g, " ").trim();
-  const LIM = wk_blocks >= 16 ? 66 : 86;
+  const LIM = wk_blocks >= 18 ? 56 : wk_blocks >= 16 ? 66 : 86;
   if (t.length <= LIM) return t;
   const cut = t.slice(0, LIM);
   const stop = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("다 "), cut.lastIndexOf("· "));
@@ -137,9 +137,19 @@ function build(wk) {
   body.denser ol li { padding:2px 0 2px 15px; }
   body.denser ol li span { font-size:8.2pt; }
   body.denser .next { padding:6px 9px; }
+  /* 18장을 넘으면 한 단계 더. A4 한 장이 이 문서의 조건이다. */
+  body.densest { font-size:7.9pt; line-height:1.28; }
+  body.densest .flow td { padding:0.8px 4px 0.8px 0; }
+  body.densest .flow td.t em { font-size:7pt; line-height:1.22; }
+  body.densest .sch td { padding:0.9px 4px 0.9px 0; }
+  body.densest h1 { font-size:14.5pt; }
+  body.densest .goal { font-size:8.6pt; }
+  body.densest section { margin-bottom:4px; }
+  body.densest .work { padding:3px 6px; margin-bottom:2px; }
+  body.densest ol li { padding:1.4px 0 1.4px 14px; }
   .two { display:flex; gap:9mm; align-items:flex-start; break-inside:avoid; }
   .two > * { flex:1; min-width:0; }
-</style></head><body class="${wk.blocks.length >= 16 ? "dense denser" : wk.blocks.length >= 14 ? "dense" : ""}">
+</style></head><body class="${wk.blocks.length >= 18 ? "dense denser densest" : wk.blocks.length >= 16 ? "dense denser" : wk.blocks.length >= 14 ? "dense" : ""}">
   <div class="rail"><span>${esc(COURSE.name)} · ${esc(COURSE.audience)}</span><span>WEEK ${n} · 수업 요약</span></div>
   <div class="rule"></div>
   <h1>${oneline(wk.title)}</h1>

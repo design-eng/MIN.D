@@ -309,6 +309,41 @@ function buildWeek(wk) {
       const s = light();
       head(s, b.kicker, b.title, b.sub);
       const n = b.items.length, g = 0.4;
+      // 한 장에 한 단계만 놓을 때는 카드가 비어 보이므로 조판을 따로 쓴다
+      if (n === 1) {
+        const it = b.items[0];
+        const top = BODY_TOP + 0.2, bottom = b.foot ? 5.44 : 6.12;
+        const isDark = b.dark === 0;
+        card(s, M, top, CW, bottom - top, isDark ? { fill: INK } : { fill: WHITE, line: LINE });
+        s.addText(it.n, {
+          x: M + 0.6, y: top + 0.3, w: 2.2, h: bottom - top - 0.6,
+          fontSize: 116, color: isDark ? WHITE : INK, fontFace: FT, align: "center", margin: 0, valign: "middle",
+        });
+        rule(s, M + 3.2, top + 0.6, 0, isDark ? "3A3A3A" : LINE);
+        s.addShape("line", {
+          x: M + 3.2, y: top + 0.55, w: 0, h: bottom - top - 1.1,
+          line: { color: isDark ? "3A3A3A" : LINE, width: 1 },
+        });
+        s.addText(it.t, {
+          x: M + 3.8, y: top + 0.72, w: CW - 4.5, h: 0.7,
+          fontSize: 30, color: isDark ? WHITE : INK, fontFace: FB, margin: 0, valign: "top",
+        });
+        s.addText(it.d, {
+          x: M + 3.8, y: top + 1.62, w: CW - 4.5, h: bottom - top - 2.3,
+          fontSize: 15, color: isDark ? BODY_D : GRAPHITE, fontFace: F, margin: 0,
+          lineSpacingMultiple: 1.42, valign: "top",
+        });
+        if (b.foot) {
+          rule(s, M, 5.72, CW, INK);
+          s.addText(b.foot, {
+            x: M, y: 5.84, w: CW, h: 0.44,
+            fontSize: 13, color: INK, fontFace: FB, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
+          });
+        }
+        foot(s);
+        notes(s, b.script, b.note);
+        return;
+      }
       const cw = (CW - g * (n - 1)) / n;
       b.items.forEach((it, i) => {
         const x = M + i * (cw + g);
