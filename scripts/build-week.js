@@ -731,7 +731,11 @@ function buildWeek(wk) {
   }
 
   const out = path.join(__dirname, "..", "dist", COURSE.outDir, `${COURSE.filePrefix}_${wk.n.padStart(2, "0")}주차_${wk.file}.pptx`);
-  return pres.writeFile({ fileName: out }).then(() => out);
+  // 압축을 켜면 파일이 크게 줄어 메일·드라이브로 옮기기 쉬워진다.
+  // writeFile 은 outputType 이 있으면 compression 을 무시하므로(라이브러리 분기),
+  // STREAM 으로 버퍼를 받아 직접 쓴다.
+  return pres.write({ outputType: "STREAM", compression: true })
+    .then((buf) => { fs.writeFileSync(out, buf); return out; });
 }
 
 const want = process.argv.slice(2).filter((a) => /^\d+$/.test(a)).map(Number);
