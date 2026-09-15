@@ -11,6 +11,7 @@
  */
 const pptxgen = require("pptxgenjs");
 const path = require("path");
+const fs = require("fs");
 // 과목 선택 — 인자가 없으면 서비스디자인 1학기형(리서치 기반) 콘텐츠를 쓴다
 //   --portfolio  포트폴리오제작
 //   --design     서비스디자인 2학기 (디자이닝 중심)
@@ -40,6 +41,13 @@ const FT = "Pretendard Thin";
 const FB = "Pretendard Black";   // 디스플레이 전용
 
 const SW = 13.333, SH = 7.5, M = 0.7, CW = SW - M * 2, BODY_TOP = 1.72;
+
+// PNG IHDR 에서 픽셀 크기를 읽는다 — 도판 비율을 유지해 배치하기 위해서다
+function pngSize(file) {
+  const buf = fs.readFileSync(file);
+  if (buf.length < 24 || buf.readUInt32BE(12) !== 0x49484452) throw new Error("PNG 아님: " + file);
+  return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) };
+}
 const RAIL_Y = 0.30, RAIL_RULE = 0.60, FOOT_RULE = 6.88;
 
 function buildWeek(wk) {
@@ -450,6 +458,29 @@ function buildWeek(wk) {
         fontSize: 14, color: BODY_D, fontFace: FL, margin: 0, lineSpacingMultiple: 1.36, valign: "top",
       });
       edgeCaption(s, COURSE.name.toUpperCase() + " · " + WEEK_TAG, "7A7A7A");
+      notes(s, b.script, b.note);
+    },
+
+    // 레퍼런스 도판 — assets/ 의 PNG 를 본문 영역에 맞춰 넣는다
+    figure(b) {
+      const s = light();
+      head(s, b.kicker, b.title, b.sub);
+      const file = path.join(__dirname, "..", b.src);
+      const { w: pw, h: ph } = pngSize(file);
+      const top = BODY_TOP + 0.18;
+      const bottom = b.foot ? 6.06 : 6.46;
+      const maxW = CW, maxH = bottom - top;
+      const scale = Math.min(maxW / pw, maxH / ph);
+      const w = pw * scale, h = ph * scale;
+      s.addImage({ path: file, x: M + (CW - w) / 2, y: top + (maxH - h) / 2, w, h });
+      if (b.foot) {
+        rule(s, M, 6.22, CW, LINE);
+        s.addText(b.foot, {
+          x: M, y: 6.30, w: CW, h: 0.30,
+          fontSize: 11.5, color: GRAPHITE, fontFace: F, margin: 0, valign: "middle",
+        });
+      }
+      foot(s);
       notes(s, b.script, b.note);
     },
 

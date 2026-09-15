@@ -34,6 +34,8 @@ const COURSE = {
   session: "120분",   // 1주차만 180분. 2주차부터 격주 120분 (2026-09-09 협의)
   outDir: "weeks-대학원",
   filePrefix: "컨셉트와프로세스",
+  // 학생용 덱에는 시간 배분을 넣지 않는다(2026-09-15 교수님 지시).
+  showTiming: false,
   subject: "원광대학교 2026-2 · 대학원 박사과정 · 주 3시간 × 15주 · 세미나형 · 연구 프로포절",
 };
 
@@ -71,7 +73,7 @@ const WEEK_CONTENT = [
       topics: ["Design Methods Movement (1960s)", "Jones · Archer의 체계적 방법론", "방법론 운동의 좌초와 그 이후", "계보도 공동 작성"],
       prepare: "리딩 노트 1회차 · 연구 주제 수정본 · 1주차 발제자 리딩" },
     blocks: [
-      { type: "rows", kicker: "OBJECTIVES", title: "오늘 끝나면 여러분은",
+      { type: "rows", kicker: "OBJECTIVES", title: "오늘의 목표",
         script: "오늘의 목표 네 가지입니다.\n\n첫째, concept, conception, conceptual 세 단어를 구분해 쓸 수 있게 되는 것.\n\n둘째, 디자인에서 '컨셉'이 실제로 몇 자리에서 다르게 쓰이는지 아는 것.\n\n셋째 — 이게 오늘의 핵심입니다 — 자기 연구의 '컨셉'이 어느 층위인지 말할 수 있게 되는 것. 이게 흐리면 기여 진술이 끝까지 흐려집니다.\n\n넷째, 이 세미나의 운영 방식에 합의하는 것.\n\n아래 문장이 이 학기의 정의입니다. 남의 개념을 정확히 읽고, 자기 개념을 말이 되게 세워, 연구 프로포절로 내놓는다.",
         items: [
           { n: "1", t: "concept · conception · conceptual을 구분해 쓸 수 있다", d: "세 단어가 서로 다른 층위를 가리킨다는 것을 예로 설명할 수 있는 수준" },

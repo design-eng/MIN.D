@@ -21,13 +21,15 @@ const oneline = (t) => esc(String(t || "").replace(/\n/g, " ").trim());
 // 장표 한 줄 — 부제가 있으면 부제, 없으면 그 블록이 실제로 하는 말.
 // 요약 문서이므로 한 줄을 넘기지 않게 자른다. statement 의 body 처럼 긴 문단이
 // 그대로 들어가면 다섯 줄까지 늘어나 한 장에 안 들어간다.
+let wk_blocks = 0;
 function gist(b) {
   const raw = b.sub || (b.type === "divider" ? b.desc
             : b.type === "statement" ? b.body
             : b.foot) || "";
   const t = String(raw).replace(/\s+/g, " ").trim();
-  if (t.length <= 86) return t;
-  const cut = t.slice(0, 86);
+  const LIM = wk_blocks >= 16 ? 66 : 86;
+  if (t.length <= LIM) return t;
+  const cut = t.slice(0, LIM);
   const stop = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("다 "), cut.lastIndexOf("· "));
   return (stop > 46 ? cut.slice(0, stop + 1) : cut.trimEnd()) + "…";
 }
@@ -36,10 +38,11 @@ function gist(b) {
 const KIND = {
   divider: "구간", statement: "핵심", steps: "실습", checklist: "점검",
   compare: "비교", cols: "정리", cards3: "정리", rows: "정리",
-  twocol: "정리", casebox: "사례",
+  twocol: "정리", casebox: "사례", figure: "도판",
 };
 
 function build(wk) {
+  wk_blocks = wk.blocks.length;
   const n = wk.n.padStart(2, "0");
 
   const sched = wk.schedule.map(([t, w, h]) =>
@@ -120,9 +123,23 @@ function build(wk) {
   body.dense .goal { font-size:9.4pt; }
   body.dense section { margin-bottom:7px; }
   body.dense .work { padding:5px 8px; }
+  /* 16장을 넘으면 한 단계 더 조인다 — A4 한 장을 넘기지 않기 위해서다. */
+  body.denser { font-size:8.3pt; line-height:1.34; }
+  body.denser .flow td { padding:1.2px 5px 1.2px 0; }
+  body.denser .flow td.t em { font-size:7.4pt; line-height:1.26; }
+  body.denser .sch td { padding:1.3px 5px 1.3px 0; }
+  body.denser h1 { font-size:15.5pt; }
+  body.denser .goal { font-size:9pt; }
+  body.denser section { margin-bottom:5px; }
+  body.denser h2 { margin-bottom:3px; }
+  body.denser .work { padding:4px 7px; margin-bottom:3px; }
+  body.denser .work p { font-size:8.2pt; }
+  body.denser ol li { padding:2px 0 2px 15px; }
+  body.denser ol li span { font-size:8.2pt; }
+  body.denser .next { padding:6px 9px; }
   .two { display:flex; gap:9mm; align-items:flex-start; break-inside:avoid; }
   .two > * { flex:1; min-width:0; }
-</style></head><body class="${wk.blocks.length >= 14 ? "dense" : ""}">
+</style></head><body class="${wk.blocks.length >= 16 ? "dense denser" : wk.blocks.length >= 14 ? "dense" : ""}">
   <div class="rail"><span>${esc(COURSE.name)} · ${esc(COURSE.audience)}</span><span>WEEK ${n} · 수업 요약</span></div>
   <div class="rule"></div>
   <h1>${oneline(wk.title)}</h1>

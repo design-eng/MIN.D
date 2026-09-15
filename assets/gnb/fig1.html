@@ -1,0 +1,80 @@
+<meta charset="utf-8"><style>
+ html,body{margin:0;background:#fff}
+ svg{display:block}
+ text{font-family:Pretendard,sans-serif;fill:#111}
+ .kick{font-size:26px;letter-spacing:3px;fill:#8A8A8A}
+ .num{font-size:52px;font-weight:700}
+ .num-s{font-size:36px;font-weight:600}
+ .tiny{font-size:27px;fill:#6E6E6E}
+ .dim{stroke:#111;stroke-width:2;fill:none}
+ .dimg{stroke:#9A9A9A;stroke-width:1.6;fill:none}
+ .box{fill:none;stroke:#111;stroke-width:2.4}
+ .seg{fill:none;stroke:#C9C9C9;stroke-width:1.6;stroke-dasharray:6 6}
+</style>
+<svg width="2000" height="700" viewBox="0 0 2000 700">
+<defs>
+ <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker>
+ <marker id="b" markerWidth="10" markerHeight="10" refX="1" refY="5" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#111"/></marker>
+</defs>
+
+<!-- 화면 전체 인셋 : 390×844 @0.40 = 156×338 -->
+<text class="kick" x="70" y="120">IN SCREEN</text>
+<rect class="box" x="70" y="160" width="156" height="338"/>
+<g fill="#F2F2F2" stroke="#EAEAEA">
+ <rect x="86" y="196" width="124" height="46"/><rect x="86" y="254" width="124" height="46"/>
+ <rect x="86" y="312" width="124" height="46"/><rect x="86" y="370" width="124" height="46"/>
+</g>
+<rect x="70" y="462" width="156" height="36" fill="#111"/>
+<line class="dimg" x1="236" y1="462" x2="300" y2="462"/>
+<line class="dimg" x1="236" y1="498" x2="300" y2="498"/>
+<text class="num-s" x="252" y="492">90</text>
+<text class="tiny" x="70" y="546">844 중 아래 90</text>
+<text class="tiny" x="70" y="584">본문 754는 그 위에서</text>
+<text class="tiny" x="70" y="618">스크롤합니다</text>
+
+<!-- ───── GNB 전개 : 390 @3.7 = 1443 ───── -->
+<text class="kick" x="450" y="120">APPLIED — 390 폭 · 4탭</text>
+
+<line class="dim" x1="450" y1="176" x2="1893" y2="176" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="1171" y="162" text-anchor="middle">390</text>
+
+<!-- 바 : 콘텐츠 56@3.7=207 · 안전 34@3.7=126 -->
+<rect class="box" x="450" y="198" width="1443" height="207" fill="#fff"/>
+<rect x="450" y="405" width="1443" height="126" fill="#F2F2F2" stroke="#111" stroke-width="2.4"/>
+<line x1="450" y1="198" x2="1893" y2="198" stroke="#111" stroke-width="4"/>
+
+<!-- 탭 4개 · 폭 360.75 -->
+<line class="seg" x1="810.75" y1="198" x2="810.75" y2="405"/>
+<line class="seg" x1="1171.5" y1="198" x2="1171.5" y2="405"/>
+<line class="seg" x1="1532.25" y1="198" x2="1532.25" y2="405"/>
+<!-- 아이콘 24@3.7=89 · 상단 6@3.7=22 -->
+<rect x="586" y="220" width="89" height="89" fill="#111"/>
+<rect x="946.75" y="220" width="89" height="89" fill="none" stroke="#B4B4B4" stroke-width="3"/>
+<rect x="1307.5" y="220" width="89" height="89" fill="none" stroke="#B4B4B4" stroke-width="3"/>
+<rect x="1668.25" y="220" width="89" height="89" fill="none" stroke="#B4B4B4" stroke-width="3"/>
+<text x="630" y="381" text-anchor="middle" font-size="41" font-weight="700">홈</text>
+<text x="991" y="381" text-anchor="middle" font-size="41" fill="#9A9A9A">탐색</text>
+<text x="1352" y="381" text-anchor="middle" font-size="41" fill="#9A9A9A">기록</text>
+<text x="1713" y="381" text-anchor="middle" font-size="41" fill="#9A9A9A">내정보</text>
+
+<!-- 세로 치수 -->
+<line class="dim" x1="418" y1="198" x2="418" y2="405" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="404" y="316" text-anchor="end">56</text>
+<line class="dim" x1="418" y1="405" x2="418" y2="531" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="404" y="482" text-anchor="end">34</text>
+<line class="dim" x1="1960" y1="198" x2="1960" y2="531" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num" x="1946" y="382" text-anchor="end">90</text>
+
+<!-- 탭 폭 -->
+<line class="dim" x1="450" y1="586" x2="810.75" y2="586" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="630" y="574" text-anchor="middle">97.5</text>
+<text class="tiny" x="840" y="580">390 ÷ 4 — 값을 입력하지 않고 균등 분배로 나눕니다</text>
+
+<!-- 주석 -->
+<line class="dimg" x1="675" y1="240" x2="760" y2="240"/>
+<text class="tiny" x="774" y="250">아이콘 24</text>
+<text class="tiny" x="1450" y="470">이 34는 비워 둡니다 · 배경만 깔립니다</text>
+<text class="tiny" x="1893" y="132" text-anchor="end">상단 구분선 1px hairline</text>
+<line class="dimg" x1="1830" y1="142" x2="1830" y2="196"/>
+<text class="tiny" x="450" y="646">상단 6 + 아이콘 24 + 간격 4 + 라벨 11pt·라인높이 14 + 하단 8 = 56 · 여기에 안전 영역 34를 더해 90</text>
+</svg>

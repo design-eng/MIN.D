@@ -1,0 +1,77 @@
+<meta charset="utf-8"><style>
+ html,body{margin:0;background:#fff}
+ svg{display:block}
+ text{font-family:Pretendard,sans-serif;fill:#111}
+ .kick{font-size:28px;font-weight:600}
+ .num{font-size:46px;font-weight:700}
+ .num-s{font-size:34px;font-weight:600}
+ .tiny{font-size:26px;fill:#6E6E6E}
+ .dim{stroke:#111;stroke-width:2;fill:none}
+ .dimg{stroke:#9A9A9A;stroke-width:1.6;fill:none}
+ .box{fill:none;stroke:#111;stroke-width:2.4}
+ .seg{fill:none;stroke:#C9C9C9;stroke-width:1.6;stroke-dasharray:6 6}
+</style>
+<svg width="2000" height="700" viewBox="0 0 2000 700">
+<defs>
+ <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker>
+ <marker id="b" markerWidth="10" markerHeight="10" refX="1" refY="5" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#111"/></marker>
+</defs>
+
+<!-- ─── 위 : 390 @2.2 = 858 · 탭 214.5 ─── -->
+<text class="kick" x="70" y="132">기준 폭 390</text>
+<text class="tiny" x="70" y="172">탭 폭 97.5</text>
+<line class="dim" x1="420" y1="100" x2="1278" y2="100" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="849" y="88" text-anchor="middle">390</text>
+<rect class="box" x="420" y="118" width="858" height="123" fill="#fff"/>
+<rect x="420" y="241" width="858" height="75" fill="#F2F2F2" stroke="#111" stroke-width="2.4"/>
+<line class="seg" x1="634.5" y1="118" x2="634.5" y2="241"/>
+<line class="seg" x1="849" y1="118" x2="849" y2="241"/>
+<line class="seg" x1="1063.5" y1="118" x2="1063.5" y2="241"/>
+<rect x="500" y="131" width="53" height="53" fill="#111"/>
+<rect x="714.5" y="131" width="53" height="53" fill="none" stroke="#B4B4B4" stroke-width="3"/>
+<rect x="929" y="131" width="53" height="53" fill="none" stroke="#B4B4B4" stroke-width="3"/>
+<rect x="1143.5" y="131" width="53" height="53" fill="none" stroke="#B4B4B4" stroke-width="3"/>
+<text x="527" y="223" text-anchor="middle" font-size="28" font-weight="700">홈</text>
+<text x="741" y="223" text-anchor="middle" font-size="28" fill="#9A9A9A">탐색</text>
+<text x="956" y="223" text-anchor="middle" font-size="28" fill="#9A9A9A">기록</text>
+<text x="1170" y="223" text-anchor="middle" font-size="28" fill="#9A9A9A">내정보</text>
+<line class="dim" x1="1330" y1="118" x2="1330" y2="316" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="1346" y="228">90</text>
+
+<!-- ─── 아래 : 360 @2.2 = 792 · 탭 198 ─── -->
+<text class="kick" x="70" y="492">검증 폭 360</text>
+<text class="tiny" x="70" y="532">탭 폭 90</text>
+<line class="dim" x1="420" y1="460" x2="1212" y2="460" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="816" y="448" text-anchor="middle">360</text>
+<rect class="box" x="420" y="478" width="792" height="123" fill="#fff"/>
+<rect x="420" y="601" width="792" height="75" fill="#F2F2F2" stroke="#111" stroke-width="2.4"/>
+<line class="seg" x1="618" y1="478" x2="618" y2="601"/>
+<line class="seg" x1="816" y1="478" x2="816" y2="601"/>
+<line class="seg" x1="1014" y1="478" x2="1014" y2="601"/>
+<rect x="492" y="491" width="53" height="53" fill="#111"/>
+<rect x="690" y="491" width="53" height="53" fill="none" stroke="#B4B4B4" stroke-width="3"/>
+<rect x="888" y="491" width="53" height="53" fill="none" stroke="#B4B4B4" stroke-width="3"/>
+<rect x="1086" y="491" width="53" height="53" fill="none" stroke="#B4B4B4" stroke-width="3"/>
+<text x="519" y="583" text-anchor="middle" font-size="28" font-weight="700">홈</text>
+<text x="717" y="583" text-anchor="middle" font-size="28" fill="#9A9A9A">탐색</text>
+<text x="915" y="583" text-anchor="middle" font-size="28" fill="#9A9A9A">기록</text>
+<text x="1113" y="583" text-anchor="middle" font-size="28" fill="#9A9A9A">내정보</text>
+<line class="dim" x1="1264" y1="478" x2="1264" y2="676" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="1280" y="588">90</text>
+
+<!-- 오른쪽 요약 -->
+<text class="tiny" x="1450" y="112">바뀐 값</text>
+<text class="num" x="1450" y="168">97.5 → 90</text>
+<text class="tiny" x="1450" y="206">탭 폭 하나뿐입니다</text>
+<line class="dimg" x1="1450" y1="246" x2="1940" y2="246"/>
+<text class="tiny" x="1450" y="294">그대로인 값</text>
+<text class="tiny" x="1450" y="338" fill="#111">전체 높이 90 · 콘텐츠 56 · 안전 34</text>
+<text class="tiny" x="1450" y="378" fill="#111">아이콘 24 · 간격 4</text>
+<text class="tiny" x="1450" y="418" fill="#111">라벨 11 / 라인높이 14</text>
+<line class="dimg" x1="1450" y1="458" x2="1940" y2="458"/>
+<text class="tiny" x="1450" y="506">오토레이아웃 가로 + 각 탭을</text>
+<text class="tiny" x="1450" y="546">Fill container 로 두면</text>
+<text class="tiny" x="1450" y="586">자동으로 재분배됩니다.</text>
+<text class="tiny" x="1450" y="640">98을 직접 입력했다면 네 탭을</text>
+<text class="tiny" x="1450" y="676">모두 다시 고쳐야 합니다.</text>
+</svg>
