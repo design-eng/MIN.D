@@ -46,11 +46,13 @@ function build(wk) {
     `<tr class="${h ? "" : "rest"}"><td>${esc(t)}</td>` +
     `<td>${esc(w)}${h ? `<em>${esc(h)}</em>` : ""}</td></tr>`).join("");
 
-  // 본문 장표 — 표지·시간표·과제 3장을 뺀 나머지가 3번 장표부터다
+  // 본문 장표 — 표지·(시간표)·과제를 뺀 나머지가 그다음 번호부터다
+  const DECK_EXTRA = COURSE.showTiming === false ? 2 : 3;
+  const DECK_EXTRA_LABEL = COURSE.showTiming === false ? "표지·과제" : "표지·시간표·과제";
   const flow = wk.blocks.map((b, i) => {
     const g = oneline(gist(b));
     return `<tr>
-      <td class="p">${String(i + 3).padStart(2, "0")}</td>
+      <td class="p">${String(i + DECK_EXTRA).padStart(2, "0")}</td>
       <td class="k">${esc(KIND[b.type] || b.type)}</td>
       <td class="t">${oneline(b.title)}${g ? `<em>${g}</em>` : ""}</td>
     </tr>`;
@@ -136,7 +138,7 @@ function build(wk) {
       ${works ? `<section><h2>실습</h2>${works}</section>` : ""}
     </div>
     <div class="right">
-      <section><h2>오늘 다루는 것 — 본문 ${wk.blocks.length}장 (표지·시간표·과제 포함 ${wk.blocks.length + 3}장)</h2>
+      <section><h2>오늘 다루는 것 — 본문 ${wk.blocks.length}장 (${DECK_EXTRA_LABEL} 포함 ${wk.blocks.length + DECK_EXTRA}장)</h2>
         <table class="flow">${flow}</table></section>
     </div>
   </div>

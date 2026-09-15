@@ -22,8 +22,9 @@ const para = (t) => esc(t).split(/\n{2,}/).map((s) => `<p>${s.replace(/\n/g, "<b
 function slides(wk) {
   const out = [
     { t: wk.title, k: "표지", script: wk.coverScript, note: wk.coverNote },
-    { t: "오늘의 " + COURSE.session, k: "TODAY", script: wk.flowScript, note: wk.flowNote,
-      table: wk.schedule },
+    { t: "오늘의 " + COURSE.session, k: COURSE.showTiming === false ? "진행 (덱에는 없음)" : "TODAY",
+      nonum: COURSE.showTiming === false,
+      script: wk.flowScript, note: wk.flowNote, table: wk.schedule },
   ];
   wk.blocks.forEach((b) => out.push({
     t: (b.title || "").replace(/\n/g, " "), k: b.kicker || b.type,
@@ -34,9 +35,10 @@ function slides(wk) {
 }
 
 function build(wk) {
-  const rows = slides(wk).map((s, i) => `
+  let seq = 0;
+  const rows = slides(wk).map((s) => `
     <section>
-      <div class="no">${String(i + 1).padStart(2, "0")}</div>
+      <div class="no">${s.nonum ? "·" : String(++seq).padStart(2, "0")}</div>
       <div class="body">
         <div class="kick">${esc(s.k)}</div>
         <h2>${esc(s.t)}</h2>

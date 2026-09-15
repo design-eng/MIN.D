@@ -52,6 +52,9 @@ function buildWeek(wk) {
 
   const DECK_TITLE = `${COURSE.name} · ${wk.n}주차 ${wk.title}`;
   const SESSION = wk.session || COURSE.session;  // 주차별 오버라이드 허용
+  // 학생용 덱에 시간 배분을 노출할지. false면 표지의 "오늘" 줄, 진행 시간표 장표,
+  // 실습 단계의 분 표기가 빠진다. 시간표는 수업 요약·발표 대본에만 남는다.
+  const SHOW_TIMING = COURSE.showTiming !== false;
   const WEEK_TAG = "WEEK " + wk.n.padStart(2, "0");
   let pageNo = 0;
 
@@ -201,7 +204,9 @@ function buildWeek(wk) {
       fontSize: 16, color: GRAPHITE, fontFace: FL, margin: 0, lineSpacingMultiple: 1.3, valign: "top",
     });
     rule(s, M, 4.86, 3.0, INK);
-    [["과목", COURSE.name + " · " + COURSE.audience], ["오늘", SESSION + " — " + wk.ratio], ["제출물", wk.output]]
+    [["과목", COURSE.name + " · " + COURSE.audience],
+     ...(SHOW_TIMING ? [["오늘", SESSION + " — " + wk.ratio]] : []),
+     ["제출물", wk.output]]
       .forEach(([k, v], i) => {
         const y = 5.08 + i * 0.42;
         s.addText(k, {
@@ -219,7 +224,7 @@ function buildWeek(wk) {
   }
 
   /* ── 2. 오늘의 진행 (실제 시각 시간표) ─────────────────── */
-  {
+  if (SHOW_TIMING) {
     const s = light();
     head(s, "TODAY", "오늘의 " + SESSION, wk.ratio);
     const n = wk.schedule.length;
@@ -457,16 +462,19 @@ function buildWeek(wk) {
         const y = BODY_TOP + 0.16 + i * rowH;
         const isDark = i === n - 1;
         card(s, M, y, CW, rowH - 0.16, isDark ? { fill: INK } : { fill: WHITE, line: LINE });
-        s.addText(it.min, {
+        const showMin = SHOW_TIMING && it.min;
+        if (showMin) s.addText(it.min, {
           x: M + 0.4, y: y + 0.1, w: 1.3, h: rowH - 0.36,
           fontSize: 22, color: isDark ? WHITE : INK, fontFace: FL, margin: 0, valign: "middle",
         });
+        const tx = showMin ? M + 1.8 : M + 0.5;
+        const dx = showMin ? M + 5.5 : M + 4.2;
         s.addText(it.t, {
-          x: M + 1.8, y: y + 0.1, w: 3.6, h: rowH - 0.36,
+          x: tx, y: y + 0.1, w: dx - tx - 0.1, h: rowH - 0.36,
           fontSize: 14.5, color: isDark ? WHITE : INK, fontFace: FB, margin: 0, valign: "middle",
         });
         s.addText(it.d, {
-          x: M + 5.5, y: y + 0.1, w: CW - 5.9, h: rowH - 0.36,
+          x: dx, y: y + 0.1, w: SW - M - dx - 0.4, h: rowH - 0.36,
           fontSize: 11.5, color: isDark ? BODY_D : GRAPHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.24, valign: "middle",
         });
       });
