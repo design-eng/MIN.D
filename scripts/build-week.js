@@ -6,7 +6,7 @@
  * 장표 스타일 — 흑백 에디토리얼.
  *   · 컬러 없음. 강조는 색이 아니라 무게·대문자·자간·괘선으로 만든다.
  *   · 상단 레일(작은 대문자 라벨 + 헤어라인), 하단 헤어라인.
- *   · 디스플레이 타입은 Pretendard Black, 본문은 Regular/Light.
+ *   · 디스플레이 타입은 Pretendard SemiBold, 본문은 Regular/Light.
  *   · 모서리는 각지게, 면은 흰색·연회색·먹색 세 단계만 쓴다.
  */
 const pptxgen = require("pptxgenjs");
@@ -38,7 +38,7 @@ const BODY_D = "B8B8B8";   // 다크 면 위 본문
 const F = "Pretendard";
 const FL = "Pretendard Light";
 const FT = "Pretendard Thin";
-const FB = "Pretendard Black";   // 디스플레이 전용
+const FB = "Pretendard SemiBold";  // 디스플레이 전용 — Black 은 너무 굵어 가독성이 떨어진다
 
 const SW = 13.333, SH = 7.5, M = 0.7, CW = SW - M * 2, BODY_TOP = 1.72;
 

@@ -100,7 +100,7 @@ function build(wk) {
   .sch tr.rest td { color:#9B9B9B; font-weight:400; }
   .flow td.p { width:7mm; color:#9B9B9B; font-variant-numeric:tabular-nums; font-size:8.4pt; }
   .flow td.k { width:12mm; font-size:7.5pt; letter-spacing:1px; color:#8A8A8A; padding-top:5px; }
-  .flow td.t { font-weight:700; }
+  .flow td.t { font-weight:600; }
   .flow td.t em { display:block; font-style:normal; font-weight:400; color:#6E6E6E;
                   font-size:8.3pt; margin-top:0; line-height:1.4; }
   .work { background:#F2F2F2; padding:6px 9px; margin-bottom:4px; }
@@ -110,8 +110,8 @@ function build(wk) {
   ol li { counter-increment:h; padding:3px 0 3px 16px; position:relative; border-bottom:1px solid #EDEDED; }
   ol li::before { content:counter(h); position:absolute; left:0; top:4px;
                   font-size:8pt; color:#9B9B9B; font-variant-numeric:tabular-nums; }
-  ol li b { font-weight:700; } ol li span { display:block; color:#6E6E6E; font-size:8.6pt; }
-  .due { margin-top:5px; padding-top:5px; border-top:1.4px solid #111; font-weight:700; font-size:9.6pt; }
+  ol li b { font-weight:600; } ol li span { display:block; color:#6E6E6E; font-size:8.6pt; }
+  .due { margin-top:5px; padding-top:5px; border-top:1.4px solid #111; font-weight:600; font-size:9.6pt; }
   .next { background:#111; color:#fff; padding:8px 11px; }
   .next b { font-size:10.5pt; } .next p { margin:3px 0 0; color:#B8B8B8; font-size:8.6pt; }
   /* 본문 장표가 14장을 넘으면 우측 열이 한 장을 넘긴다. 그 주차만 조판을 조인다. */

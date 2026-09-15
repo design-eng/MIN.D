@@ -1,0 +1,80 @@
+<meta charset="utf-8"><style>
+ html,body{margin:0;background:#fff}
+ svg{display:block}
+ text{font-family:Pretendard,sans-serif;fill:#111}
+ .kick{font-size:28px;font-weight:500}
+ .num{font-size:44px;font-weight:600}
+ .num-s{font-size:32px;font-weight:500}
+ .tiny{font-size:25px;fill:#6E6E6E}
+ .dim{stroke:#111;stroke-width:2;fill:none}
+ .dimg{stroke:#9A9A9A;stroke-width:1.6;fill:none}
+ .box{fill:none;stroke:#111;stroke-width:2.4}
+ .seg{fill:none;stroke:#C9C9C9;stroke-width:1.6;stroke-dasharray:6 6}
+</style>
+<svg width="2000" height="700" viewBox="0 0 2000 700">
+<defs>
+ <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker>
+ <marker id="b" markerWidth="10" markerHeight="10" refX="1" refY="5" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#111"/></marker>
+</defs>
+
+<!-- ═══ 왼쪽 : 탭 하나 확대 (scale 5.5) ═══ -->
+<text class="kick" x="150" y="88">탭 하나 · 콘텐츠 영역 56</text>
+
+<!-- 탭 박스 : 폭 97.5→536 · 높이 56→308 -->
+<rect x="150" y="140" width="536" height="308" fill="#fff" stroke="#DCDCDC" stroke-width="1.6"/>
+<line x1="150" y1="140" x2="686" y2="140" stroke="#111" stroke-width="5"/>
+<text class="tiny" x="150" y="122">상단 구분선 1px hairline — 그림자 대신 선</text>
+
+<!-- 아이콘 24→132 · 안쪽 그림 20→110 · 여백 2→11 -->
+<rect class="box" x="352" y="173" width="132" height="132"/>
+<rect x="363" y="184" width="110" height="110" fill="#3A3A3A"/>
+<!-- 라벨 -->
+<text x="418" y="390" text-anchor="middle" font-size="52" font-weight="500">내정보</text>
+<line class="seg" x1="150" y1="327" x2="686" y2="327"/>
+<line class="seg" x1="150" y1="404" x2="686" y2="404"/>
+
+<!-- 세로 치수 -->
+<line class="dim" x1="740" y1="140" x2="740" y2="173" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="tiny" x="758" y="166">상단 6</text>
+<line class="dim" x1="740" y1="173" x2="740" y2="305" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="758" y="250">24</text>
+<text class="tiny" x="816" y="250">아이콘</text>
+<line class="dim" x1="740" y1="305" x2="740" y2="327" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="tiny" x="758" y="326">간격 4</text>
+<line class="dim" x1="740" y1="327" x2="740" y2="404" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="758" y="372">14</text>
+<text class="tiny" x="806" y="372">라벨 라인높이</text>
+<text class="tiny" x="806" y="406">11pt · 1줄 고정</text>
+<line class="dim" x1="740" y1="404" x2="740" y2="448" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="tiny" x="758" y="438">하단 8</text>
+
+<!-- 가로 치수 -->
+<line class="dim" x1="150" y1="494" x2="686" y2="494" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="418" y="482" text-anchor="middle">97.5</text>
+<text class="tiny" x="150" y="556">6 + 24 + 4 + 14 + 8 = 56</text>
+<text class="tiny" x="150" y="596">터치 타깃 48보다 크므로 탭 전체가 손가락에 닿습니다.</text>
+
+<!-- ═══ 오른쪽 위 : 아이콘 박스 안의 그림 ═══ -->
+<text class="kick" x="1020" y="88">아이콘 박스 24, 그림은 20 안쪽</text>
+<rect class="box" x="1020" y="126" width="120" height="120"/>
+<rect x="1030" y="136" width="100" height="100" fill="#3A3A3A"/>
+<line class="dimg" x1="1020" y1="126" x2="1020" y2="110"/>
+<line class="dimg" x1="1140" y1="126" x2="1140" y2="110"/>
+<line class="dim" x1="1020" y1="118" x2="1140" y2="118" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="1160" y="196">24</text>
+<text class="tiny" x="1224" y="196">박스 24 · 그림 20 · 바깥 2씩 여백</text>
+<text class="tiny" x="1224" y="234">그림이 꽉 차면 다른 아이콘보다 커 보입니다.</text>
+<text class="tiny" x="1224" y="272">여백 2를 두어야 크기가 고르게 보입니다.</text>
+
+<!-- ═══ 오른쪽 아래 : 라벨 폭 여유 ═══ -->
+<text class="kick" x="1020" y="392">라벨은 탭 폭보다 한참 좁습니다</text>
+<!-- scale 4 : 44→176 · 78→312 · 97.5→390 -->
+<rect x="1020" y="424" width="390" height="44" fill="#F2F2F2" stroke="#111" stroke-width="2"/>
+<text class="tiny" x="1424" y="454">탭 폭 97.5 — 4탭</text>
+<rect x="1020" y="484" width="312" height="44" fill="#F2F2F2" stroke="#111" stroke-width="2"/>
+<text class="tiny" x="1424" y="514">탭 폭 78 — 5탭</text>
+<rect x="1020" y="544" width="176" height="44" fill="#3A3A3A"/>
+<text class="tiny" x="1424" y="574">한글 4자 라벨 ≈ 44</text>
+<text class="tiny" x="1020" y="626">5탭으로 늘려도 라벨이 잘리지 않습니다. 그래서 3~5개 범위를 씁니다.</text>
+<text class="tiny" x="1020" y="664">라벨이 두 줄로 넘어가면 콘텐츠 높이 56이 깨집니다 — 1줄 고정입니다.</text>
+</svg>
