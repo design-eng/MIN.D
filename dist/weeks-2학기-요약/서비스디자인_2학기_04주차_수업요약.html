@@ -1,0 +1,159 @@
+<html><head><meta charset="utf-8"><title>서비스디자인 4주차 수업 요약</title>
+<style>
+  @page { size: A4; margin: 13mm 13mm; }
+  body { font-family:"Pretendard","Noto Sans KR",sans-serif; color:#111; font-size:9.1pt; line-height:1.48; }
+  .rail { display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:1.8px;
+          color:#8A8A8A; text-transform:uppercase; padding-bottom:5px; }
+  .rule { border-bottom:1.4px solid #111; }
+  h1 { font-size:18pt; font-weight:900; margin:9px 0 5px; letter-spacing:-.3px; }
+  .goal { font-size:10pt; color:#111; margin:0 0 9px; max-width:135mm; }
+  .meta { display:flex; flex-wrap:wrap; gap:3px 22px; font-size:8.4pt; color:#6E6E6E;
+          border-top:1px solid #DCDCDC; border-bottom:1px solid #DCDCDC; padding:5px 0; margin-bottom:11px; }
+  .meta b { color:#111; font-weight:500; }
+  h2 { font-size:7.5pt; letter-spacing:1.8px; text-transform:uppercase; color:#8A8A8A;
+       font-weight:400; margin:0 0 4px; }
+  section { margin-bottom:9px; }
+  .cols { display:flex; gap:8mm; align-items:flex-start; }
+  .cols .left { width:57mm; flex:none; }
+  .cols .right { flex:1; min-width:0; }
+  tr { break-inside:avoid; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:2.4px 6px 2.4px 0; border-bottom:1px solid #EDEDED; vertical-align:top; }
+  .sch td { word-break:keep-all; overflow-wrap:break-word; }
+  .sch td:first-child { width:20mm; font-variant-numeric:tabular-nums; font-weight:500; }
+  .sch td em { display:block; font-style:normal; color:#8A8A8A; font-size:7.8pt; margin-top:1px; }
+  .sch tr.rest td { color:#9B9B9B; font-weight:400; }
+  .flow td.p { width:7mm; color:#9B9B9B; font-variant-numeric:tabular-nums; font-size:8.4pt; }
+  .flow td.k { width:12mm; font-size:7.5pt; letter-spacing:1px; color:#8A8A8A; padding-top:5px; }
+  .flow td.t { font-weight:600; }
+  .flow td.t em { display:block; font-style:normal; font-weight:400; color:#6E6E6E;
+                  font-size:8.3pt; margin-top:0; line-height:1.4; }
+  .work { background:#F2F2F2; padding:6px 9px; margin-bottom:4px; }
+  .work b { font-size:10pt; } .work span { color:#6E6E6E; font-size:8.4pt; margin-left:7px; }
+  .work p { margin:3px 0 0; font-size:8.6pt; color:#111; }
+  ol { margin:0; padding:0; list-style:none; counter-reset:h; }
+  ol li { counter-increment:h; padding:3px 0 3px 16px; position:relative; border-bottom:1px solid #EDEDED; }
+  ol li::before { content:counter(h); position:absolute; left:0; top:4px;
+                  font-size:8pt; color:#9B9B9B; font-variant-numeric:tabular-nums; }
+  ol li b { font-weight:600; } ol li span { display:block; color:#6E6E6E; font-size:8.6pt; }
+  .due { margin-top:5px; padding-top:5px; border-top:1.4px solid #111; font-weight:600; font-size:9.6pt; }
+  .next { background:#111; color:#fff; padding:8px 11px; }
+  .next b { font-size:10.5pt; } .next p { margin:3px 0 0; color:#B8B8B8; font-size:8.6pt; }
+  /* 본문 장표가 14장을 넘으면 우측 열이 한 장을 넘긴다. 그 주차만 조판을 조인다. */
+  body.dense { font-size:8.7pt; line-height:1.4; }
+  body.dense .flow td { padding:1.8px 6px 1.8px 0; }
+  body.dense .flow td.t em { font-size:7.8pt; line-height:1.32; }
+  body.dense .sch td { padding:1.9px 6px 1.9px 0; }
+  body.dense h1 { font-size:16.5pt; }
+  body.dense .goal { font-size:9.4pt; }
+  body.dense section { margin-bottom:7px; }
+  body.dense .work { padding:5px 8px; }
+  /* 16장을 넘으면 한 단계 더 조인다 — A4 한 장을 넘기지 않기 위해서다. */
+  body.denser { font-size:8.3pt; line-height:1.34; }
+  body.denser .flow td { padding:1.2px 5px 1.2px 0; }
+  body.denser .flow td.t em { font-size:7.4pt; line-height:1.26; }
+  body.denser .sch td { padding:1.3px 5px 1.3px 0; }
+  body.denser h1 { font-size:15.5pt; }
+  body.denser .goal { font-size:9pt; }
+  body.denser section { margin-bottom:5px; }
+  body.denser h2 { margin-bottom:3px; }
+  body.denser .work { padding:4px 7px; margin-bottom:3px; }
+  body.denser .work p { font-size:8.2pt; }
+  body.denser ol li { padding:2px 0 2px 15px; }
+  body.denser ol li span { font-size:8.2pt; }
+  body.denser .next { padding:6px 9px; }
+  /* 18장을 넘으면 한 단계 더. A4 한 장이 이 문서의 조건이다. */
+  body.densest { font-size:7.9pt; line-height:1.28; }
+  body.densest .flow td { padding:0.8px 4px 0.8px 0; }
+  body.densest .flow td.t em { font-size:7pt; line-height:1.22; }
+  body.densest .sch td { padding:0.9px 4px 0.9px 0; }
+  body.densest h1 { font-size:14.5pt; }
+  body.densest .goal { font-size:8.6pt; }
+  body.densest section { margin-bottom:4px; }
+  body.densest .work { padding:3px 6px; margin-bottom:2px; }
+  body.densest ol li { padding:1.4px 0 1.4px 14px; }
+  .two { display:flex; gap:9mm; align-items:flex-start; break-inside:avoid; }
+  .two > * { flex:1; min-width:0; }
+</style></head><body class="">
+  <div class="rail"><span>서비스디자인 · 학부 3학년</span><span>WEEK 04 · 수업 요약</span></div>
+  <div class="rule"></div>
+  <h1>공통 요소 확장</h1>
+  <p class="goal">지난주 GNB에 쓴 방식을 헤더 · 리스트 · 카드에 그대로 반복해, 화면을 조립할 수 있는 상태로 만듭니다.</p>
+  <div class="meta">
+    <span><b>진행</b> 3시간 · 컨펌 30분 · 강의 35분 · 강의 30분 · 실습 60분 · 확인과 안내 15분</span>
+    <span><b>산출물</b> 헤더 · 리스트 · 카드 규격 명세 · 컴포넌트 3종 · 디자인 4장</span>
+  </div>
+
+  <div class="cols">
+    <div class="left">
+      <section><h2>진행</h2><table class="sch"><tr class=""><td>00:00–00:30</td><td>디자인 2장 함께 보기 — 컨펌<em>전체 공유</em></td></tr><tr class=""><td>00:30–01:05</td><td>PART 1 — 화면이 어떻게 나뉘는가<em>강의 + 도판</em></td></tr><tr class="rest"><td>01:05–01:15</td><td>휴식</td></tr><tr class=""><td>01:15–01:45</td><td>PART 2 — 간격과 이름<em>강의 + 시연</em></td></tr><tr class=""><td>01:45–02:45</td><td>실습 — 세 요소 만들고 2장에 적용<em>개인 워크 + 순회</em></td></tr><tr class=""><td>02:45–03:00</td><td>확인 · 과제 안내<em>2인 1조 + 안내</em></td></tr></table></section>
+      <section><h2>실습</h2>
+    <div class="work">
+      <b>실습 · 세 요소 만들고 2장에 적용</b>
+      <span>60분 · 개인 — 만드는 것보다 적용하는 것이 오늘의 목표입니다.</span>
+      <p>10분 규격 명세 이어 쓰기  ·  15분 헤더 만들기  ·  15분 리스트 행과 카드  ·  20분 2장에 적용</p>
+    </div></section>
+    </div>
+    <div class="right">
+      <section><h2>오늘 다루는 것 — 본문 12장 (표지·과제 포함 14장)</h2>
+        <table class="flow"><tr>
+      <td class="p">02</td>
+      <td class="k">정리</td>
+      <td class="t">오늘의 목표</td>
+    </tr><tr>
+      <td class="p">03</td>
+      <td class="k">구간</td>
+      <td class="t">화면이 어떻게 나뉘는가<em>세로 844를 네 덩어리로 나누고, 각 덩어리의 값을 근거에서 찾습니다.</em></td>
+    </tr><tr>
+      <td class="p">04</td>
+      <td class="k">핵심</td>
+      <td class="t">지난주에 한 것을 세 번 더 반복합니다.<em>새로 배우는 방법은 없습니다. 근거에서 값을 찾고, 값을 컴포넌트에 담고, 화면에서는 꺼내 씁니다. GNB에서 한 이 순서를 헤더 · 리스트 ·…</em></td>
+    </tr><tr>
+      <td class="p">05</td>
+      <td class="k">도판</td>
+      <td class="t">화면 세로가 나뉘는 자리<em>844가 네 덩어리로 나뉘고, 본문이 실제로 쓰는 높이가 나옵니다.</em></td>
+    </tr><tr>
+      <td class="p">06</td>
+      <td class="k">정리</td>
+      <td class="t">상단 헤더 — 정할 것은 네 가지<em>GNB와 같은 방식으로 값과 근거를 씁니다.</em></td>
+    </tr><tr>
+      <td class="p">07</td>
+      <td class="k">도판</td>
+      <td class="t">리스트 한 행과 카드 하나<em>여백도 값입니다. 정해 두면 다음 화면에서 다시 고민하지 않습니다.</em></td>
+    </tr><tr>
+      <td class="p">08</td>
+      <td class="k">구간</td>
+      <td class="t">간격과 이름<em>값을 정했으면 규칙으로 묶고, 찾을 수 있게 이름을 붙입니다.</em></td>
+    </tr><tr>
+      <td class="p">09</td>
+      <td class="k">정리</td>
+      <td class="t">간격은 여섯 개면 충분합니다<em>4의 배수로 여섯 단계를 정해 두고 그 안에서만 고릅니다.</em></td>
+    </tr><tr>
+      <td class="p">10</td>
+      <td class="k">정리</td>
+      <td class="t">이름은 영역 / 이름 / 상태 세 칸으로<em>Figma는 슬래시를 만나면 자동으로 묶어 줍니다.</em></td>
+    </tr><tr>
+      <td class="p">11</td>
+      <td class="k">실습</td>
+      <td class="t">실습 · 세 요소 만들고 2장에 적용<em>60분 · 개인 — 만드는 것보다 적용하는 것이 오늘의 목표입니다.</em></td>
+    </tr><tr>
+      <td class="p">12</td>
+      <td class="k">정리</td>
+      <td class="t">확인 — 조립이 되는가<em>마지막 15분. 2인 1조로 서로의 파일에서 확인합니다.</em></td>
+    </tr><tr>
+      <td class="p">13</td>
+      <td class="k">점검</td>
+      <td class="t">디자인 점검표<em>5주차부터 컬러와 글자 크기를 정해 토큰으로 묶습니다.</em></td>
+    </tr></table></section>
+    </div>
+  </div>
+  <section class="two">
+    <div><h2>과제</h2><ol><li><b>세 요소 규격 명세</b><span>헤더 · 리스트 · 카드를 항목 · 값 · 근거 세 칸으로 채웁니다. 지난주 GNB 명세서와 같은 표에 이어서 적으면 됩니다.</span></li><li><b>컴포넌트 3종 제작</b><span>헤더 · 리스트 행 · 카드를 각각 컴포넌트로 만듭니다. 상태가 필요한 것은 배리언트로 함께 담습니다.</span></li><li><b>디자인 4장으로 확장</b><span>컨펌 받은 2장에 2장을 더해 네 장을 만듭니다. 새로 만든 2장은 오늘 만든 컴포넌트만으로 조립합니다.</span></li></ol>
+      <div class="due">제출 — 5주차 수업 시작 전까지 · Figma 링크 제출</div></div>
+    <div><h2>다음</h2><div class="next">
+      <b>05주차 컬러와 글자 크기</b>
+      <p>지배색과 명도 단계 · 글자 크기 스케일 · 토큰으로 묶기 · 네 장에 한꺼번에 적용</p>
+      <p>미리 준비 — 세 요소 규격 명세 · 컴포넌트 3종 · 디자인 4장</p>
+    </div></div>
+  </section>
+</body></html>

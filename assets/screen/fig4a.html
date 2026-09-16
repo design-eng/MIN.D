@@ -1,0 +1,71 @@
+<meta charset="utf-8"><style>
+ html,body{margin:0;background:#fff}
+ svg{display:block}
+ text{font-family:Pretendard,sans-serif;fill:#111}
+ .kick{font-size:28px;font-weight:500}
+ .num{font-size:52px;font-weight:600}
+ .num-s{font-size:34px;font-weight:500}
+ .tiny{font-size:26px;fill:#6E6E6E}
+ .dim{stroke:#111;stroke-width:2;fill:none}
+ .dimg{stroke:#9A9A9A;stroke-width:1.6;fill:none}
+ .box{fill:none;stroke:#111;stroke-width:2.4}
+</style>
+<svg width="2000" height="700" viewBox="0 0 2000 700">
+<defs>
+ <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker>
+ <marker id="b" markerWidth="10" markerHeight="10" refX="1" refY="5" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#111"/></marker>
+</defs>
+
+<!-- 화면 390×844 @0.62 = 242×523 -->
+<text class="kick" x="120" y="66">390 × 844</text>
+<rect class="box" x="120" y="100" width="242" height="523"/>
+<!-- 상단 안전 47*0.62=29 -->
+<rect x="120" y="100" width="242" height="29" fill="#F2F2F2"/>
+<!-- 헤더 44*0.62=27 -->
+<rect x="120" y="129" width="242" height="27" fill="#E4E4E4"/>
+<!-- 본문 663*0.62=411 -->
+<g fill="#FAFAFA" stroke="#EDEDED">
+ <rect x="136" y="172" width="210" height="60"/><rect x="136" y="244" width="210" height="60"/>
+ <rect x="136" y="316" width="210" height="60"/><rect x="136" y="388" width="210" height="60"/>
+ <rect x="136" y="460" width="210" height="60"/>
+</g>
+<!-- GNB 90*0.62=56 -->
+<rect x="120" y="567" width="242" height="56" fill="#111"/>
+
+<line class="dimg" x1="362" y1="129" x2="700" y2="129"/>
+<line class="dimg" x1="362" y1="156" x2="700" y2="156"/>
+<line class="dimg" x1="362" y1="567" x2="700" y2="567"/>
+
+<line class="dim" x1="400" y1="100" x2="400" y2="129" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="420" y="126">47</text>
+<text class="tiny" x="470" y="126">상단 안전 영역</text>
+<line class="dim" x1="400" y1="129" x2="400" y2="156" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="420" y="152">44</text>
+<text class="tiny" x="470" y="152">헤더</text>
+<line class="dim" x1="400" y1="156" x2="400" y2="567" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num" x="420" y="378">663</text>
+<text class="tiny" x="420" y="416">본문이 실제로 쓰는 높이</text>
+<line class="dim" x1="400" y1="567" x2="400" y2="623" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num-s" x="420" y="604">90</text>
+<text class="tiny" x="470" y="604">GNB — 지난주에 정한 값</text>
+
+<line class="dim" x1="790" y1="100" x2="790" y2="623" marker-start="url(#b)" marker-end="url(#a)"/>
+<text class="num" x="810" y="378">844</text>
+
+<!-- 오른쪽 : 계산과 근거 -->
+<line class="dimg" x1="1000" y1="80" x2="1000" y2="640"/>
+<text class="kick" x="1060" y="130">헤더가 들어가면 본문이 줄어듭니다</text>
+<text class="num" x="1060" y="216">844 − 47 − 44 − 90 = 663</text>
+<line class="dimg" x1="1060" y1="256" x2="1940" y2="256"/>
+
+<text class="tiny" x="1060" y="312" fill="#111">지난주에는 844에서 GNB 90만 뺀 754였습니다.</text>
+<text class="tiny" x="1060" y="350" fill="#111">상단 안전 영역과 헤더를 더하면 663으로 줄어듭니다.</text>
+<text class="tiny" x="1060" y="388">화면을 663 안에서 설계하지 않으면</text>
+<text class="tiny" x="1060" y="424">스크롤 없이 보이는 첫 화면이 잘립니다.</text>
+<line class="dimg" x1="1060" y1="462" x2="1940" y2="462"/>
+
+<text class="tiny" x="1060" y="512">47 — 노치가 차지하는 높이. 기기가 정한 값입니다.</text>
+<text class="tiny" x="1060" y="550">44 — Apple HIG 내비게이션 바. Material 앱 바는 56입니다.</text>
+<text class="tiny" x="1060" y="588">90 — 지난주 GNB. 콘텐츠 56 + 하단 안전 34.</text>
+<text class="tiny" x="1060" y="626">어느 값을 고르든 좋습니다. 고르고 나면 학기 내내 같은 값을 씁니다.</text>
+</svg>
