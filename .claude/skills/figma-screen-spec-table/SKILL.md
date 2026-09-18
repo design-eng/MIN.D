@@ -768,3 +768,27 @@ header.findAll(n=>n.type==="INSTANCE" && n.name==="Process")[0]
 인스턴스 내부 노드는 `clone()` 이 막혀 있으므로 **아이콘을 실제로 이식할 수 없다.**
 → 기획서에서는 `serviceflow_mark`(점선 상자) + 빨간 라벨로 "여기에 추가" 를 표기하고,
 표에 `Button` 행과 마커 번호를 새로 부여하는 방식으로 정의한다.
+
+---
+
+## 25. 작업한 페이지를 눈에 띄게 — 슬라이드 배경색
+
+개정·신규 페이지를 슬라이드 그리드에서 바로 찾을 수 있게 **배경만 옅게 물들인다.**
+
+```js
+const TINT = {r:1, g:0.9647, b:0.8588};          // #FFF6DB
+slide.fills = [{type:"SOLID", color:TINT, opacity:1, blendMode:"NORMAL", visible:true}];
+```
+
+- 슬라이드 기본 배경은 **흰색이 변수에 바인딩**되어 있다
+  (`boundVariables.color = VariableID:40003540:596163`). 위처럼 `fills` 를 덮어쓰면 바인딩이 끊기고
+  그게 곧 "손댄 페이지" 표시가 된다.
+- 되돌릴 때는 같은 변수로 다시 바인딩하면 된다.
+  ```js
+  const v = await figma.variables.getVariableByIdAsync("VariableID:40003540:596163");
+  slide.fills = [figma.variables.setBoundVariableForPaint(
+      {type:"SOLID", color:{r:1,g:1,b:1}}, "color", v)];
+  ```
+- 헤더(`PPT_form`)·푸터(`PPT_form/Default`)는 배경이 비어 있어 **틴트가 전체에 깔린다.**
+  목업과 표 행은 흰색이라 오히려 도드라진다 — 가독성 손해 없음.
+- 채도가 높은 색은 인쇄·PDF 에서 지저분해지므로 **명도 95% 이상의 옅은 색**만 쓴다.
