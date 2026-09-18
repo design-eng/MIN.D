@@ -612,3 +612,159 @@ q.type==="TEXT" && console.log(q.characters, "right=", q.absoluteTransform[0][2]
 ```
 목업 좌측 열(x=70)과 카드 내부 빈 자리를 함께 쓰고, 목업과 우측 예시 카드 **사이 간격이
 마커 폭(50)보다 좁으면** 그 사이에는 절대 두지 말 것 — 예시 카드를 덮는다.
+
+---
+
+## 19. 슬라이드를 통째로 복제해서 개정판을 만들 때
+
+원본을 고치지 않고 **개정판 슬라이드를 새로 만드는 것**이 기본이다.
+
+```js
+const c = slide.clone();
+row.insertChild(20, c);           // ← 주의: 원하는 위치 + 1
+```
+
+`SLIDE_ROW.insertChild(n, slide)` 의 `n` 은 **"제거 후 재삽입" 기준이 아니라 한 칸 밀린 값**으로
+동작한다. 18번 뒤에 넣고 싶으면 19가 아니라 **20** 을 줘야 한다. 넣고 나서
+`row.children.indexOf(c)` 로 반드시 확인할 것.
+
+### ★ 화면정의서 슬라이드에는 COMPONENT 마스터가 얹혀 있다
+
+목업이 `INSTANCE` 인 장도 있고 `COMPONENT`(마스터 원본) 인 장도 있다.
+마스터가 있는 장을 통째로 clone 하면 **컴포넌트가 복제되어 파일이 오염된다.**
+
+```js
+const dup  = c.children.filter(n=>n.type==="COMPONENT" && n.name===NAME)[0];
+const inst = figma.getNodeById(MAIN_ID).createInstance();
+c.appendChild(inst); inst.x = X; inst.y = Y;
+dup.remove();
+c.insertChild(ORIGINAL_INDEX, inst);   // z-order 복원 (안 하면 마커를 덮는다)
+```
+
+복제 전에 `s.children.map(x=>x.type+":"+x.name)` 로 COMPONENT 유무와 **원래 인덱스**를
+먼저 기록해 둘 것.
+
+---
+
+## 20. ★ 스왑 스타일은 "크기·행간이 같은 것"을 써야 한다
+
+Pretendard 를 로드할 수 없으므로 **문자를 넣는 순간의 스왑 폰트로 박스가 측정되고,
+원래 스타일로 되돌려도 다시 측정되지 않는다.** 박스가 작게 굳으면
+
+- 표에서는 행 높이가 틀어지고 (14px 스왑으로 36pt 제목을 쓰면 h=24 로 굳음)
+- **Figma Slides 렌더에서는 글자가 통째로 작게 보인다** (제목이 본문 크기로 보이는 사고)
+
+### 크기별 스왑 스타일 대응표
+
+| 대상 | 스왑 스타일 | ID |
+|---|---|---|
+| 제목 36 Bold (Header 3) | `swap/title 36 (fix)` | `S:8a19c39ded716473a85d55cfa237f871e308cbbe,` |
+| 헤더 22 (Ver / Screen Number) | `swap/22-28-0` | `S:0b23e330aab323542312aae0508e59ef3782b948,` |
+| 16 Regular | `swap/16-24--6` | `S:2ace0d9945857384bf1b5f948329c68f4b0ab3b2,` |
+| 16 Bold (목업 버튼·타이틀) | `swap/16-24--4b` | `S:3e9b6079eed5b4d6c40cfac98dbf46e4de6d0294,` |
+| 표 셀 14 / 행간 24 | `swap/14-24--6` | `S:af58f9e59acb5f2cbc12bca96b549f2c8656294b,` |
+| 표 셀 14 / 행간 20 | `swap/14-20` | `S:724a60d2217a3bb1915d563cabaf1991e66bea39,` |
+
+**같은 `Frame 2609093` 안에서도 셀마다 행간이 20 / 24 로 섞여 있다.**
+쓰기 전에 반드시 실측해서 고를 것.
+
+```js
+const lh = t.lineHeight;                       // {unit:"PIXELS", value:20 | 24}
+const SWAP = (lh && lh.value===20) ? SW20 : SW24;
+```
+
+### 박스가 이미 작게 굳었을 때 복구
+
+`resize()` 는 Pretendard 미로드 상태에서 무시된다. **같은 크기 스왑으로 다시 써 넣는 것**이
+유일하게 확실한 복구 방법이다.
+
+```js
+const keep = t.textStyleId, v = t.characters;
+await t.setTextStyleIdAsync(SAME_SIZE_SWAP);
+t.textAutoResize = "WIDTH_AND_HEIGHT";   // 부모가 hug 면 이때 폭이 다시 잡힌다
+t.characters = v;
+await t.setTextStyleIdAsync(keep);
+```
+
+원래 `textAutoResize` 가 `HEIGHT`(가로 FILL) 였던 노드를 `WIDTH_AND_HEIGHT` 로 바꾸면
+가운데로 밀려 보인다 → 스왑이 걸려 있는 동안 `layoutSizingHorizontal="FILL"` +
+`resize(원래폭, h)` 로 되돌린 뒤 스타일을 복구한다.
+
+---
+
+## 21. 텍스트를 새로 만들 때
+
+`createText()` 는 로드된 폰트로 시작해야 하지만, **다 쓴 뒤 Pretendard 스타일을 씌우면
+로드 없이 Pretendard 로 돌아온다.**
+
+```js
+await figma.loadFontAsync({family:"Noto Sans KR", style:"Regular"});
+const t = figma.createText();
+t.fontName   = {family:"Noto Sans KR", style:"Regular"};
+t.characters = "※ ...";
+await t.setTextStyleIdAsync("S:6693d9ec2158f13dbf6d7db13f146e384d20a6ad,"); // Pretendard Regular 16
+t.fills = [{type:"SOLID", color:{r:0.878, g:0.243, b:0.102}}];              // 개정 표기 빨강 #E03E1A
+slide.appendChild(t); t.x = X; t.y = Y;
+```
+
+- `fills` 는 폰트 로드 없이 바꿀 수 있다.
+- **스타일을 씌운 뒤 `lineHeight` · `fontSize` 를 건드리면 "unloaded font" 에러로
+  그 호출 전체가 롤백된다.** 행간을 바꾸려면 스왑이 걸려 있는 동안 해야 한다.
+- 개정 표기 빨강은 기존 표에서 뽑은 값 `rgb(224,62,26)` 을 그대로 쓴다.
+
+---
+
+## 22. 「3. 서비스 플로우」 슬라이드 구조
+
+| 요소 | 정체 |
+|---|---|
+| 화면 한 칸 | `FRAME` = `serviceflow_nameteg`(파란 라벨) + 목업 INSTANCE |
+| 탭 가능 요소 표시 | `serviceflow_mark` (파란 점선 상자) — clone 후 `resize` + `x/y` |
+| 연결선 | `VECTOR` — stroke `#094BA3`, weight 2, `dashPattern [2,2]`, align CENTER |
+
+### ★ 연결선 방향은 좌표만 보면 반대로 읽힌다
+
+`relativeTransform` 에 flip(`-1`)이 섞여 있어서 `vectorPaths` 의 좌표를 그대로 더하면
+엉뚱한 곳을 가리킨다. **화살표 끝은 `vectorNetwork.vertices[].strokeCap === "ARROW_LINES"`
+로 판별할 것.**
+
+### 새 연결선 만들기 / 길이 바꾸기
+
+`resize()` 는 무시된다. `setVectorNetworkAsync` 로 다시 그리는 게 확실하다.
+
+```js
+async function setLine(node, pts){            // pts = [[x,y,cap], ...]
+  const vertices = pts.map(p=>({x:p[0], y:p[1], strokeCap:p[2]||"NONE"}));
+  const segments = vertices.slice(1).map((_,i)=>({start:i, end:i+1,
+    tangentStart:{x:0,y:0}, tangentEnd:{x:0,y:0}}));
+  await node.setVectorNetworkAsync({vertices, segments, regions:[]});
+}
+await setLine(v, [[0,0,"NONE"], [437,0,"ARROW_LINES"]]);
+v.relativeTransform = [[1,0,643],[0,1,791]];   // flip 없는 깨끗한 행렬로 재설정
+```
+
+---
+
+## 23. 진행 상태 뱃지 `Process`
+
+헤더(`PPT_form`) 안의 `Process` 인스턴스. variants 는 **기획 | 디자인 | 디자인 완료 | 확인**.
+
+```js
+header.findAll(n=>n.type==="INSTANCE" && n.name==="Process")[0]
+      .setProperties({"Property 1":"기획"});
+```
+
+원본을 복제해서 만든 **신규 기획 페이지는 반드시 `기획` 으로 내릴 것.**
+「디자인 완료」가 붙은 채로 새 화면을 올리면 개발·디자인 쪽에 잘못된 신호를 준다.
+
+---
+
+## 24. 앱바 아이콘은 컴포넌트마다 다르다
+
+`List/top/2icon` 이라는 같은 이름의 앱바라도 **메인 컴포넌트가 서로 다르다.**
+(어떤 것은 우측 아이콘 슬롯 `Frame 2609167` 을 갖고 있고, 어떤 것은 아예 없다.
+`componentProperties` 는 `{}` 라서 토글로 켤 수도 없다.)
+
+인스턴스 내부 노드는 `clone()` 이 막혀 있으므로 **아이콘을 실제로 이식할 수 없다.**
+→ 기획서에서는 `serviceflow_mark`(점선 상자) + 빨간 라벨로 "여기에 추가" 를 표기하고,
+표에 `Button` 행과 마커 번호를 새로 부여하는 방식으로 정의한다.
