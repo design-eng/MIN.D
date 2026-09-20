@@ -1701,8 +1701,10 @@ const title = findAll(r, c => c.name === "title" && c.children.filter(x => x.typ
 
 - "행간" 한 단어라도 **padding·gap·lineHeight·칩 텍스트 스타일** 이 함께 바뀐다. 행 하나를 depth 12 로 덤프해
   전/후를 표로 만든 뒤 옮긴다. 렌더만 보고 눈대중으로 맞추지 않는다.
-- 헤더 행간: 디에이치는 새 텍스트 스타일을 만들었지만 다른 파일에 스타일을 새로 만들지 않는다.
-  `lineHeight={unit:"PIXELS",value:24}` 를 직접 넣는다(스타일은 풀린다) — 보고에 적는다.
+- 헤더 행간: 디에이치는 새 텍스트 스타일을 만들었다. 다른 파일에는 **먼저 값만 직접 넣고**(`lineHeight={unit:"PIXELS",value:24}`,
+  스타일은 풀린다) 보고에서 "스타일을 만들어 연결할까요" 를 묻는다. "만들어줘" 를 받으면 원본 스타일 속성을
+  그대로 읽어(`fontName/fontSize/lineHeight/letterSpacing`) `figma.createTextStyle()` 로 만들고 이름은 원본 패턴에서
+  브랜드만 바꾼다(`3차 The H/KR-Callout-15-R` → `3차 HILLS/KR-Callout-15-R`). 같은 이름이 이미 있으면 재사용.
 - 칩 높이는 칩 텍스트의 **스타일**(lh 20 → 16)로 맞춘다. 패딩(4/16)은 그대로.
 - 다른 화면(01~04·07)의 패딩 32 는 원본도 32 이므로 손대지 않는다. 바뀐 화면만 바꾼다.
 - 6장은 루트 높이도 원본(1094)에 맞추고 `bottom-fix` 를 다시 바닥에 둔다.
