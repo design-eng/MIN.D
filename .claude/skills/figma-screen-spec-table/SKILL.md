@@ -999,3 +999,46 @@ info.y = 230;                                // 288 → 230, 블록 하단은 �
 
 제목 텍스트만 clone 해서 넣으면 부모의 `counterAxisAlignItems` 가 CENTER 라 **가운데로 간다.**
 **제목이 들어 있는 행 프레임을 통째로 clone** 하면 정렬이 맞는다.
+
+---
+
+## 33. 다른 페이지의 이미지를 가져다 쓰기
+
+`findAllWithCriteria` 는 **현재 페이지만** 훑는다. 다른 페이지를 뒤지려면 페이지를 바꿔야 한다.
+
+```js
+const pg = figma.root.children.find(p => p.name === "단지생활");
+await figma.setCurrentPageAsync(pg);
+// … 여기서 검색 …
+```
+
+- **전환 상태는 호출이 끝나면 돌아간다.** 다음 호출에서 또 뒤지려면 매번 다시 전환할 것.
+- 사용자가 편집 중이어도 크게 방해되지 않는다(호출 단위로만 바뀐다). 그래도 **미리 양해를 구하는 편이 낫다.**
+- `getNodeByIdAsync` 는 페이지 전환 없이도 다른 페이지 노드를 가져온다. **id 를 아는 노드는 전환이 필요 없다.**
+
+### 이미지는 imageHash 로 재사용한다
+
+이미지를 새로 올릴 수 없어도(`createImageAsync` 금지), **이미 파일에 있는 이미지는 해시만 복사하면 된다.**
+
+```js
+const src = await figma.getNodeByIdAsync(원본);
+const h = src.fills.find(f => f.type === "IMAGE").imageHash;
+r.fills = [{ type:"IMAGE", imageHash: h, scaleMode:"FILL" }];
+
+// 세로로 긴 원본에서 윗부분만 쓰고 싶을 때
+r.fills = [{ type:"IMAGE", imageHash: h, scaleMode:"CROP",
+             imageTransform: [[1,0,0],[0,0.30,0.02]] }];
+```
+
+### ★ 렌더가 비어 보인다고 이미지가 없는 게 아니다
+
+마스크나 가려진 노드는 `get_screenshot` 이 **1x1 흰색**으로 돌아온다.
+그래도 `imageHash` 는 멀쩡하고, 다른 노드에 넣으면 정상적으로 보인다.
+**해시가 있으면 쓸 수 있다고 판단할 것.**
+
+### 찾는 순서
+
+1. 섹션 이름으로 좁힌다 — 이 파일은 `31_독서실` · `34_툴즈` · `26_강좌신청` 처럼 시설별로 섹션이 나뉘어 있다
+2. 섹션 안에서 `fills` 에 IMAGE 가 있는 노드를 모으고 **`imageHash` 로 중복 제거**
+3. 후보를 작게(`maxDimension: 200`) 렌더해 내용을 확인
+4. 없으면 **억지로 비슷한 걸 쓰지 말고 없다고 보고**한다 (라커 · 사우나는 실제로 파일에 없었다)
