@@ -1119,3 +1119,61 @@ if (m.children[0] && m.children[0].type === "INSTANCE") m.children[0].detachInst
 
 「신청정보」·「신청내역」 같은 헤더가 `children[0]` 이 아닌 화면이 있다
 (결제·예약현황은 제목 행이 먼저 와서 index 1). **헤더 인덱스를 찾아 그 다음에 삽입**한다.
+
+## 37. 기준 화면의 그룹 구조를 나머지 화면에 옮길 때
+
+사용자가 한 화면(예: 결제)의 정보 블록을 **그룹 프레임 여러 개**로 재구성해 두면,
+같은 세트의 나머지 화면도 그 구조에 맞춰야 한다. 평면으로 남은 화면은
+자식 목록이 `헤더 | 행 | 행 | … | 토글 | 토글 | 입력` 처럼 한 겹으로 나열돼 있다.
+
+새 프레임을 `createFrame()` 으로 만들지 말고 **기준 화면의 그룹을 `clone()`** 한다 —
+`itemSpacing`·패딩·정렬·리사이즈 모드가 통째로 따라와서 눈으로 맞출 필요가 없다.
+
+```js
+const gA0 = await figma.getNodeByIdAsync(정보그룹_ID);   // 기준 화면의 그룹
+const gB0 = await figma.getNodeByIdAsync(서비스그룹_ID);
+
+const info = f.children.find(c => c.name === "Frame 2611659");
+if (info.children.some(c => c.name === "정보 행 그룹")) return;   // 멱등성
+
+const kids = info.children.slice();      // ★ 먼저 스냅샷
+const rows = kids.slice(1, 6);           // 헤더 다음 ~ 합계
+const svc  = kids.slice(6);              // 토글 + 입력
+
+const gA = gA0.clone(); gA.name = "정보 행 그룹"; info.insertChild(1, gA);
+gA.children.slice().forEach(c => c.remove());   // clone 의 내용물 비우기
+rows.forEach(r => gA.appendChild(r));           // 기존 행을 그대로 이동
+
+const gB = gB0.clone(); gB.name = "서비스 행 그룹"; info.insertChild(2, gB);
+gB.children.slice().forEach(c => c.remove());
+svc.forEach(r => gB.appendChild(r));
+
+info.itemSpacing = 24;
+```
+
+주의할 점
+
+- `info.children` 은 **라이브 배열**이다. `appendChild` 로 옮기는 순간 인덱스가 밀리므로
+  반드시 `slice()` 로 먼저 떠 놓고 자른다.
+- `clone()` 한 그룹 안에는 기준 화면의 행이 들어 있다. **비우지 않으면 내용이 중복**된다.
+- 행을 그룹으로 감싸면 바깥 `itemSpacing` 이 한 번만 적용돼 **전체 높이가 줄어든다**.
+  반대로 그룹의 자체 패딩(24)이 더해지므로 **반드시 높이를 재고 하단 버튼과 겹치는지 본다**.
+- 이미 적용된 화면을 다시 돌리면 행이 사라진다. **그룹 이름으로 멱등성 가드**를 넣는다.
+
+### 적용 후 점검 쿼리
+
+한 세트를 다 고쳤으면 화면별로 한 줄씩 찍어 **구조·간격·여백을 나란히 비교**한다.
+
+```js
+const info = f.children.find(c => c.name === "Frame 2611659");
+const btn  = f.children.find(c => c.name && c.name.indexOf("bottom-fix") === 0);
+out.push(f.name
+  + " info " + Math.round(info.y) + "~" + Math.round(info.y + info.height)
+  + " gap=" + info.itemSpacing
+  + " | " + info.children.map(c => c.name).join(" | ")
+  + " | 버튼까지 " + Math.round(btn.y - (info.y + info.height)) + "px");
+```
+
+여유가 한 자릿수(3px 등)로 나와도 **그 자체가 오류는 아니다** — 렌더로 확인해
+잘리지 않으면 둔다. 대신 제목 프레임의 `paddingTop` 을 다른 화면(24)에 맞춰
+올리는 식의 "통일"은 **하단 버튼을 밀어 넘치게 하므로 하지 않는다**.
