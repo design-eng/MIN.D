@@ -1344,3 +1344,63 @@ inner.parent.layoutSizingVertical = "HUG";
 screen.resize(375, NAVBAR + inner.parent.height + INDICATOR);
 byName(screen, "HomeIndicator").y = screen.height - INDICATOR;   // 절대배치라 수동
 ```
+
+## 42. ★ 루트를 resize 하면 절대배치 자식이 밀린다
+
+화면 루트가 `LM=NONE` 이고 그 안에 `navbar` · `contents` · `HomeIndicator` 가
+**절대 좌표로** 놓인 구조가 흔하다. 내용이 늘어 루트를 `resize()` 하면
+자식의 **constraints(SCALE 등)** 때문에 y 가 같이 움직인다.
+
+실측: 88 에 있던 `contents` 가 리사이즈 후 68 로 올라가 상단이 20px 잘렸다.
+게다가 화면마다 늘어난 양이 달라 **화면끼리 간격이 어긋난다** — 눈으로는
+"어떤 화면만 간격이 다르다"로 보인다.
+
+리사이즈 뒤에 **절대배치 자식의 위치를 다시 못 박는다.**
+
+```js
+S.resize(375, NAV + outer.height + INDICATOR);
+outer.x = 0; outer.y = NAV;
+nav.x = 0;   nav.y = 0;
+hi.x = 0;    hi.y = S.height - INDICATOR;
+```
+
+점검은 **여러 화면을 한 표로 찍어 대조**한다. 한 화면만 보면 절대 안 보인다.
+
+```js
+const f = n => Math.round(n.absoluteBoundingBox.y - S.absoluteBoundingBox.y);
+out.push(label + " outer=" + f(outer) + " inner=" + f(inner) + " child0=" + f(inner.children[0]));
+```
+
+### 같은 역할의 컨테이너는 gap 을 상수로 둔다
+
+그룹을 루프로 만들면서 `itemSpacing` 을 각각 대입하면, 어느 하나만 값이 달라져도
+**자식이 1개인 그룹에서는 드러나지 않는다.** (실측: 시설 0 / 강좌·편의 20 —
+행이 3개인 시설에서만 보였다.) 만들고 나서 **전 그룹의 gap 을 한 번 더 일괄 대입**해 맞춘다.
+
+## 43. 혼합 스타일 텍스트에 줄 추가하기
+
+목업의 리스트 행은 한 TEXT 안에 `제목(Bold 12.7) \n 부가(Regular 10.6 회색)` 처럼
+**범위별로 다른 스타일**이 들어 있다. 여기에 `characters =` 로 통째로 대입하면
+**스타일이 첫 범위로 통일돼 위계가 무너진다.**
+
+`insertCharacters` + `setRange*` 를 쓴다.
+
+```js
+const segs = t.getStyledTextSegments(["fontName","fontSize","fills"]);  // 먼저 읽어 둔다
+t.insertCharacters(0, user + "\n", "AFTER");     // 뒤 범위 스타일을 물려받아 삽입
+const n = user.length;
+t.setRangeFontName(0, n, { family: "Noto Sans KR", style: "Regular" });
+t.setRangeFontSize(0, n, 10.631);
+t.setRangeFills(0, n, GRAY);
+```
+
+`useStyle` 은 `"BEFORE"`/`"AFTER"` 중 **삽입 지점에 인접한 어느 쪽 스타일을 물려받을지**다.
+맨 앞 삽입이면 `"AFTER"` 밖에 못 쓴다 — 그래서 삽입 후에 범위 스타일을 덮어쓴다.
+
+### 검색 결과에 사용자명을 언제 넣나
+
+- **사용자명으로 검색** → 결과가 전부 그 사람 것이므로 **행마다 이름을 반복하지 않는다.**
+- **서비스명으로 검색** → 여러 세대원의 건이 섞이므로 **행마다 사용자명을 표시**한다.
+
+디자인에서는 결제이력 행 컴포넌트의 **사용자명 칩을 살리고/제거**하는 것으로 갈린다.
+기획서에는 두 경우를 한 줄로 못박아 둔다 — 안 그러면 다음 검토 때 또 올라온다.
