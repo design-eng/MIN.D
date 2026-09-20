@@ -1086,3 +1086,36 @@ mk6.y = top(mock.children.find(c=>c.name==="Frame 608").absoluteBoundingBox.y) +
 ```
 
 번호를 새로 줘야만 하는 독립 요소일 때만 재번호를 감수한다.
+
+---
+
+## 36. 목업에 행을 넣었으면 마커를 같이 내린다
+
+행을 하나 추가하면 그 아래 내용이 **행 높이 + `itemSpacing` 만큼** 내려간다.
+마커는 슬라이드 직계라 **따라오지 않으므로**, 표의 번호와 화면이 한 칸씩 어긋난다.
+
+```js
+const delta = Math.round(row.height + (row.parent.itemSpacing || 0));   // 실측 39~40
+const rowY  = Math.round(row.absoluteBoundingBox.y - slide.absoluteBoundingBox.y);
+slide.children
+  .filter(c => /^Number sign/.test(c.name) && c.y > rowY)
+  .forEach(c => { c.y += delta; });
+```
+
+델타는 **추측하지 말고 실측**한다 — 같은 덱에서도 목업마다 gap 이 19/20 으로 달랐다.
+적용 후 렌더로 「표 N번 = 화면 N번」이 맞는지 눈으로 확인할 것.
+
+### 이중 인스턴스
+
+축소 목업은 **인스턴스 안에 또 인스턴스**(`iPhone SE - 3` 등)가 들어 있는 경우가 있다.
+한 번만 디테치하면 내부 행이 여전히 안 잡힌다.
+
+```js
+let m = (await figma.getNodeByIdAsync(id)).detachInstance();
+if (m.children[0] && m.children[0].type === "INSTANCE") m.children[0].detachInstance();
+```
+
+### 헤더가 첫 자식이라고 가정하지 말 것
+
+「신청정보」·「신청내역」 같은 헤더가 `children[0]` 이 아닌 화면이 있다
+(결제·예약현황은 제목 행이 먼저 와서 index 1). **헤더 인덱스를 찾아 그 다음에 삽입**한다.
