@@ -1177,3 +1177,77 @@ out.push(f.name
 여유가 한 자릿수(3px 등)로 나와도 **그 자체가 오류는 아니다** — 렌더로 확인해
 잘리지 않으면 둔다. 대신 제목 프레임의 `paddingTop` 을 다른 화면(24)에 맞춰
 올리는 식의 "통일"은 **하단 버튼을 밀어 넘치게 하므로 하지 않는다**.
+
+## 38. 축소 목업에 행을 넣을 때 — 폰트를 건드리지 말고 행을 복제한다
+
+플로우 슬라이드의 축소 목업은 텍스트가 **Pretendard 직접 지정 + `textStyleId` 없음**인 경우가 많다.
+스타일 바인딩이 없으니 §27 의 스왑 기법을 쓸 수 없고, Pretendard 는 로드도 안 된다.
+
+→ **이미 그 행이 들어 있는 다른 목업에서 행 프레임을 통째로 `clone()`** 한다.
+값까지 같이 따라오므로 `characters` 를 건드릴 일이 없다.
+
+```js
+const src = await figma.getNodeByIdAsync("I<완료된목업>;<행>");   // 인스턴스 내부라도 clone 가능
+const row = src.clone(); row.name = "신청자 행";
+const hdr = f639.children.findIndex(c => tn(c).some(t => t.characters.indexOf("신청내역") >= 0));
+f639.insertChild(hdr + 1, row);
+row.layoutSizingHorizontal = "FILL";
+```
+
+### 디테치하면 숨은 행이 드러난다
+
+인스턴스 상태에서 `visible=false` 로 꺼 둔 행(사용시간·좌석번호 등)이 디테치 후 목록에 나타난다.
+**그 상태를 그대로 두고** 보이는 행만 기준으로 헤더 인덱스를 찾는다.
+(가시 상태를 건드리지 말 것 — 되돌릴 근거가 없다.)
+
+### ★ 다중 디테치가 헤더 오토레이아웃을 깨뜨린다
+
+이중·삼중 인스턴스를 연달아 디테치하면, 축소 배율이 적용되지 않은 **원본 치수가 되살아난
+자식**이 생긴다. 상단바 제목이 `x=-15 w=230`(200 폭 프레임 안에서) 같은 값으로 튀어
+왼쪽이 잘린다 — 렌더에 `＜ 신청 현황` 이 `l 현황` 으로 보이면 이 증상이다.
+
+`layoutSizingHorizontal` 은 이미 `FILL` 이라고 보고되지만 **실제로는 반영되지 않는다.**
+`itemSpacing` 토글·부모 `resize`·FIXED↔FILL 왕복 모두 듣지 않는다.
+**그 상단바 인스턴스까지 디테치해야** 비로소 치수가 잡힌다.
+
+```js
+let bar = find(m, "List/top/2icon");
+if (bar.children.find(c => c.name === "description").width > bar.width) {
+  bar = bar.detachInstance();
+  const t = bar.children.find(c => c.name === "description");
+  const fixed = bar.children.filter(c => c !== t && c.layoutPositioning !== "ABSOLUTE");
+  const avail = bar.width - bar.paddingLeft - bar.paddingRight
+              - fixed.reduce((s, c) => s + c.width, 0)
+              - bar.itemSpacing * fixed.length;
+  t.layoutSizingHorizontal = "FIXED"; t.resize(avail, t.height);
+  t.layoutSizingHorizontal = "FILL";
+}
+```
+
+`layoutPositioning === "ABSOLUTE"` 인 자식은 흐름에서 빠지므로 **`avail` 계산에서 제외**한다.
+넣고 빼는 걸 틀리면 제목과 우측 배지가 겹친다.
+
+### 목업 루트는 고정 높이 + 클립이다
+
+목업 루트는 보통 `LM=NONE`·`clipsContent=true` 이고, 본문 프레임과 하단 버튼 바가
+**절대 좌표로 나란히** 놓여 있다. 행을 넣으면 본문만 자라서 버튼 바 **밑으로 파고든다**.
+
+- 여유가 남으면 그대로 둔다 (실측 결제 33→8px, 예약현황 2→-1px).
+- 스티키 버튼 바가 본문 위에 그려지므로 **1~2px 침범은 렌더에 드러나지 않는다.**
+- 루트를 키우면 슬라이드의 화살표 Vector 와 마커까지 전부 따라 옮겨야 하므로,
+  **웬만하면 키우지 말고 침범을 허용**하는 편이 손해가 적다.
+
+### 떠 있는 라벨도 같이 내린다
+
+목업 루트에 **절대 좌표로 얹힌 텍스트**(「수정」 배지 등)는 본문이 밀려도 따라오지 않는다.
+§36 의 마커와 같은 처리를 해 준다 — 숨겨진 짝(`visible=false`)이 있으면 **그것도 같이** 옮겨
+나중에 켰을 때 어긋나지 않게 한다.
+
+### 하이라이트 박스는 늘릴지 내릴지 구분한다
+
+`serviceflow_mark` 는 최상위 인스턴스라 `resize()` 가 먹는다.
+
+- 박스가 **블록 전체**를 감싸고 있고 새 행이 그 블록에 속하면 → **높이를 +delta**.
+- 박스가 **특정 한 행**을 가리키고 그 행이 밀렸으면 → **y 를 +delta**.
+
+둘을 바꿔 적용하면 "무엇을 강조하는 슬라이드인지"가 달라진다.
