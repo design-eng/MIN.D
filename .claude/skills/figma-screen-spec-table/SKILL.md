@@ -1251,3 +1251,96 @@ if (bar.children.find(c => c.name === "description").width > bar.width) {
 - 박스가 **특정 한 행**을 가리키고 그 행이 밀렸으면 → **y 를 +delta**.
 
 둘을 바꿔 적용하면 "무엇을 강조하는 슬라이드인지"가 달라진다.
+
+## 39. ★ 스왑 스타일의 굵기가 렌더에 남는다
+
+Pretendard 처럼 **없는 폰트**를 쓰는 노드는, 스왑 기법으로 글자를 바꾸면
+`fontName` · `textStyleId` · `fontWeight` 가 모두 원래대로 복구된 것으로 보고되지만
+**렌더는 스왑에 쓴 폰트의 굵기로 남는다.** 편집한 행만 굵게(또는 가늘게) 보인다.
+
+노드 데이터만 비교하면 절대 못 찾는다 — **반드시 표를 통째로 렌더해서
+편집한 행과 안 건드린 행의 굵기를 눈으로 맞춰 본다.**
+
+원인은 "첫 번째로 로드되는 스타일"을 스왑으로 고른 것. 그 스타일이 Medium 이면
+Regular 셀은 두꺼워지고 Bold 셀은 얇아진다.
+
+```js
+const pick = {};                       // 굵기별 스왑 후보
+for (const s of await figma.getLocalTextStylesAsync()) {
+  try { await figma.loadFontAsync(s.fontName); } catch (e) { continue; }
+  const st = s.fontName.style;
+  if (!pick[st] || Math.abs(s.fontSize - 14) < Math.abs(pick[st].fontSize - 14)) pick[st] = s;
+}
+const want = t.fontName === figma.mixed ? "Regular" : t.fontName.style;
+const sw   = pick[want] || pick["Regular"];     // ★ 굵기를 맞춰서 고른다
+```
+
+이미 잘못 바꿨다면 **같은 글자를 굵기 맞춘 스왑으로 한 번 더 쓰면 복구된다.**
+대상은 `문자열 + textStyleId 有 + 없는 폰트` 로 긁어 일괄 처리하면 된다.
+
+파일 데이터는 처음부터 정상이므로 **사용자 PC(폰트 설치됨)에서는 원래 맞게 보인다.**
+그래도 검토가 렌더로 이뤄지는 이상 맞춰 두는 편이 낫다.
+
+## 40. 마커와 설명 표의 매칭 점검
+
+마커는 슬라이드 직계라 목업 내용이 바뀌어도 따라오지 않는다(§36). 점검은 **좌표 실측**으로 한다.
+
+```js
+// 목업 요소의 슬라이드 기준 중앙 y
+const bb = c.absoluteBoundingBox;
+const mid = Math.round(bb.y - slide.absoluteBoundingBox.y + bb.height / 2);
+// 마커의 중앙 y = marker.y + marker.height/2  (24px 마커면 y+12)
+```
+
+요소 mid 목록과 마커 mid 목록을 나란히 찍어 두고 **표의 번호 순서대로** 짝을 맞춘다.
+
+- **행이 추가된 자리에 있던 마커는 안 움직인다.** `c.y > rowY` 조건으로 거르면
+  새 행 자리의 마커가 남아 한 칸씩 밀린 것처럼 보인다 — 그 마커도 같이 내려야 한다.
+- **하단 스티키 버튼 바는 내용이 늘어도 움직이지 않는다.** 거기 붙은 마커
+  (취소 · 확인 등)를 같이 내리면 오히려 어긋난다. §38 의 "떠 있는 라벨"도 마찬가지.
+- 같은 화면을 1/2 · 2/2 로 나눴으면 **양쪽 마커 좌표를 하나의 기준표로 일괄 적용**한다.
+  한쪽에만 있는 마커는 다른 장에서 `clone()` 해 가져온다.
+- 마커끼리 6~10px 안으로 겹치면 뒤엣것이 가린다. **한쪽을 반대편 여백(x)으로** 옮긴다.
+
+### 설명 표 중복 정리
+
+번호가 다른데 설명이 똑같은 행(「상세 보기 [Tap] 상세 화면 이동」×3)은
+**무엇을 여는지 목적어를 넣어** 구분한다. 마커를 합치지 않는다 — 요소마다 개별 번호가 원칙.
+
+동작이 실제로 한 곳에만 있는 경우(버튼 → 팝업 → 확정)는
+**트리거 행은 "팝업 표시", 확정 행만 "삭제 처리"** 로 갈라 쓴다. 양쪽에 다 쓰면 중복이다.
+
+## 41. 기존 화면을 복제해 새 화면을 만들 때
+
+기획서 화면을 디자인으로 옮길 때는 **같은 앱의 기존 화면을 복제**해서 고친다.
+새로 그리면 서체 · 간격 · 색이 미묘하게 어긋나 "이질감 난다"는 지적을 받는다.
+
+절차
+
+1. 같은 기능의 화면을 텍스트로 찾는다 (`findAllWithCriteria` + 문자열).
+   화면 테마(다크/라이트)는 **목적지 화면 기준**으로 고른다.
+2. 대상 섹션에 `clone()` → `section.appendChild()` → `x`/`y` 지정.
+   섹션 자식 좌표는 **섹션 기준 상대값**이다.
+3. 리스트 행은 기존 리스트 화면의 행 인스턴스를 복제하고 **디테치 후 불필요한 부분을 제거**한다.
+
+### ★ 복제본에는 숨은 노드가 섞여 있다
+
+컴포넌트에는 `visible=false` 인 예비 노드가 흔하다. 인덱스로 텍스트를 찾으면
+**안 보이는 노드에 값을 넣고 "왜 화면에 안 나오지" 하게 된다.**
+
+```js
+const ts = container.children.filter(c => c.type === "TEXT" && c.visible);   // ★ visible 필터
+```
+
+디테치하면 숨은 행이 드러나기도 한다(§38). 가시 상태는 **그대로 두고** 필터로만 피한다.
+
+### 오토레이아웃 높이 되돌리기
+
+내용을 다 넣은 뒤 바깥부터 안쪽 순서로 HUG 를 걸고 루트 높이를 다시 계산한다.
+
+```js
+inner.layoutSizingVertical = "HUG";
+inner.parent.layoutSizingVertical = "HUG";
+screen.resize(375, NAVBAR + inner.parent.height + INDICATOR);
+byName(screen, "HomeIndicator").y = screen.height - INDICATOR;   // 절대배치라 수동
+```
