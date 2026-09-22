@@ -1878,3 +1878,10 @@ Stop hook 이 미푸시 커밋을 알려도 사용자에게 다시 언급하지 
 - 긴 제목은 인스턴스 안에서 `resize` 가 무시된다 → detach 후 `textAutoResize="HEIGHT"; layoutGrow=1; resize(327,h)`. 22px Bold 는 17자까지 한 줄에 들어간다.
 - 탭 활성 상태는 베이스 화면이 이미 갖고 있다(BG-4tabs Property 는 탭이 아님). 빈 상태 카드는 034 - 2 의 dash-card, 씨네큐 카드는 034 - 5 의 community3 를 clone.
 - 새 줄 배치: y=1746+812+150=2708, x=234+430·(i−1). 13장이 섹션 폭 12413 안에 들어간다.
+
+## 70. 카테고리 탭(시설/강좌/편의) 순서·활성 상태와 탭별 화면 배치
+
+- 탭은 `category-menu`(main `Property 1=커뮤니티`) 인스턴스의 자식 3개(`category-menu/btn` 또는 `category-tab`)이고, 각 버튼이 `Text#…`/`State#…` 속성을 가진다.
+  화면마다 `Text` 만 바꿔 활성 위치를 맞춘 흔적(강좌/시설/편의)이 있으니, **State=true 인 버튼의 Text 를 기억한 뒤** 버튼 1·2·3 에 시설/강좌/편의 를 넣고 같은 이름에 State=true 를 준다.
+  같은 화면에 `category-menu` 가 둘(하단 강좌안내 목록의 전체/필라테스…)이라 자식 Text 가 모두 {시설,강좌,편의} 인 인스턴스만 고른다. 속성 키는 `Object.keys(componentProperties)` 에서 접두사로 찾는다.
+- 탭별 배치: 행 하나당 한 탭(y 간격 812+180), 행 위에 `row-label` 텍스트(Noto Sans Bold 24, 밝은색). 섹션 높이는 `resizeWithoutConstraints` 로 늘린다.
