@@ -1868,3 +1868,13 @@ Stop hook 이 미푸시 커밋을 알려도 사용자에게 다시 언급하지 
 - 「카드가 있는 화면」은 이름이 아니라 **인스턴스의 mainComponent 이름**으로 고른다(dash-card/Property 1=number, community3, 빈 상태 dash-card). 헤더 텍스트 정규식(`^신청현황`)은 앞에 보이지 않는 문자가 있어 0건이 나온다 → `indexOf` 를 쓴다.
 - `section.appendChild(node)` 뒤에 x/y 는 섹션 기준 좌표로 다시 준다. 기존 줄(y=1417, 간격 430)의 오른쪽에 이어 붙이고 섹션 폭 안인지 확인한다.
 - 홈 탭(7-홈)의 대시보드 dash-card 화면은 같은 컴포넌트라도 신청현황 화면이 아니다 — 옮기지 않고 보고에 후보로만 적는다.
+
+## 69. ★ 디에이치 파일의 한글은 NFD(자모 분해)로 저장된 노드가 많다 — 텍스트 매칭은 `characters.normalize("NFC")`
+
+- `/신청취소/`, `/66번/`, `/^신청현황/`, `indexOf("김명표")` 가 모두 0건이던 원인. 출력에는 정상으로 보인다. 매칭 전 `normalize("NFC")`, 가능하면 **노드 이름**(`title`, `Label Text`, `Date Text`, `Button Text`, 인스턴스 `tag`/`btn-view-all`)으로 찾는다.
+- PPT(카드 케이스 정의)를 화면으로 옮길 때: `python-pptx` 로 슬라이드별 제목·설명·이미지를 뽑고, 앱 스크린샷(디에이치=Picture 6)에서 카드 모양을 확인한다. markitdown·thumbnail.py 는 이 환경에 없다(pip 로 python-pptx·defusedxml 설치).
+- 케이스 화면 = 탭별 베이스 화면 `clone()`(시설 55590:187873 · 강좌 55606:145923 · 편의 55590:187775) → 카드 컨테이너 `section`(VERTICAL gap 12)의 카드를 지우고 템플릿 카드 clone 을 넣는다.
+  같은 마스터 인스턴스라도 어떤 것은 버튼 노드가 없고(181772) 어떤 것은 번호 노드가 없다(181771) → 버튼이 필요한 카드는 **`detachInstance()` 후 버튼 인스턴스를 다른 카드에서 clone 해 `Frame 2612343` 에 append**. detach 하면 숨겨져 있던 버튼이 실체로 남으므로 `visible=false` 인 것을 지운다.
+- 긴 제목은 인스턴스 안에서 `resize` 가 무시된다 → detach 후 `textAutoResize="HEIGHT"; layoutGrow=1; resize(327,h)`. 22px Bold 는 17자까지 한 줄에 들어간다.
+- 탭 활성 상태는 베이스 화면이 이미 갖고 있다(BG-4tabs Property 는 탭이 아님). 빈 상태 카드는 034 - 2 의 dash-card, 씨네큐 카드는 034 - 5 의 community3 를 clone.
+- 새 줄 배치: y=1746+812+150=2708, x=234+430·(i−1). 13장이 섹션 폭 12413 안에 들어간다.
