@@ -1826,3 +1826,7 @@ const title = findAll(r, c => c.name === "title" && c.children.filter(x => x.typ
   사용자가 의도적으로 옮긴 마커(카드 탭 마커가 카드 아래쪽으로 +22)는 되돌리지 않는다 — 두 장에서 같은 양이면 의도다.
 - 목업의 Noto Sans CJK KR 텍스트(로드 불가)는 같은 크기·행간의 **Noto Sans KR 로컬 스타일**(regular/10 `S:e4696ec6…`, swap/14-24--6)로 바꿔 놓고 characters 를 쓴다. fill 은 유지된다.
   마스터가 아니라 인스턴스 텍스트만 바꾸면 오버라이드로 남아 다른 카드에 영향이 없다.
+
+## 64. 보고 규칙 — 현대건설(THE H · HILLS) 작업 보고에 강의자료 커밋 이야기를 넣지 않는다
+
+Stop hook 이 미푸시 커밋을 알려도 사용자에게 다시 언급하지 않는다. 스킬 문서 커밋만 `git push origin HEAD:claude/figma-integration-edit-et7b3j` 로 올리고, 보고는 피그마 작업 내용만 적는다.
