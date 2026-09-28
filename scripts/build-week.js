@@ -663,7 +663,12 @@ function buildWeek(wk) {
     },
   };
 
-  wk.blocks.forEach((b) => R[b.type](b));
+  /* 학생용 덱에는 목표 장표를 넣지 않는다(2026-09-28 교수님 지시).
+     콘텐츠에는 남겨 두고 여기서만 걸러낸다 — 수업 요약과 발표 대본에는 남는다. */
+  const isObjectives = (b) =>
+    b.kicker === "OBJECTIVES" || b.title === "오늘의 목표" || b.title === "오늘 끝나면 여러분은";
+
+  wk.blocks.filter((b) => !isObjectives(b)).forEach((b) => R[b.type](b));
 
   /* ── 마지막. 과제와 다음 주 ─────────────────────────────── */
   {
