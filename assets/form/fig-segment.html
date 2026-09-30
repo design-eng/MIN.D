@@ -1,0 +1,49 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:2000px;height:712px;background:#fff;font-family:Pretendard,sans-serif;color:#111;
+     padding:34px 48px;display:flex;gap:64px}
+.col{flex:1}
+.h{font-size:30px;font-weight:600;margin-bottom:8px}
+.hs{font-size:22px;color:#6E6E6E;margin-bottom:30px}
+.phone{width:660px;border:2px solid #DCDCDC;border-radius:18px;padding:26px 24px;background:#fff}
+/* 채움형 */
+.segwrap{background:#F2F2F2;border-radius:20px;padding:8px;display:flex;gap:0;height:88px;align-items:center}
+.seg{flex:1;height:72px;display:flex;align-items:center;justify-content:center;
+     font-size:26px;color:#6E6E6E;border-radius:16px}
+.seg.on{background:#111;color:#fff;font-weight:600}
+/* 밑줄형 */
+.tabs{display:flex;height:96px;border-bottom:2px solid #DCDCDC}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:26px;color:#9A9A9A;position:relative}
+.tab.on{color:#111;font-weight:600}
+.tab.on:after{content:"";position:absolute;left:14%;right:14%;bottom:-2px;height:5px;background:#111}
+.list{margin-top:26px}
+.li{height:46px;border-radius:8px;background:#F2F2F2;margin-bottom:14px}
+.li.w{width:72%}
+.dim{display:flex;align-items:center;gap:14px;font-size:21px;color:#6E6E6E;margin-top:22px}
+.dim b{color:#111;font-weight:600}
+.spec{margin-top:26px;border-top:2px solid #111;padding-top:16px;font-size:21px;line-height:1.75}
+.spec b{font-weight:600}
+</style></head><body>
+<div class="col">
+  <div class="h">채움형 — 같은 목록을 다른 기준으로</div>
+  <div class="hs">항목 2~4개 · 등분 · 화면 안 내용만 바뀝니다</div>
+  <div class="phone">
+    <div class="segwrap"><div class="seg on">전체</div><div class="seg">진행 중</div><div class="seg">끝남</div></div>
+    <div class="list"><div class="li"></div><div class="li w"></div><div class="li"></div></div>
+  </div>
+  <div class="dim"><b>바깥 44</b> · 안쪽 <b>36</b> · 여백 <b>4</b> · 모서리 바깥 10 안쪽 8 · 글자 15</div>
+  <div class="spec">선택된 것만 면을 채웁니다. <b>다섯 개가 넘으면 채움형을 쓰지 않습니다</b> —
+  칸이 좁아져 글자가 줄어들고, 결국 무엇이 선택되었는지 안 보입니다.</div>
+</div>
+<div class="col">
+  <div class="h">밑줄형 — 항목이 많을 때</div>
+  <div class="hs">5개 이상 · 가로로 밀립니다 · 성격이 같은 목록들</div>
+  <div class="phone">
+    <div class="tabs"><div class="tab on">추천</div><div class="tab">신상</div><div class="tab">인기</div><div class="tab">세일</div></div>
+    <div class="list"><div class="li"></div><div class="li w"></div><div class="li"></div></div>
+  </div>
+  <div class="dim">높이 <b>48</b> · 밑줄 <b>2</b> · 글자 17 · 좌우 여백 16</div>
+  <div class="spec">밑줄은 라벨 폭에 맞춥니다. 항목이 화면을 넘으면 가로로 밀리게 하되
+  <b>다음 항목이 반쯤 보이게</b> 두세요. 더 있다는 것이 보입니다.</div>
+</div>
+</body></html>
