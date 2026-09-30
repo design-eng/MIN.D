@@ -1,0 +1,112 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:2000px;height:712px;background:#fff;font-family:Pretendard,sans-serif;color:#111;
+     padding:20px 36px;display:flex;gap:30px}
+.col{flex:1;display:flex;flex-direction:column}
+.pg{width:100%;height:472px;border:2px solid #111;background:#fff;padding:26px 28px;display:flex;flex-direction:column;flex:none}
+.tag{font-size:12px;letter-spacing:2px;color:#9A9AA0;margin-bottom:5px}
+.ti{font-size:21.5px;font-weight:600;line-height:1.35;margin-bottom:12px}
+.ti em{font-style:normal;background:#FFE8A3;padding:0 2px}
+.rule{height:2px;background:#111;margin-bottom:12px}
+.rowx{display:flex;gap:14px;flex:1}
+.imgbox{border-radius:4px}
+.b1{background:linear-gradient(145deg,#C9D6E8,#8FA6C4)}
+.b2{background:linear-gradient(145deg,#E3D5C4,#BFA588)}
+.b3{background:linear-gradient(145deg,#CFE0D2,#9DBCA6)}
+.gy{background:#EFEFF1}
+.sm{font-size:13px;color:#6E6E6E;line-height:1.5}
+.k{font-size:14px;font-weight:600;margin-bottom:3px}
+.find{display:flex;gap:7px;margin-bottom:8px}
+.fn{width:19px;height:19px;border-radius:50%;background:#111;color:#fff;font-size:11px;
+    display:flex;align-items:center;justify-content:center;font-weight:600;flex:none;margin-top:1px}
+.foot{margin-top:12px;border-top:1px solid #DCDCDC;padding-top:10px;font-size:13.5px;font-weight:600}
+/* 과정 */
+.steps{display:flex;gap:6px;margin-bottom:12px}
+.st{flex:1;border:1px solid #DCDCDC;border-radius:4px;padding:8px 7px;font-size:12px;text-align:center}
+.st.on{background:#111;color:#fff;border-color:#111;font-weight:600}
+.opts{display:flex;gap:10px;flex:1}
+.opt{flex:1;display:flex;flex-direction:column}
+.opt .im{flex:1;border-radius:4px;margin-bottom:5px}
+.opt .lb{font-size:12px;color:#6E6E6E;text-align:center}
+.opt.pick .lb{color:#111;font-weight:600}
+.opt.pick .im{outline:3px solid #111;outline-offset:2px}
+/* 결과 */
+.hero{flex:1;border-radius:4px;margin-bottom:10px}
+.thumbs{display:flex;gap:9px;height:74px}
+.thumbs div{flex:1;border-radius:4px}
+.cap{margin-top:14px}
+.ch{font-size:23px;font-weight:600;display:inline}
+.cs{font-size:16px;color:#6E6E6E;display:inline;margin-left:8px}
+.cl{display:flex;gap:9px;margin-top:8px}
+.num{width:22px;height:22px;border-radius:50%;background:#111;color:#fff;font-size:12px;
+     display:flex;align-items:center;justify-content:center;font-weight:600;flex:none;margin-top:1px}
+.ct{font-size:17px;line-height:1.5}
+.ct b{font-weight:600}
+</style></head><body>
+
+<div class="col">
+  <div class="pg">
+    <div class="tag">RESEARCH</div>
+    <div class="ti">배달 기사가 아니라 <em>받는 사람</em>이<br>문 앞에서 기다리는 시간이 문제였다</div>
+    <div class="rule"></div>
+    <div class="rowx">
+      <div style="width:36%;display:flex;flex-direction:column;gap:8px">
+        <div><div class="k">어떻게 조사했나</div><div class="sm">이용자 6명 인터뷰<br>배달 앱 3개 화면 분석<br>2주간 수령 기록</div></div>
+        <div class="imgbox gy" style="flex:1"></div>
+      </div>
+      <div class="imgbox b1" style="width:30%"></div>
+      <div style="flex:1">
+        <div class="k" style="margin-bottom:7px">알게 된 것</div>
+        <div class="find"><div class="fn">1</div><div class="sm">도착 알림과 실제 도착 사이가 평균 7분 어긋난다</div></div>
+        <div class="find"><div class="fn">2</div><div class="sm">기다리는 동안 앱을 5번 이상 다시 연다</div></div>
+        <div class="find"><div class="fn">3</div><div class="sm">늦는 것보다 모르는 것을 더 답답해한다</div></div>
+      </div>
+    </div>
+    <div class="foot">→ 문제는 속도가 아니라 예측 가능성이다</div>
+  </div>
+  <div class="cap">
+    <span class="ch">리서치 지면</span><span class="cs">문제 문장 · 방법 · 발견 · 한 줄 결론</span>
+    <div class="cl"><div class="num">1</div><div class="ct">맨 위가 <b>문제 문장</b>입니다. 조사 내용이 아니라 조사로 알아낸 관점이 제목입니다.</div></div>
+    <div class="cl"><div class="num">2</div><div class="ct">발견은 <b>세 개면 충분</b>합니다. 숫자가 있으면 넣으세요.</div></div>
+  </div>
+</div>
+
+<div class="col">
+  <div class="pg">
+    <div class="tag">PROCESS</div>
+    <div class="ti">알림을 늘리는 대신<br>기다리는 화면을 만들기로 했다</div>
+    <div class="rule"></div>
+    <div class="steps">
+      <div class="st">문제 확인</div><div class="st">시안 3안</div><div class="st on">사용성 확인</div><div class="st">수정</div>
+    </div>
+    <div class="opts">
+      <div class="opt"><div class="im b2"></div><div class="lb">A · 알림 늘리기</div></div>
+      <div class="opt"><div class="im b1"></div><div class="lb">B · 지도 표시</div></div>
+      <div class="opt pick"><div class="im b3"></div><div class="lb">C · 기다리는 화면 ✓</div></div>
+    </div>
+    <div class="foot">→ A 는 알림 피로, B 는 위치를 봐도 남은 시간을 모름. C 를 골랐다</div>
+  </div>
+  <div class="cap">
+    <span class="ch">과정 지면</span><span class="cs">고른 것 · 버린 것 · 고른 이유</span>
+    <div class="cl"><div class="num">1</div><div class="ct"><b>버린 안을 함께 보여줍니다.</b> 고른 것만 있으면 판단한 흔적이 남지 않습니다.</div></div>
+    <div class="cl"><div class="num">2</div><div class="ct">작업 사진을 시간순으로 붙이는 것은 과정이 아닙니다. <b>결정이 보여야</b> 과정입니다.</div></div>
+  </div>
+</div>
+
+<div class="col">
+  <div class="pg">
+    <div class="tag">RESULT</div>
+    <div class="ti">남은 시간을 한 화면에서 보여주는<br>수령 대기 화면</div>
+    <div class="rule"></div>
+    <div class="hero b3"></div>
+    <div class="thumbs"><div class="b1"></div><div class="b2"></div><div class="gy"></div></div>
+    <div class="foot">→ 다시 열어 보는 횟수 5회 → 2회 (이용자 6명 재확인)</div>
+  </div>
+  <div class="cap">
+    <span class="ch">결과 지면</span><span class="cs">큰 것 하나 · 작은 것 몇 · 달라진 것</span>
+    <div class="cl"><div class="num">1</div><div class="ct">장수를 늘리지 말고 <b>하나를 크게</b> 두세요. 같은 크기 여섯 개는 아무것도 안 보입니다.</div></div>
+    <div class="cl"><div class="num">2</div><div class="ct">맨 아래에 <b>무엇이 달라졌는지</b> 한 줄. 숫자가 없으면 관찰한 변화라도 씁니다.</div></div>
+  </div>
+</div>
+
+</body></html>
