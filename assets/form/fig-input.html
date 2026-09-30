@@ -1,0 +1,52 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:2000px;height:712px;background:#fff;font-family:Pretendard,sans-serif;color:#111;
+     padding:34px 48px;display:flex;gap:64px}
+.col{flex:1}
+.h{font-size:30px;font-weight:600;margin-bottom:8px}
+.hs{font-size:22px;color:#6E6E6E;margin-bottom:18px}
+.row{display:flex;align-items:center;gap:22px;margin-bottom:10px}
+.tag{width:150px;font-size:22px;color:#6E6E6E;text-align:right;flex:none}
+.field{width:520px;height:74px;border:2px solid #DCDCDC;border-radius:16px;
+       display:flex;align-items:center;padding:0 32px;font-size:26px;color:#9A9A9A;background:#fff}
+.field.focus{border:4px solid #111;color:#111}
+.field.filled{border:2px solid #9A9A9A;color:#111}
+.field.error{border:3px solid #111;color:#111;background:#F2F2F2}
+.field.off{border:2px solid #EAEAEA;background:#F7F7F7;color:#C4C4C4}
+.msg{font-size:20px;color:#111;margin:-6px 0 12px 172px;font-weight:600}
+.note{font-size:20px;color:#6E6E6E}
+.btns{display:flex;flex-direction:column;gap:20px;margin-top:6px}
+.b{height:74px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+   font-size:28px;font-weight:600;width:520px}
+.b1{background:#111;color:#fff}
+.b2{background:#fff;color:#111;border:3px solid #111}
+.b3{background:#fff;color:#111;text-decoration:underline;text-underline-offset:8px}
+.bl{display:flex;align-items:center;gap:22px}
+.spec{margin-top:18px;border-top:2px solid #111;padding-top:18px;font-size:21px;line-height:1.75;color:#111}
+.spec b{font-weight:600}
+</style></head><body>
+<div class="col">
+  <div class="h">입력 요소 — 다섯 가지 상태</div>
+  <div class="hs">높이 48 · 좌우 패딩 16 · 모서리 8 · 글자 17</div>
+  <div class="row"><div class="tag">기본</div><div class="field">이름을 입력하세요</div></div>
+  <div class="row"><div class="tag">포커스</div><div class="field focus">최민숙</div></div>
+  <div class="row"><div class="tag">입력됨</div><div class="field filled">최민숙</div></div>
+  <div class="row"><div class="tag">오류</div><div class="field error">최민숙</div></div>
+  <div class="msg">이미 등록된 이름입니다</div>
+  <div class="row"><div class="tag">비활성</div><div class="field off">수정할 수 없습니다</div></div>
+  <div class="spec">선 굵기로 상태를 나눕니다 — <b>기본 1 · 입력됨 1 · 오류 1.5 · 포커스 2</b>.
+  색만으로 나누면 색을 못 보는 사람에게는 같은 화면이 됩니다.</div>
+</div>
+<div class="col">
+  <div class="h">버튼 — 세 등급</div>
+  <div class="hs">높이 48 · 모서리 8 · 글자 17 · 한 화면에 기본 버튼은 하나</div>
+  <div class="btns">
+    <div class="bl"><div class="tag">기본</div><div class="b b1">저장하기</div></div>
+    <div class="bl"><div class="tag">보조</div><div class="b b2">취소</div></div>
+    <div class="bl"><div class="tag">텍스트</div><div class="b b3">나중에 하기</div></div>
+  </div>
+  <div class="spec">등급이 셋이면 무엇을 눌러야 할지 한 번에 보입니다.
+  기본 버튼이 한 화면에 둘이면 둘 다 기본이 아니게 됩니다.<br>
+  터치 영역은 눈에 보이는 크기와 별개로 <b>최소 44</b> 를 지킵니다.</div>
+</div>
+</body></html>

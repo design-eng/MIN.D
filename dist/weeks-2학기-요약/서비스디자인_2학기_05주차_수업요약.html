@@ -1,0 +1,163 @@
+<html><head><meta charset="utf-8"><title>서비스디자인 5주차 수업 요약</title>
+<style>
+  @page { size: A4; margin: 13mm 13mm; }
+  body { font-family:"Pretendard","Noto Sans KR",sans-serif; color:#111; font-size:9.1pt; line-height:1.48; }
+  .rail { display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:1.8px;
+          color:#8A8A8A; text-transform:uppercase; padding-bottom:5px; }
+  .rule { border-bottom:1.4px solid #111; }
+  h1 { font-size:18pt; font-weight:900; margin:9px 0 5px; letter-spacing:-.3px; }
+  .goal { font-size:10pt; color:#111; margin:0 0 9px; max-width:135mm; }
+  .meta { display:flex; flex-wrap:wrap; gap:3px 22px; font-size:8.4pt; color:#6E6E6E;
+          border-top:1px solid #DCDCDC; border-bottom:1px solid #DCDCDC; padding:5px 0; margin-bottom:11px; }
+  .meta b { color:#111; font-weight:500; }
+  h2 { font-size:7.5pt; letter-spacing:1.8px; text-transform:uppercase; color:#8A8A8A;
+       font-weight:400; margin:0 0 4px; }
+  section { margin-bottom:9px; }
+  .cols { display:flex; gap:8mm; align-items:flex-start; }
+  .cols .left { width:57mm; flex:none; }
+  .cols .right { flex:1; min-width:0; }
+  tr { break-inside:avoid; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:2.4px 6px 2.4px 0; border-bottom:1px solid #EDEDED; vertical-align:top; }
+  .sch td { word-break:keep-all; overflow-wrap:break-word; }
+  .sch td:first-child { width:20mm; font-variant-numeric:tabular-nums; font-weight:500; }
+  .sch td em { display:block; font-style:normal; color:#8A8A8A; font-size:7.8pt; margin-top:1px; }
+  .sch tr.rest td { color:#9B9B9B; font-weight:400; }
+  .flow td.p { width:7mm; color:#9B9B9B; font-variant-numeric:tabular-nums; font-size:8.4pt; }
+  .flow td.k { width:12mm; font-size:7.5pt; letter-spacing:1px; color:#8A8A8A; padding-top:5px; }
+  .flow td.t { font-weight:600; }
+  .flow td.t em { display:block; font-style:normal; font-weight:400; color:#6E6E6E;
+                  font-size:8.3pt; margin-top:0; line-height:1.4; }
+  .work { background:#F2F2F2; padding:6px 9px; margin-bottom:4px; }
+  .work b { font-size:10pt; } .work span { color:#6E6E6E; font-size:8.4pt; margin-left:7px; }
+  .work p { margin:3px 0 0; font-size:8.6pt; color:#111; }
+  ol { margin:0; padding:0; list-style:none; counter-reset:h; }
+  ol li { counter-increment:h; padding:3px 0 3px 16px; position:relative; border-bottom:1px solid #EDEDED; }
+  ol li::before { content:counter(h); position:absolute; left:0; top:4px;
+                  font-size:8pt; color:#9B9B9B; font-variant-numeric:tabular-nums; }
+  ol li b { font-weight:600; } ol li span { display:block; color:#6E6E6E; font-size:8.6pt; }
+  .due { margin-top:5px; padding-top:5px; border-top:1.4px solid #111; font-weight:600; font-size:9.6pt; }
+  .next { background:#111; color:#fff; padding:8px 11px; }
+  .next b { font-size:10.5pt; } .next p { margin:3px 0 0; color:#B8B8B8; font-size:8.6pt; }
+  /* 본문 장표가 14장을 넘으면 우측 열이 한 장을 넘긴다. 그 주차만 조판을 조인다. */
+  body.dense { font-size:8.7pt; line-height:1.4; }
+  body.dense .flow td { padding:1.8px 6px 1.8px 0; }
+  body.dense .flow td.t em { font-size:7.8pt; line-height:1.32; }
+  body.dense .sch td { padding:1.9px 6px 1.9px 0; }
+  body.dense h1 { font-size:16.5pt; }
+  body.dense .goal { font-size:9.4pt; }
+  body.dense section { margin-bottom:7px; }
+  body.dense .work { padding:5px 8px; }
+  /* 16장을 넘으면 한 단계 더 조인다 — A4 한 장을 넘기지 않기 위해서다. */
+  body.denser { font-size:8.3pt; line-height:1.34; }
+  body.denser .flow td { padding:1.2px 5px 1.2px 0; }
+  body.denser .flow td.t em { font-size:7.4pt; line-height:1.26; }
+  body.denser .sch td { padding:1.3px 5px 1.3px 0; }
+  body.denser h1 { font-size:15.5pt; }
+  body.denser .goal { font-size:9pt; }
+  body.denser section { margin-bottom:5px; }
+  body.denser h2 { margin-bottom:3px; }
+  body.denser .work { padding:4px 7px; margin-bottom:3px; }
+  body.denser .work p { font-size:8.2pt; }
+  body.denser ol li { padding:2px 0 2px 15px; }
+  body.denser ol li span { font-size:8.2pt; }
+  body.denser .next { padding:6px 9px; }
+  /* 18장을 넘으면 한 단계 더. A4 한 장이 이 문서의 조건이다. */
+  body.densest { font-size:7.9pt; line-height:1.28; }
+  body.densest .flow td { padding:0.8px 4px 0.8px 0; }
+  body.densest .flow td.t em { font-size:7pt; line-height:1.22; }
+  body.densest .sch td { padding:0.9px 4px 0.9px 0; }
+  body.densest h1 { font-size:14.5pt; }
+  body.densest .goal { font-size:8.6pt; }
+  body.densest section { margin-bottom:4px; }
+  body.densest .work { padding:3px 6px; margin-bottom:2px; }
+  body.densest ol li { padding:1.4px 0 1.4px 14px; }
+  .two { display:flex; gap:9mm; align-items:flex-start; break-inside:avoid; }
+  .two > * { flex:1; min-width:0; }
+</style></head><body class="">
+  <div class="rail"><span>서비스디자인 · 학부 3학년</span><span>WEEK 05 · 수업 요약</span></div>
+  <div class="rule"></div>
+  <h1>남은 화면으로 넓히기</h1>
+  <p class="goal">아이콘 · 입력 요소 · 상태 화면까지 규격을 정하고, 만든 시스템만으로 남은 화면을 조립합니다.</p>
+  <div class="meta">
+    <span><b>진행</b> 3시간 · 컨펌 25분 · 강의 85분 · 실습 50분 · 확인과 안내 10분</span>
+    <span><b>산출물</b> 아이콘 · 입력 · 상태 화면 규격 · 디자인 8장</span>
+  </div>
+
+  <div class="cols">
+    <div class="left">
+      <section><h2>진행</h2><table class="sch"><tr class=""><td>00:00–00:25</td><td>디자인 4장 함께 보기 — 컨펌<em>전체 공유</em></td></tr><tr class=""><td>00:25–00:55</td><td>PART 1 — 아이콘과 입력 요소<em>강의 + 도판</em></td></tr><tr class="rest"><td>00:55–01:05</td><td>휴식</td></tr><tr class=""><td>01:05–01:30</td><td>PART 2 — 비어 있을 때 · 기다릴 때 · 잘못됐을 때<em>강의</em></td></tr><tr class=""><td>01:30–02:00</td><td>PART 3 — 시스템으로 화면 늘리기<em>강의 + 시연</em></td></tr><tr class=""><td>02:00–02:50</td><td>실습 — 남은 화면 조립<em>개인 워크 + 순회</em></td></tr><tr class=""><td>02:50–03:00</td><td>확인 · 과제 안내<em>2인 1조 + 안내</em></td></tr></table></section>
+      <section><h2>실습</h2>
+    <div class="work">
+      <b>실습 · 남은 화면 조립</b>
+      <span>개인 작업 — 오늘은 그리지 않고 조립합니다.</span>
+      <p>10분 아이콘 세트 고르고 규격 적기  ·  12분 입력 요소와 버튼 만들기  ·  18분 상태 화면 세 장  ·  10분 일반 화면 한 장 조립</p>
+    </div></section>
+    </div>
+    <div class="right">
+      <section><h2>오늘 다루는 것 — 본문 13장 (표지·과제 포함 15장)</h2>
+        <table class="flow"><tr>
+      <td class="p">02</td>
+      <td class="k">정리</td>
+      <td class="t">오늘의 목표<em>잘 된 경우만 그려 놓으면 화면 수가 절반만 나온 것입니다. 사용자는 나머지 절반에서 더 오래 머뭅니다.</em></td>
+    </tr><tr>
+      <td class="p">03</td>
+      <td class="k">구간</td>
+      <td class="t">아이콘과 입력 요소<em>화면마다 반복되는 마지막 요소들입니다. 방식은 지난주와 같습니다.</em></td>
+    </tr><tr>
+      <td class="p">04</td>
+      <td class="k">도판</td>
+      <td class="t">입력 요소와 버튼<em>상태를 색이 아니라 선 굵기로 나눕니다.</em></td>
+    </tr><tr>
+      <td class="p">05</td>
+      <td class="k">정리</td>
+      <td class="t">아이콘 — 정할 것은 네 가지<em>직접 그리지 말고 한 세트 안에서만 고릅니다.</em></td>
+    </tr><tr>
+      <td class="p">06</td>
+      <td class="k">구간</td>
+      <td class="t">비어 있을 때 · 기다릴 때 · 잘못됐을 때<em>사용자가 만나는 화면의 절반은 잘 된 경우가 아닙니다.</em></td>
+    </tr><tr>
+      <td class="p">07</td>
+      <td class="k">정리</td>
+      <td class="t">세 가지 상태 화면<em>이 셋을 그려 두지 않으면 개발 단계에서 흰 화면이 나갑니다.</em></td>
+    </tr><tr>
+      <td class="p">08</td>
+      <td class="k">정리</td>
+      <td class="t">상태 화면의 문장<em>상태 화면은 그림보다 문장이 일을 합니다.</em></td>
+    </tr><tr>
+      <td class="p">09</td>
+      <td class="k">구간</td>
+      <td class="t">시스템으로 화면 늘리기<em>지금부터 화면은 그리는 것이 아니라 조립하는 것입니다.</em></td>
+    </tr><tr>
+      <td class="p">10</td>
+      <td class="k">비교</td>
+      <td class="t">조립한 화면 · 그린 화면<em>지난 세 주를 들여 만든 것이 여기서 값을 합니다.</em></td>
+    </tr><tr>
+      <td class="p">11</td>
+      <td class="k">정리</td>
+      <td class="t">시스템에 안 맞는 화면을 만나면<em>반드시 이런 순간이 옵니다. 순서대로 검토하세요.</em></td>
+    </tr><tr>
+      <td class="p">12</td>
+      <td class="k">실습</td>
+      <td class="t">실습 · 남은 화면 조립<em>개인 작업 — 오늘은 그리지 않고 조립합니다.</em></td>
+    </tr><tr>
+      <td class="p">13</td>
+      <td class="k">정리</td>
+      <td class="t">확인 — 기준 구간이 끝났는가<em>2인 1조로 서로의 파일에서 확인합니다.</em></td>
+    </tr><tr>
+      <td class="p">14</td>
+      <td class="k">점검</td>
+      <td class="t">디자인 점검표<em>다음 주부터 이 시스템으로 화면을 늘립니다.</em></td>
+    </tr></table></section>
+    </div>
+  </div>
+  <section class="two">
+    <div><h2>과제</h2><ol><li><b>아이콘 · 입력 · 버튼 규격</b><span>지난주 표에 이어서 적습니다. 아이콘 크기와 선 굵기, 입력 요소의 다섯 상태, 버튼 세 등급을 값과 근거로 채웁니다.</span></li><li><b>상태 화면 3종</b><span>빈 화면 · 불러오는 중 · 오류 화면을 각각 한 장씩 만듭니다. 오늘 만든 컴포넌트와 토큰만 씁니다.</span></li><li><b>디자인 8장으로 확장</b><span>지난주 4장에 4장을 더합니다. 새 4장 중 최소 1장은 상태 화면입니다. 직접 그린 요소가 남지 않게 합니다.</span></li></ol>
+      <div class="due">제출 — 10월 14일(수) 수업 시작 전까지 · Figma 링크 제출</div></div>
+    <div><h2>다음</h2><div class="next">
+      <b>06주차 화면 늘리기 — 흐름 단위로</b>
+      <p>한 화면이 아니라 한 흐름 · 화면 사이의 이동과 되돌아오기 · 같은 정보를 다른 화면에서 · 흐름 단위 컨펌</p>
+      <p>미리 준비 — 규격 표 · 상태 화면 3종 · 디자인 8장</p>
+    </div></div>
+  </section>
+</body></html>
