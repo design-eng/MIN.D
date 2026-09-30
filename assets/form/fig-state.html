@@ -1,0 +1,88 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:2000px;height:712px;background:#fff;font-family:Pretendard,sans-serif;color:#111;
+     padding:26px 44px;display:flex;gap:40px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center}
+.ph{width:384px;height:520px;border:2.5px solid #111;border-radius:28px;padding:14px 12px;
+    display:flex;flex-direction:column;background:#fff}
+.hd{height:48px;border-bottom:2px solid #DCDCDC;display:flex;align-items:center;
+    justify-content:center;font-size:21px;font-weight:600;flex:none}
+.bd{flex:1;display:flex;flex-direction:column;padding:16px 14px;overflow:hidden}
+.gnb{height:44px;border-top:2px solid #DCDCDC;display:flex;align-items:center;justify-content:space-around;flex:none}
+.dot{width:20px;height:20px;border:2px solid #9A9A9A;border-radius:5px}
+.dot.on{background:#111;border-color:#111}
+.ctr{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center}
+.glyph{width:70px;height:70px;border:3px solid #C4C4C4;border-radius:16px}
+.t1{font-size:23px;font-weight:600}
+.t2{font-size:18px;color:#6E6E6E;line-height:1.5}
+.cta{margin-top:12px;height:56px;width:216px;background:#111;color:#fff;border-radius:10px;
+     display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600}
+.sk{height:64px;border-radius:10px;background:#EDEDED;margin-bottom:14px;display:flex;align-items:center;padding:0 14px;gap:14px;flex:none}
+.skt{width:46px;height:46px;border-radius:8px;background:#DCDCDC;flex:none}
+.skl{flex:1}
+.skl i{display:block;height:13px;border-radius:5px;background:#DCDCDC;margin-bottom:8px}
+.skl i:last-child{width:58%;margin-bottom:0;background:#E6E6E6}
+.err{font-size:18px;line-height:1.55;color:#111;text-align:center}
+.err b{display:block;font-size:23px;margin-bottom:8px}
+.cap{width:100%;margin-top:16px;padding:0 6px}
+.nh{font-size:27px;font-weight:600;display:inline}
+.ns{font-size:20px;color:#6E6E6E;display:inline;margin-left:10px}
+.ni{font-size:19px;line-height:1.7;margin-top:10px;border-top:2px solid #111;padding-top:10px}
+.ni b{font-weight:600}
+</style></head><body>
+
+<div class="col">
+  <div class="ph">
+    <div class="hd">보관함</div>
+    <div class="bd"><div class="ctr">
+      <div class="glyph"></div>
+      <div class="t1">아직 저장한 것이 없어요</div>
+      <div class="t2">마음에 드는 장소를 저장하면<br>여기에 모입니다</div>
+      <div class="cta">둘러보기</div>
+    </div></div>
+    <div class="gnb"><div class="dot"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="cap">
+    <span class="nh">비어 있을 때</span><span class="ns">처음 온 사람이 보는 화면</span>
+    <div class="ni"><b>왜</b> 비어 있는지 한 줄 · <b>무엇을</b> 하면 채워지는지 두 줄까지 · <b>버튼</b>.
+    그림은 없어도 되지만 버튼은 있어야 합니다. 그림만 크게 넣으면 사용자가 여기서 나갑니다.</div>
+  </div>
+</div>
+
+<div class="col">
+  <div class="ph">
+    <div class="hd">주변 장소</div>
+    <div class="bd">
+      <div class="sk"><div class="skt"></div><div class="skl"><i></i><i></i></div></div>
+      <div class="sk"><div class="skt"></div><div class="skl"><i></i><i></i></div></div>
+      <div class="sk"><div class="skt"></div><div class="skl"><i></i><i></i></div></div>
+      <div class="sk"><div class="skt"></div><div class="skl"><i></i><i></i></div></div>
+    </div>
+    <div class="gnb"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="cap">
+    <span class="nh">기다릴 때</span><span class="ns">나올 화면의 뼈대를 미리</span>
+    <div class="ni">리스트 행 컴포넌트를 <b>복사해 회색으로</b> 바꾸면 됩니다. 새로 그리지 않습니다.
+    가운데 동그라미만 돌리면 무엇이 나올지 모르고 더 오래 기다린 것처럼 느껴집니다.</div>
+  </div>
+</div>
+
+<div class="col">
+  <div class="ph">
+    <div class="hd">주변 장소</div>
+    <div class="bd"><div class="ctr">
+      <div class="glyph"></div>
+      <div class="err"><b>목록을 불러오지 못했어요</b>
+        연결이 끊어졌습니다<br>연결을 확인하고 다시 눌러 주세요</div>
+      <div class="cta">다시 시도</div>
+    </div></div>
+    <div class="gnb"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="cap">
+    <span class="nh">잘못됐을 때</span><span class="ns">세 줄 · 그리고 다음 행동</span>
+    <div class="ni"><b>무엇이</b> 잘못됐는지 · <b>왜</b> 그런지 · <b>무엇을</b> 하면 되는지, 그리고 그 행동을 할 버튼.
+    '오류가 발생했습니다 (E-402)' 만 쓰면 사용자가 할 수 있는 일이 없습니다.</div>
+  </div>
+</div>
+
+</body></html>
