@@ -118,6 +118,70 @@ function applyDV_(ss){
 }
 function colNum_(L){ var n=0; for(var i=0;i<L.length;i++) n=n*26+(L.charCodeAt(i)-64); return n; }
 
+/**
+ * 법정 서류 두 시트만 만든다 — 근로자명부 · 임금대장.
+ * 대장만들기() 와 달리 다른 시트는 건드리지 아니한다.
+ * 코드표에는 성별·퇴직사유 두 열만 더한다. 기존 A~D 열은 그대로 둔다.
+ */
+function 법정서류시트만들기(){
+  var ss=SpreadsheetApp.getActive();
+  var ui=SpreadsheetApp.getUi();
+  var names=['근로자명부','임금대장'];
+
+  var exists=names.filter(function(n){ return ss.getSheetByName(n); });
+  if(exists.length){
+    var r=ui.alert('이미 있는 시트',
+      exists.join(' · ')+' 시트가 이미 있습니다.\n\n'+
+      '다시 만들면 적어 둔 내용이 모두 사라집니다. 계속할까요?',
+      ui.ButtonSet.YES_NO);
+    if(r!==ui.Button.YES) return;
+  }
+
+  var code=ss.getSheetByName('코드표');
+  if(!code){ ui.alert('코드표 시트가 없습니다. 먼저 코드표부터 만들어 주세요.'); return; }
+
+  // 1) 코드표 E·F — 드롭다운이 이 범위를 참조하므로 시트보다 먼저 넣는다.
+  var cspec=null;
+  SPEC.sheets.forEach(function(s){ if(s.name==='코드표') cspec=s; });
+  cspec.statics.forEach(function(t){
+    if(t[1]===5||t[1]===6) code.getRange(t[0],t[1]).setValue(toVal_(t[2]));
+  });
+  code.getRange(4,5,1,2).setFontSize(9).setFontWeight('bold').setFontColor(INK)
+      .setBackground(HEAD_FILL).setHorizontalAlignment('center')
+      .setBorder(true,true,true,true,true,true,LINE,SpreadsheetApp.BorderStyle.SOLID);
+  code.getRange(5,5,6,2).setFontSize(9).setFontColor(INK).setHorizontalAlignment('center');
+  code.setColumnWidth(5, Math.max(40,cspec.widths[4]));
+  code.setColumnWidth(6, Math.max(40,cspec.widths[5]));
+
+  // 2) 두 시트만 만든다.
+  var made=[];
+  SPEC.sheets.forEach(function(s){
+    if(names.indexOf(s.name)<0) return;
+    buildSheet_(ss,s);
+    made.push(s.name);
+  });
+
+  // 3) 두 시트에 걸린 드롭다운만 적용한다.
+  SPEC.dv.forEach(function(d){
+    if(names.indexOf(d[0])<0) return;
+    var sh=ss.getSheetByName(d[0]); if(!sh) return;
+    var rule=SpreadsheetApp.newDataValidation()
+      .requireValueInRange(ss.getRange(d[4]),true).setAllowInvalid(true).build();
+    sh.getRange(d[2], colNum_(d[1]), d[3]-d[2]+1, 1).setDataValidation(rule);
+  });
+
+  ss.setActiveSheet(ss.getSheetByName('근로자명부'));
+  ui.alert('법정 서류 시트를 만들었습니다',
+    made.join(' · ')+'\n\n'+
+    '근로자명부에 사번을 넣으면 성명·고용연월일·퇴직일이 직원명부에서 따라옵니다.\n'+
+    '성별·생년월일·주소·이력·종사업무는 직접 적으셔야 합니다. '+
+    '근로기준법 시행령 제20조가 정한 기재사항이라 비우면 명부로 인정되지 않습니다.\n\n'+
+    '임금대장은 지급년월(그 달 1일)과 사번만 넣으면 '+
+    '근로일수·근로시간·연장·야간·휴일시간이 근태기록에서 자동으로 모입니다.\n\n'+
+    '근로자명부에는 주소와 생년월일이 들어갑니다. 공유 범위를 대표로 좁혀 두세요.',
+    ui.ButtonSet.OK);
+}
+
 const TZ = 'Asia/Seoul';
 
 const SH_AT = '근태기록';
