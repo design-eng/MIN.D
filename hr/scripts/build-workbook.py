@@ -15,6 +15,8 @@ BOX  = Border(left=thin, right=thin, top=thin, bottom=thin)
 EMP_FIRST, EMP_LAST = 5, 24          # 직원 20명
 LV_FIRST,  LV_LAST  = 5, 504         # 휴가 500건
 AT_FIRST,  AT_LAST  = 5, 2004        # 근태 2000건
+RS_FIRST,  RS_LAST  = 5, 24          # 근로자명부 20명
+PY_FIRST,  PY_LAST  = 5, 244         # 임금대장 20명 × 12개월
 
 wb = openpyxl.Workbook()
 
@@ -75,6 +77,8 @@ guide = [
     ('월별집계', '조회할 연월 하나만 바꾸면 그 달의 근무일수·지각·결근·연차사용이 직원별로 집계됩니다.'),
     ('프로젝트집계', '근태기록의 「프로젝트」 칸을 모아 프로젝트별 투입시간을 집계합니다. 견적의 근거가 됩니다.'),
     ('보상휴가', '연장·야간·휴일근로 수당을 갈음하는 휴가의 발생·사용·잔여를 관리합니다.'),
+    ('근로자명부', '근로기준법 제41조가 요구하는 법정 서류입니다. 성별·생년월일·주소·이력·종사업무를 적습니다.'),
+    ('임금대장', '근로기준법 제48조제1항이 요구하는 법정 서류입니다. 달마다 한 줄씩 쌓습니다.'),
     ('코드표', '드롭다운 목록의 원본입니다. 항목을 늘리려면 여기에 추가합니다.'),
     ('', ''),
     ('연차 계산 기준', ''),
@@ -136,6 +140,8 @@ CODES = {
                  '단축근무']),
     'D': ('휴가종류', ['연차', '경조휴가', '병가', '공가', '출산전후휴가', '배우자출산휴가',
                    '육아휴직', '가족돌봄휴가', '무급휴가']),
+    'E': ('성별', ['남', '여']),
+    'F': ('퇴직사유', ['자진퇴사', '계약만료', '권고사직', '해고', '정년', '사망']),
 }
 for col, (name, items) in CODES.items():
     c = cs[f'{col}4']
@@ -584,7 +590,129 @@ for i, t in enumerate([
 ], start=UL + 2):
     cp.cell(row=i, column=1, value=t).font = Font(name=F, size=9, color=GRAY)
 
-wb.move_sheet('코드표', offset=7)
+# ============================================================
+# 9. 근로자명부  (근로기준법 제41조 · 시행령 제20조)
+#    5인 미만 사업장에도 적용되는 법정 서류다. 성별·생년월일·주소·
+#    이력·종사업무는 시행령이 요구하는 기재사항이라 뺄 수 없다.
+# ============================================================
+def pull(key_cell, src_sheet, col, first, last, key_col='A', miss='""'):
+    """사번으로 다른 시트의 값을 끌어온다.
+       INDEX 는 빈 칸을 "" 가 아니라 0 으로 돌려주므로 0 을 따로 걸러낸다."""
+    idx = (f'INDEX({src_sheet}${col}${first}:${col}${last},'
+           f'MATCH({key_cell},{src_sheet}${key_col}${first}:${key_col}${last},0))')
+    return (f'=IFERROR(IF({key_cell}="","",IF({idx}=0,"",{idx})),{miss})')
+
+rs = wb.create_sheet('근로자명부')
+rs.sheet_view.showGridLines = False
+title_block(rs, '근로자명부',
+            '근로기준법 제41조 · 시행령 제20조가 정한 법정 서류입니다. 퇴직일부터 3년간 보존합니다. (제42조)')
+legend(rs, 3)
+hdr = ['사번', '성명', '성별', '생년월일', '주소', '이력', '종사하는 업무',
+       '고용연월일', '계약기간', '퇴직일', '퇴직사유']
+header_row(rs, 4, hdr, [10, 12, 8, 13, 34, 26, 16, 13, 14, 13, 12],
+           auto_cols=(2, 8, 10))
+rs.freeze_panes = 'C5'
+
+for r in range(RS_FIRST, RS_LAST + 1):
+    e = f'직원명부!'
+    body_cell(rs, r, 1)                                     # 사번
+    body_cell(rs, r, 2,
+        pull(f'A{r}', e, 'B', EMP_FIRST, EMP_LAST, miss='"사번 확인"'), auto=True)
+    body_cell(rs, r, 3)                                     # 성별
+    body_cell(rs, r, 4, fmt='yyyy-mm-dd')                   # 생년월일
+    body_cell(rs, r, 5, center=False)                       # 주소
+    body_cell(rs, r, 6, center=False)                       # 이력
+    body_cell(rs, r, 7, center=False)                       # 종사하는 업무
+    body_cell(rs, r, 8, pull(f'A{r}', e, 'C', EMP_FIRST, EMP_LAST),
+              fmt='yyyy-mm-dd', auto=True)
+    body_cell(rs, r, 9)                                     # 계약기간
+    body_cell(rs, r, 10, pull(f'A{r}', e, 'G', EMP_FIRST, EMP_LAST),
+              fmt='yyyy-mm-dd', auto=True)
+    body_cell(rs, r, 11)                                    # 퇴직사유
+
+dv(rs, 'C', RS_FIRST, RS_LAST, 'E', 2)
+dv(rs, 'K', RS_FIRST, RS_LAST, 'F', 6)
+
+for i, t in enumerate([
+    '· 성별·생년월일·주소·이력·종사하는 업무는 시행령 제20조가 정한 기재사항입니다. 비워 두면 명부로 인정되지 않습니다.',
+    '· 「이력」은 최종 학력과 주요 경력을 한 줄로 적으면 충분합니다. (예: ○○대 시각디자인 졸 · ○○스튜디오 1년)',
+    '· 「계약기간」은 기간을 정한 근로계약인 경우에만 적습니다. 정규사원은 비워 둡니다.',
+    '· 성명·고용연월일·퇴직일은 직원명부에서 사번으로 끌어옵니다. 직접 고치지 마세요.',
+    '· 이 시트에는 주소와 생년월일이 들어 있습니다. 공유 범위를 대표로 한정하세요. (개인정보 보호법 제29조)',
+    '· 퇴직한 사원의 명부도 퇴직일부터 3년간 지우지 않습니다. (근로기준법 제42조)',
+], start=RS_LAST + 2):
+    rs.cell(row=i, column=1, value=t).font = Font(name=F, size=9, color=GRAY)
+
+# ============================================================
+# 10. 임금대장  (근로기준법 제48조제1항 · 시행령 제27조)
+#     상시 4명 이하 사업장은 시행령 제27조제3항에 따라 근로시간수와
+#     연장·야간·휴일 시간수를 적지 않아도 되지만, 근태기록이 이미
+#     있으므로 자동으로 채워 둔다. 5명이 되면 그대로 쓰면 된다.
+# ============================================================
+py = wb.create_sheet('임금대장')
+py.sheet_view.showGridLines = False
+title_block(py, '임금대장',
+            '근로기준법 제48조제1항 · 시행령 제27조가 정한 법정 서류입니다. 3년간 보존합니다. (제42조)')
+legend(py, 3, extra='지급년월은 그 달 1일 날짜로 넣으세요. 근로일수·시간은 근태기록에서 자동으로 모입니다.')
+hdr = ['지급년월', '사번', '성명', '생년월일', '고용연월일', '종사업무',
+       '근로일수', '근로시간', '연장시간', '야간시간', '휴일시간',
+       '기본급', '식대 (비과세)', '연장·야간수당', '기타수당', '지급액 계',
+       '소득세', '지방소득세', '국민연금', '건강보험', '장기요양', '고용보험',
+       '공제액 계', '실지급액']
+header_row(py, 4, hdr,
+           [13, 10, 11, 13, 13, 14, 9, 10, 10, 10, 10,
+            13, 13, 13, 12, 14, 11, 11, 11, 11, 11, 11, 13, 14],
+           auto_cols=(3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 23, 24))
+py.freeze_panes = 'D5'
+
+PA = f'근태기록!$A${AT_FIRST}:$A${AT_LAST}'
+PC = f'근태기록!$C${AT_FIRST}:$C${AT_LAST}'
+PH = f'근태기록!$H${AT_FIRST}:$H${AT_LAST}'
+PI = f'근태기록!$I${AT_FIRST}:$I${AT_LAST}'
+PJ = f'근태기록!$J${AT_FIRST}:$J${AT_LAST}'
+PL = f'근태기록!$L${AT_FIRST}:$L${AT_LAST}'
+
+for r in range(PY_FIRST, PY_LAST + 1):
+    e = '직원명부!'
+    rng = f'{PA},">="&$A{r},{PA},"<="&EOMONTH($A{r},0)'
+    g = f'IF(OR($A{r}="",$B{r}=""),"",'
+    body_cell(py, r, 1, fmt='yyyy"년" mm"월"')                 # 지급년월
+    body_cell(py, r, 2)                                       # 사번
+    body_cell(py, r, 3,
+        pull(f'$B{r}', e, 'B', EMP_FIRST, EMP_LAST, miss='"사번 확인"'), auto=True)
+    body_cell(py, r, 4, pull(f'$B{r}', '근로자명부!', 'D', RS_FIRST, RS_LAST),
+              fmt='yyyy-mm-dd', auto=True)                    # 생년월일
+    body_cell(py, r, 5, pull(f'$B{r}', e, 'C', EMP_FIRST, EMP_LAST),
+              fmt='yyyy-mm-dd', auto=True)                    # 고용연월일
+    body_cell(py, r, 6, pull(f'$B{r}', '근로자명부!', 'G', RS_FIRST, RS_LAST),
+              auto=True, center=False)                        # 종사업무
+
+    body_cell(py, r, 7,  f'={g}COUNTIFS({PC},$B{r},{rng},{PH},">0"))', fmt='0', auto=True)
+    body_cell(py, r, 8,  f'={g}SUMIFS({PH},{PC},$B{r},{rng}))', fmt='0.00', auto=True)
+    body_cell(py, r, 9,  f'={g}SUMIFS({PI},{PC},$B{r},{rng}))', fmt='0.00', auto=True)
+    body_cell(py, r, 10, f'={g}SUMIFS({PJ},{PC},$B{r},{rng}))', fmt='0.00', auto=True)
+    body_cell(py, r, 11, f'={g}SUMIFS({PH},{PC},$B{r},{rng},{PL},"휴일근로"))', fmt='0.00', auto=True)
+
+    for col in (12, 13, 14, 15):                              # 기본급·식대·수당
+        body_cell(py, r, col, fmt='#,##0')
+    body_cell(py, r, 16, f'={g}SUM(L{r}:O{r}))', fmt='#,##0', auto=True)
+    for col in range(17, 23):                                 # 공제 항목
+        body_cell(py, r, col, fmt='#,##0')
+    body_cell(py, r, 23, f'={g}SUM(Q{r}:V{r}))', fmt='#,##0', auto=True)
+    body_cell(py, r, 24, f'={g}N(P{r})-N(W{r}))', fmt='#,##0', auto=True)
+
+for i, t in enumerate([
+    '· 임금을 지급할 때마다 한 줄씩 적습니다. 지급년월은 반드시 그 달 1일 날짜로 넣어야 집계가 맞습니다.',
+    '· 「기본급」부터 「고용보험」까지는 급여를 계산한 값을 그대로 옮겨 적습니다. 세무 대리인이 보내 준 급여대장의 값과 같아야 합니다.',
+    '· 「식대 (비과세)」는 소득세법이 정한 한도(월 20만원)까지 비과세로 처리되는 금액입니다. (연봉계약서 제4조제2항)',
+    '· 「근로일수」부터 「휴일시간」까지는 근태기록에서 자동으로 모입니다. 상시 4명 이하 사업장은 시행령 제27조제3항에 따라 '
+    '근로시간수와 연장·야간·휴일 시간수를 적지 않아도 되지만, 기록이 있으므로 함께 남겨 둡니다.',
+    '· 이 대장과 임금명세서는 별개입니다. 명세서는 매월 사원에게 교부해야 합니다. (제48조제2항 · 취업규칙 제32조)',
+    '· 임금 관련 서류는 3년간 보존합니다. (제42조)',
+], start=PY_LAST + 2):
+    py.cell(row=i, column=1, value=t).font = Font(name=F, size=9, color=GRAY)
+
+wb.move_sheet('코드표', offset=9)
 wb.calculation.fullCalcOnLoad = True   # 파일을 열 때 엑셀이 전체 수식을 다시 계산하도록
 import os
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '마인드_근태연차_관리대장.xlsx')
