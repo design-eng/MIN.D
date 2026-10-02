@@ -89,7 +89,7 @@ for ws in wb.worksheets:
 DV = [('직원명부', 'E', 5, 24, '코드표!$A$5:$A$8'),
       ('직원명부', 'F', 5, 24, '코드표!$B$5:$B$7'),
       ('휴가대장', 'E', 5, 504, '코드표!$D$5:$D$13'),
-      ('근태기록', 'L', 5, 2004, '코드표!$C$5:$C$13')]
+      ('근태기록', 'L', 5, 2004, '코드표!$C$5:$C$14')]
 
 payload = json.dumps({'sheets': sheets, 'dv': DV}, ensure_ascii=False, separators=(',', ':'))
 
