@@ -536,7 +536,9 @@ function buildWeek(wk) {
       const s = light();
       head(s, b.kicker, b.title, b.sub);
       const n = b.items.length;
-      const rowH = Math.min(1.06, (6.2 - BODY_TOP) / n);
+      /* foot 이 있으면 아래에 결론 한 줄 자리를 비워 둔다. */
+      const stepsBottom = b.foot ? 5.76 : 6.2;
+      const rowH = Math.min(1.06, (stepsBottom - BODY_TOP) / n);
       b.items.forEach((it, i) => {
         const y = BODY_TOP + 0.16 + i * rowH;
         const isDark = i === n - 1;
@@ -557,6 +559,14 @@ function buildWeek(wk) {
           fontSize: 11.5, color: isDark ? BODY_D : GRAPHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.24, valign: "middle",
         });
       });
+      if (b.foot) {
+        const fy = Math.min(BODY_TOP + 0.16 + n * rowH + 0.18, 6.12);
+        rule(s, M, fy, CW, INK);
+        s.addText(b.foot, {
+          x: M, y: fy + 0.12, w: CW, h: 0.44,
+          fontSize: 13, bold: true, color: INK, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
+        });
+      }
       foot(s);
       notes(s, b.script, b.note);
     },
