@@ -1,0 +1,103 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:2000px;height:760px;background:#fff;font-family:Pretendard,sans-serif;color:#111;padding:20px 34px}
+.top{display:flex;gap:30px;align-items:flex-start}
+.src{width:460px;flex:none;border:2px solid #111;border-radius:12px;padding:15px 17px}
+.src .k{font-size:12px;color:#9A9AA0;letter-spacing:1.6px;margin-bottom:4px}
+.src .t{font-size:20px;font-weight:600;margin-bottom:10px}
+.fld{display:flex;font-size:14px;line-height:1.55;border-bottom:1px solid #F2F2F4;padding:5px 0}
+.fld .n{width:92px;flex:none;color:#9A9AA0}
+.fld .v{flex:1}
+.fld .u{width:116px;flex:none;text-align:right;font-size:12.5px;color:#111;font-weight:600}
+.arr{width:56px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:330px;gap:5px}
+.arr .ln{font-size:28px}
+.arr .tx{font-size:12px;color:#6E6E6E;text-align:center;line-height:1.3}
+.outs{flex:1;display:flex;gap:26px}
+.out{flex:1}
+.ok{font-size:12px;color:#9A9AA0;letter-spacing:1.4px;margin-bottom:3px}
+.ot{font-size:18px;font-weight:600;margin-bottom:9px}
+.frame{border:1px solid #DCDCE0;border-radius:10px;background:#fff;padding:12px;height:212px;
+  display:flex;align-items:flex-start}
+/* 목록 행 */
+.row{display:flex;gap:10px;align-items:center;width:100%;border-bottom:1px solid #F2F2F4;padding:9px 0}
+.row .im{width:46px;height:46px;border-radius:8px;flex:none}
+.row .tt{font-size:14px;font-weight:600;margin-bottom:3px}
+.row .ss{font-size:11.5px;color:#9A9AA0}
+.hrt{margin-left:auto;font-size:17px;color:#D0D0D4}
+/* 카드 */
+.card{width:100%;border:1px solid #ECECEF;border-radius:10px;overflow:hidden}
+.card .im{height:104px}
+.card .in{padding:10px 11px}
+.card .tt{font-size:15px;font-weight:600;margin-bottom:3px}
+.card .ss{font-size:11.5px;color:#9A9AA0;margin-bottom:6px}
+.card .ds{font-size:11.5px;color:#6E6E6E;line-height:1.5}
+/* 상세 */
+.det{width:100%}
+.det .im{height:96px;border-radius:8px;margin-bottom:9px}
+.det .tt{font-size:17px;font-weight:600;margin-bottom:3px}
+.det .ss{font-size:12px;color:#9A9AA0;margin-bottom:7px}
+.det .ds{font-size:12px;color:#6E6E6E;line-height:1.6;margin-bottom:9px}
+.det .hr{font-size:11.5px;color:#6E6E6E;border-top:1px solid #F2F2F4;padding-top:7px}
+.g1{background:linear-gradient(140deg,#9EC6F5,#5A8FD6)}
+.note{font-size:13.5px;line-height:1.5;color:#111;margin-top:9px}
+.note b{font-weight:600}
+.warn{margin-top:18px;border-top:2px solid #111;padding-top:11px;font-size:16px;line-height:1.6}
+.warn b{font-weight:600}
+</style></head><body>
+<div class="top">
+  <div class="src">
+    <div class="k">DATA · 한 건</div>
+    <div class="t">장소 하나가 가진 정보</div>
+    <div class="fld"><div class="n">이름</div><div class="v">한강 루프탑</div><div class="u">목록 · 카드 · 상세</div></div>
+    <div class="fld"><div class="n">분류</div><div class="v">카페</div><div class="u">목록 · 카드 · 상세</div></div>
+    <div class="fld"><div class="n">거리</div><div class="v">0.4km</div><div class="u">목록 · 카드 · 상세</div></div>
+    <div class="fld"><div class="n">대표 사진</div><div class="v">가로 사진 1장</div><div class="u">목록 · 카드 · 상세</div></div>
+    <div class="fld"><div class="n">한 줄 소개</div><div class="v">강이 보이는 루프탑 카페</div><div class="u">카드 · 상세</div></div>
+    <div class="fld"><div class="n">상세 설명</div><div class="v">3~5문장</div><div class="u">상세</div></div>
+    <div class="fld"><div class="n">영업시간</div><div class="v">11:00–22:00</div><div class="u">상세</div></div>
+    <div class="fld"><div class="n">저장 여부</div><div class="v">저장함 / 안 함</div><div class="u">목록 · 상세</div></div>
+    <div class="note"><b>오른쪽 열이 규칙입니다.</b> 어느 자리에 나오는지를 정보마다 미리 정해 두면,
+      화면이 늘어나도 같은 장소가 화면마다 다르게 보이지 않습니다.</div>
+  </div>
+
+  <div class="arr"><div class="ln">→</div><div class="tx">자리에 맞게<br>덜어 낸다</div></div>
+
+  <div class="outs">
+    <div class="out">
+      <div class="ok">01</div><div class="ot">목록 행 — 고르기 위한 분량</div>
+      <div class="frame">
+        <div class="row"><div class="im g1"></div>
+          <div><div class="tt">한강 루프탑</div><div class="ss">카페 · 0.4km</div></div>
+          <div class="hrt">♡</div></div>
+      </div>
+      <div class="note">이름 · 분류 · 거리 · 사진 · 저장 여부. <b>한 줄 소개를 넣지 않습니다</b> —
+        고르는 데 필요 없고, 행 높이가 화면마다 달라집니다.</div>
+    </div>
+
+    <div class="out">
+      <div class="ok">02</div><div class="ot">카드 — 권하기 위한 분량</div>
+      <div class="frame">
+        <div class="card"><div class="im g1"></div>
+          <div class="in"><div class="tt">한강 루프탑</div><div class="ss">카페 · 0.4km</div>
+            <div class="ds">강이 보이는 루프탑 카페</div></div></div>
+      </div>
+      <div class="note">목록 행에 사진을 키우고 한 줄 소개를 더합니다.
+        <b>소개는 한 줄로 잘립니다</b> — 두 줄이 되면 카드 높이가 제각각이 됩니다.</div>
+    </div>
+
+    <div class="out">
+      <div class="ok">03</div><div class="ot">상세 — 결정하기 위한 분량</div>
+      <div class="frame">
+        <div class="det"><div class="im g1"></div>
+          <div class="tt">한강 루프탑</div><div class="ss">카페 · 0.4km · 저장함</div>
+          <div class="ds">강이 보이는 루프탑 카페입니다. 저녁 노을 시간에 자리가 빨리 찹니다.</div>
+          <div class="hr">영업시간 11:00–22:00</div></div>
+      </div>
+      <div class="note">전부 나옵니다. <b>상세에만 있는 정보가 무엇인지</b> 적어 두면
+        목록에 무엇을 넣을지 매번 고민하지 않게 됩니다.</div>
+    </div>
+  </div>
+</div>
+<div class="warn">같은 장소를 세 번 디자인하는 것이 아니라, <b>한 번 정한 정보를 세 분량으로 덜어 내는</b> 것입니다. 화면이 늘어날 때 흔들리는 자리가 바로 여기입니다.</div>
+</body></html>

@@ -1,0 +1,143 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:2000px;height:720px;background:#fff;font-family:Pretendard,sans-serif;color:#111;padding:20px 34px}
+.wrap{display:flex;gap:40px}
+.grp{flex:1;border:1px solid #E4E4E8;border-radius:12px;padding:16px 18px 18px}
+.gk{font-size:12px;color:#9A9AA0;letter-spacing:1.6px;margin-bottom:3px}
+.gt{font-size:21px;font-weight:600;margin-bottom:2px}
+.gs{font-size:14px;color:#6E6E6E;margin-bottom:13px}
+.pair{display:flex;align-items:center;gap:0}
+.cell{flex:1}
+.ar{width:62px;flex:none;display:flex;flex-direction:column;align-items:center;gap:4px}
+.ar .ln{font-size:26px;line-height:1}
+.ar .tx{font-size:12px;color:#6E6E6E;text-align:center;line-height:1.3}
+.ph{width:100%;height:300px;background:#111;border-radius:22px;padding:6px;position:relative}
+.scr{width:100%;height:100%;background:#fff;border-radius:17px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.nav{height:30px;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;flex:none;position:relative;border-bottom:1px solid #F2F2F4}
+.nav .bk{position:absolute;left:9px;font-size:12px;color:#2B6DEF}
+.nav .cl{position:absolute;right:9px;font-size:12px;color:#2B6DEF}
+.bd{flex:1;padding:8px 10px;overflow:hidden}
+.row{display:flex;gap:7px;align-items:center;border-bottom:1px solid #F4F4F6;padding:6px 0}
+.row .im{width:30px;height:30px;border-radius:6px;flex:none}
+.row .tt{font-size:10.5px;font-weight:600}
+.row .ss{font-size:8.5px;color:#9A9AA0}
+.g1{background:linear-gradient(140deg,#9EC6F5,#5A8FD6)}
+.g2{background:linear-gradient(140deg,#F5C9A8,#D98E58)}
+.g3{background:linear-gradient(140deg,#BFE3C9,#6FB785)}
+.hero{height:74px;border-radius:7px;margin-bottom:7px}
+.dt{font-size:12px;font-weight:600;margin-bottom:2px}
+.ds{font-size:9px;color:#8A8A90;line-height:1.5}
+.dim{position:absolute;inset:0;background:rgba(17,17,17,.42);border-radius:17px}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:58%;background:#fff;border-radius:14px 14px 0 0;padding:9px 10px;
+  box-shadow:0 -2px 10px rgba(0,0,0,.12)}
+.sheet .hd{width:30px;height:3px;background:#DCDCE0;border-radius:2px;margin:0 auto 8px}
+.sheet .st{font-size:11.5px;font-weight:600;margin-bottom:6px}
+.seg{display:flex;height:26px;background:#F2F2F4;border-radius:7px;padding:2px;margin-bottom:8px}
+.seg div{flex:1;display:flex;align-items:center;justify-content:center;font-size:9.5px;color:#8A8A90;border-radius:5px}
+.seg div.on{background:#fff;color:#111;font-weight:600}
+.spec{margin-top:13px;border-top:1px solid #E4E4E8;padding-top:10px}
+.sp{display:flex;gap:9px;font-size:13.5px;line-height:1.5;margin-bottom:5px}
+.sp .k{width:88px;flex:none;color:#9A9AA0}
+.sp .v{flex:1}
+.sp .v b{font-weight:600}
+.warn{margin-top:16px;border-top:2px solid #111;padding-top:11px;font-size:16px;line-height:1.6}
+.warn b{font-weight:600}
+</style></head><body>
+<div class="wrap">
+
+  <div class="grp">
+    <div class="gk">01</div><div class="gt">밀기</div>
+    <div class="gs">오른쪽에서 새 화면이 들어온다 — 더 깊이 들어가는 이동</div>
+    <div class="pair">
+      <div class="cell"><div class="ph"><div class="scr">
+        <div class="nav">주변 장소</div>
+        <div class="bd">
+          <div class="row"><div class="im g1"></div><div><div class="tt">한강 루프탑</div><div class="ss">카페 · 0.4km</div></div></div>
+          <div class="row"><div class="im g2"></div><div><div class="tt">성수 책방</div><div class="ss">서점 · 0.8km</div></div></div>
+          <div class="row"><div class="im g3"></div><div><div class="tt">뚝섬 공원</div><div class="ss">공원 · 1.2km</div></div></div>
+        </div>
+      </div></div></div>
+      <div class="ar"><div class="ln">→</div><div class="tx">눌러서<br>들어간다</div></div>
+      <div class="cell"><div class="ph"><div class="scr">
+        <div class="nav"><span class="bk">‹</span>한강 루프탑</div>
+        <div class="bd">
+          <div class="hero g1"></div>
+          <div class="dt">한강 루프탑</div>
+          <div class="ds">강이 보이는 루프탑 카페입니다.<br>저녁 노을 시간에 자리가 빨리 찹니다.</div>
+        </div>
+      </div></div></div>
+    </div>
+    <div class="spec">
+      <div class="sp"><div class="k">돌아가기</div><div class="v">헤더 왼쪽 <b>‹</b> · 화면을 오른쪽으로 쓸기</div></div>
+      <div class="sp"><div class="k">쓰는 자리</div><div class="v">목록 → 상세, 설정 → 하위 설정</div></div>
+      <div class="sp"><div class="k">주의</div><div class="v">세 번 넘게 밀면 돌아 나오기 어렵습니다</div></div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="gk">02</div><div class="gt">덮기</div>
+    <div class="gs">아래에서 올라와 현재 화면을 덮는다 — 끝내고 제자리로</div>
+    <div class="pair">
+      <div class="cell"><div class="ph"><div class="scr">
+        <div class="nav"><span class="bk">‹</span>한강 루프탑</div>
+        <div class="bd">
+          <div class="hero g1"></div>
+          <div class="dt">한강 루프탑</div>
+          <div class="ds">강이 보이는 루프탑 카페입니다.<br>저녁 노을 시간에 자리가 빨리 찹니다.</div>
+        </div>
+      </div></div></div>
+      <div class="ar"><div class="ln">→</div><div class="tx">공유를<br>누른다</div></div>
+      <div class="cell"><div class="ph"><div class="scr">
+        <div class="nav"><span class="bk">‹</span>한강 루프탑</div>
+        <div class="bd">
+          <div class="hero g1"></div>
+          <div class="dt">한강 루프탑</div>
+        </div>
+        <div class="dim"></div>
+        <div class="sheet">
+          <div class="hd"></div>
+          <div class="st">어디로 보낼까요</div>
+          <div class="row"><div class="im g2"></div><div><div class="tt">메시지</div></div></div>
+          <div class="row"><div class="im g3"></div><div><div class="tt">링크 복사</div></div></div>
+        </div>
+      </div></div></div>
+    </div>
+    <div class="spec">
+      <div class="sp"><div class="k">돌아가기</div><div class="v">오른쪽 위 <b>닫기</b> · 아래로 끌어내리기 · 바깥 누르기</div></div>
+      <div class="sp"><div class="k">쓰는 자리</div><div class="v">공유 · 필터 · 짧은 입력처럼 끝나면 되돌아올 일</div></div>
+      <div class="sp"><div class="k">주의</div><div class="v">덮기 위에 또 덮지 않습니다</div></div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="gk">03</div><div class="gt">바꾸기</div>
+    <div class="gs">화면은 그대로 두고 안의 내용만 바뀐다 — 이동이 아니다</div>
+    <div class="pair">
+      <div class="cell"><div class="ph"><div class="scr">
+        <div class="nav">보관함</div>
+        <div class="bd">
+          <div class="seg"><div class="on">장소</div><div>코스</div><div>메모</div></div>
+          <div class="row"><div class="im g1"></div><div><div class="tt">한강 루프탑</div><div class="ss">카페 · 0.4km</div></div></div>
+          <div class="row"><div class="im g2"></div><div><div class="tt">성수 책방</div><div class="ss">서점 · 0.8km</div></div></div>
+        </div>
+      </div></div></div>
+      <div class="ar"><div class="ln">→</div><div class="tx">탭을<br>누른다</div></div>
+      <div class="cell"><div class="ph"><div class="scr">
+        <div class="nav">보관함</div>
+        <div class="bd">
+          <div class="seg"><div>장소</div><div class="on">코스</div><div>메모</div></div>
+          <div class="row"><div class="im g3"></div><div><div class="tt">노을 코스</div><div class="ss">장소 4곳 · 2시간</div></div></div>
+          <div class="row"><div class="im g2"></div><div><div class="tt">책방 코스</div><div class="ss">장소 3곳 · 1시간</div></div></div>
+        </div>
+      </div></div></div>
+    </div>
+    <div class="spec">
+      <div class="sp"><div class="k">돌아가기</div><div class="v">이전 탭을 다시 누릅니다 — <b>‹ 가 생기지 않습니다</b></div></div>
+      <div class="sp"><div class="k">쓰는 자리</div><div class="v">같은 성격의 목록을 기준만 바꿔 볼 때</div></div>
+      <div class="sp"><div class="k">주의</div><div class="v">헤더가 바뀌면 탭이 아니라 다른 화면입니다</div></div>
+    </div>
+  </div>
+
+</div>
+<div class="warn">세 가지 중 하나를 고르는 기준은 <b>어떻게 돌아오는가</b>입니다. 돌아오는 길이 설명되지 않으면 그 이동은 아직 설계된 것이 아닙니다.</div>
+</body></html>
