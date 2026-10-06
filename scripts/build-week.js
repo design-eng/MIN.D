@@ -414,7 +414,11 @@ function buildWeek(wk) {
       const colW = (CW - 0.44) / 2;
       const top = BODY_TOP + (b.sub ? 0.06 : -0.1);
       const n = b.rows.length;
-      const h = 0.86 + n * 0.72;
+      /* foot 이 있으면 행을 조금 좁혀 아래에 결론 한 줄 자리를 만든다.
+         foot 이 없으면 종래 간격을 그대로 쓴다. */
+      const rowH = b.foot ? 0.64 : 0.72;
+      const txtH = b.foot ? 0.36 : 0.42;
+      const h = 0.86 + n * rowH;
       card(s, M, top, colW, h, { fill: SURFACE });
       s.addText(b.leftTitle, {
         x: M + 0.44, y: top + 0.3, w: colW - 0.88, h: 0.4,
@@ -426,13 +430,13 @@ function buildWeek(wk) {
         fontSize: 17, color: MUTED, fontFace: FB, margin: 0, valign: "middle",
       });
       b.rows.forEach(([k, good, bad], i) => {
-        const y = top + 0.9 + i * 0.72;
+        const y = top + 0.9 + i * rowH;
         s.addText(k, {
           x: M + 0.44, y, w: 2.2, h: 0.3,
           fontSize: 9, bold: true, color: INK, fontFace: F, charSpacing: 1.6, margin: 0, valign: "middle",
         });
         s.addText(good, {
-          x: M + 0.44, y: y + 0.26, w: colW - 0.88, h: 0.42,
+          x: M + 0.44, y: y + 0.26, w: colW - 0.88, h: txtH,
           fontSize: 11.5, color: INK_SOFT, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
         });
         s.addText(k, {
@@ -440,11 +444,20 @@ function buildWeek(wk) {
           fontSize: 9, bold: true, color: MUTED, fontFace: F, charSpacing: 1.6, margin: 0, valign: "middle",
         });
         s.addText(bad, {
-          x: M + colW + 0.88, y: y + 0.26, w: colW - 0.88, h: 0.42,
+          x: M + colW + 0.88, y: y + 0.26, w: colW - 0.88, h: txtH,
           fontSize: 11.5, color: GRAPHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
         });
-        if (i < n - 1) { rule(s, M + 0.44, y + 0.66, colW - 0.88, "D2D2D2"); rule(s, M + colW + 0.88, y + 0.66, colW - 0.88, LINE); }
+        const ry = y + rowH - 0.06;
+        if (i < n - 1) { rule(s, M + 0.44, ry, colW - 0.88, "D2D2D2"); rule(s, M + colW + 0.88, ry, colW - 0.88, LINE); }
       });
+      if (b.foot) {
+        const fy = Math.min(top + h + 0.28, 6.12);
+        rule(s, M, fy, CW, INK);
+        s.addText(b.foot, {
+          x: M, y: fy + 0.12, w: CW, h: 0.44,
+          fontSize: 13, bold: true, color: INK, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
+        });
+      }
       foot(s);
       notes(s, b.script, b.note);
     },
