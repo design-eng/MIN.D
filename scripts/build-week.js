@@ -345,24 +345,41 @@ function buildWeek(wk) {
         return;
       }
       const cw = (CW - g * (n - 1)) / n;
+      /* 꼬리표를 다는 카드는 제목이 두세 줄이 되므로 치수를 따로 잡는다.
+         2026-10-06 교수님이 직접 만드신 장표의 '이어지는 절 / 결과' 구조다. */
+      const hasTag = b.items.some((it) => it.tag);
+      const cardH = hasTag ? 3.96 : 3.32;
+      const titleH = hasTag ? 0.92 : 0.5;
+      const bodySize = n >= 4 ? 10.5 : 11.5;
       b.items.forEach((it, i) => {
         const x = M + i * (cw + g);
         const isDark = b.dark === i;
-        card(s, x, BODY_TOP + 0.18, cw, 3.32, isDark ? { fill: INK } : { fill: WHITE, line: LINE });
+        card(s, x, BODY_TOP + 0.18, cw, cardH, isDark ? { fill: INK } : { fill: WHITE, line: LINE });
         chip(s, x + 0.42, BODY_TOP + 0.48, it.n, { size: 0.4, fontSize: 11.5, onDark: isDark });
         s.addText(it.t, {
-          x: x + 0.42, y: BODY_TOP + 1.02, w: cw - 0.84, h: 0.5,
+          x: x + 0.42, y: BODY_TOP + 1.02, w: cw - 0.84, h: titleH,
           fontSize: 17, color: isDark ? WHITE : INK, fontFace: FB, margin: 0, lineSpacingMultiple: 1.14, valign: "top",
         });
         s.addText(it.d, {
-          x: x + 0.42, y: BODY_TOP + 1.56, w: cw - 0.84, h: 1.8,
-          fontSize: 11.5, color: isDark ? BODY_D : GRAPHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.3, valign: "top",
+          x: x + 0.42, y: BODY_TOP + (hasTag ? 2.00 : 1.56), w: cw - 0.84, h: hasTag ? 1.16 : 1.8,
+          fontSize: bodySize, color: isDark ? BODY_D : GRAPHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.3, valign: "top",
         });
+        if (it.tag) {
+          s.addText(it.tagLabel || "결과", {
+            x: x + 0.42, y: BODY_TOP + 3.26, w: cw - 0.84, h: 0.24,
+            fontSize: 8.5, color: isDark ? BODY_D : MUTED, fontFace: F, charSpacing: 1.4, margin: 0, valign: "middle",
+          });
+          s.addText(it.tag, {
+            x: x + 0.42, y: BODY_TOP + 3.50, w: cw - 0.84, h: 0.30,
+            fontSize: 12, color: isDark ? WHITE : INK, fontFace: FB, margin: 0, valign: "middle",
+          });
+        }
       });
       if (b.foot) {
-        rule(s, M, 5.56, CW, INK);
+        const fy = hasTag ? 6.00 : 5.56;
+        rule(s, M, fy, CW, INK);
         s.addText(b.foot, {
-          x: M, y: 5.68, w: CW, h: 0.48,
+          x: M, y: fy + 0.12, w: CW, h: 0.48,
           fontSize: 13, bold: true, color: INK, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
         });
       }
