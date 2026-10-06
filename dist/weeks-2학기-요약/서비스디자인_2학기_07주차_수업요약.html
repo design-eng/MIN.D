@@ -1,0 +1,180 @@
+<html><head><meta charset="utf-8"><title>서비스디자인 7주차 수업 요약</title>
+<style>
+  @page { size: A4; margin: 13mm 13mm; }
+  body { font-family:"Pretendard","Noto Sans KR",sans-serif; color:#111; font-size:9.1pt; line-height:1.48; }
+  .rail { display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:1.8px;
+          color:#8A8A8A; text-transform:uppercase; padding-bottom:5px; }
+  .rule { border-bottom:1.4px solid #111; }
+  h1 { font-size:18pt; font-weight:900; margin:9px 0 5px; letter-spacing:-.3px; }
+  .goal { font-size:10pt; color:#111; margin:0 0 9px; max-width:135mm; }
+  .meta { display:flex; flex-wrap:wrap; gap:3px 22px; font-size:8.4pt; color:#6E6E6E;
+          border-top:1px solid #DCDCDC; border-bottom:1px solid #DCDCDC; padding:5px 0; margin-bottom:11px; }
+  .meta b { color:#111; font-weight:500; }
+  h2 { font-size:7.5pt; letter-spacing:1.8px; text-transform:uppercase; color:#8A8A8A;
+       font-weight:400; margin:0 0 4px; }
+  section { margin-bottom:9px; }
+  .cols { display:flex; gap:8mm; align-items:flex-start; }
+  .cols .left { width:57mm; flex:none; }
+  .cols .right { flex:1; min-width:0; }
+  tr { break-inside:avoid; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:2.4px 6px 2.4px 0; border-bottom:1px solid #EDEDED; vertical-align:top; }
+  .sch td { word-break:keep-all; overflow-wrap:break-word; }
+  .sch td:first-child { width:20mm; font-variant-numeric:tabular-nums; font-weight:500; }
+  .sch td em { display:block; font-style:normal; color:#8A8A8A; font-size:7.8pt; margin-top:1px; }
+  .sch tr.rest td { color:#9B9B9B; font-weight:400; }
+  .flow td.p { width:7mm; color:#9B9B9B; font-variant-numeric:tabular-nums; font-size:8.4pt; }
+  .flow td.k { width:12mm; font-size:7.5pt; letter-spacing:1px; color:#8A8A8A; padding-top:5px; }
+  .flow td.t { font-weight:600; }
+  .flow td.t em { display:block; font-style:normal; font-weight:400; color:#6E6E6E;
+                  font-size:8.3pt; margin-top:0; line-height:1.4; }
+  .work { background:#F2F2F2; padding:6px 9px; margin-bottom:4px; }
+  .work b { font-size:10pt; } .work span { color:#6E6E6E; font-size:8.4pt; margin-left:7px; }
+  .work p { margin:3px 0 0; font-size:8.6pt; color:#111; }
+  ol { margin:0; padding:0; list-style:none; counter-reset:h; }
+  ol li { counter-increment:h; padding:3px 0 3px 16px; position:relative; border-bottom:1px solid #EDEDED; }
+  ol li::before { content:counter(h); position:absolute; left:0; top:4px;
+                  font-size:8pt; color:#9B9B9B; font-variant-numeric:tabular-nums; }
+  ol li b { font-weight:600; } ol li span { display:block; color:#6E6E6E; font-size:8.6pt; }
+  .due { margin-top:5px; padding-top:5px; border-top:1.4px solid #111; font-weight:600; font-size:9.6pt; }
+  .next { background:#111; color:#fff; padding:8px 11px; }
+  .next b { font-size:10.5pt; } .next p { margin:3px 0 0; color:#B8B8B8; font-size:8.6pt; }
+  /* 본문 장표가 14장을 넘으면 우측 열이 한 장을 넘긴다. 그 주차만 조판을 조인다. */
+  body.dense { font-size:8.7pt; line-height:1.4; }
+  body.dense .flow td { padding:1.8px 6px 1.8px 0; }
+  body.dense .flow td.t em { font-size:7.8pt; line-height:1.32; }
+  body.dense .sch td { padding:1.9px 6px 1.9px 0; }
+  body.dense h1 { font-size:16.5pt; }
+  body.dense .goal { font-size:9.4pt; }
+  body.dense section { margin-bottom:7px; }
+  body.dense .work { padding:5px 8px; }
+  /* 16장을 넘으면 한 단계 더 조인다 — A4 한 장을 넘기지 않기 위해서다. */
+  body.denser { font-size:8.3pt; line-height:1.34; }
+  body.denser .flow td { padding:1.2px 5px 1.2px 0; }
+  body.denser .flow td.t em { font-size:7.4pt; line-height:1.26; }
+  body.denser .sch td { padding:1.3px 5px 1.3px 0; }
+  body.denser h1 { font-size:15.5pt; }
+  body.denser .goal { font-size:9pt; }
+  body.denser section { margin-bottom:5px; }
+  body.denser h2 { margin-bottom:3px; }
+  body.denser .work { padding:4px 7px; margin-bottom:3px; }
+  body.denser .work p { font-size:8.2pt; }
+  body.denser ol li { padding:2px 0 2px 15px; }
+  body.denser ol li span { font-size:8.2pt; }
+  body.denser .next { padding:6px 9px; }
+  /* 18장을 넘으면 한 단계 더. A4 한 장이 이 문서의 조건이다. */
+  body.densest { font-size:7.9pt; line-height:1.28; }
+  body.densest .flow td { padding:0.8px 4px 0.8px 0; }
+  body.densest .flow td.t em { font-size:7pt; line-height:1.22; }
+  body.densest .sch td { padding:0.9px 4px 0.9px 0; }
+  body.densest h1 { font-size:14.5pt; }
+  body.densest .goal { font-size:8.6pt; }
+  body.densest section { margin-bottom:4px; }
+  body.densest .work { padding:3px 6px; margin-bottom:2px; }
+  body.densest ol li { padding:1.4px 0 1.4px 14px; }
+  .two { display:flex; gap:9mm; align-items:flex-start; break-inside:avoid; }
+  .two > * { flex:1; min-width:0; }
+</style></head><body class="dense denser">
+  <div class="rail"><span>서비스디자인 · 학부 3학년</span><span>WEEK 07 · 수업 요약</span></div>
+  <div class="rule"></div>
+  <h1>흐름 늘리기 — 겹치는 화면 정리</h1>
+  <p class="goal">흐름을 셋으로 늘리고 겹치는 화면을 한 벌로 정리해, 중간 보고서에 낼 화면 목록을 확정합니다.</p>
+  <div class="meta">
+    <span><b>진행</b> 3시간 · 컨펌 25분 · 강의 80분 · 실습 45분 · 중간 보고서 안내 20분 · 확인 10분</span>
+    <span><b>산출물</b> 흐름 3개(화면 15장 안팎) · 화면 목록표 · 중간 보고서</span>
+  </div>
+
+  <div class="cols">
+    <div class="left">
+      <section><h2>진행</h2><table class="sch"><tr class=""><td>00:00–00:25</td><td>핵심 흐름 함께 보기 — 컨펌<em>전체 공유</em></td></tr><tr class=""><td>00:25–00:50</td><td>PART 1 — 흐름을 셋으로<em>강의</em></td></tr><tr class="rest"><td>00:50–01:00</td><td>휴식</td></tr><tr class=""><td>01:00–01:30</td><td>PART 2 — 겹치는 화면<em>강의 + 도판</em></td></tr><tr class=""><td>01:30–01:55</td><td>PART 3 — 화면 목록 확정<em>강의 + 시연</em></td></tr><tr class=""><td>01:55–02:30</td><td>실습 — 흐름 둘 더하고 목록 만들기<em>개인 워크 + 순회</em></td></tr><tr class=""><td>02:30–02:50</td><td>중간 보고서 안내 — 8주차 평가<em>안내</em></td></tr><tr class=""><td>02:50–03:00</td><td>확인 · 과제 안내<em>2인 1조 + 안내</em></td></tr></table></section>
+      <section><h2>실습</h2>
+    <div class="work">
+      <b>실습 · 흐름 둘 더하고 목록 만들기</b>
+      <span>새로 그리는 시간이 아니라 정리하는 시간입니다.</span>
+      <p>8분 흐름 둘 고르고 네 지점 적기  ·  10분 겹치는 화면 찾기  ·  10분 겹치는 화면에 네 가지 적기  ·  7분 화면 목록표 틀 만들기</p>
+    </div>
+    <div class="work">
+      <b>중간 보고서 — 여덟 장</b>
+      <span>새로 쓰는 것은 첫 장과 마지막 장뿐입니다. 나머지 여섯 장은 모으는 일입니다.</span>
+      <p>01 표지 — 새로 씁니다  ·  02 작업 범위  ·  03 규격 표  ·  04 토큰 표  ·  05 컴포넌트 목록  ·  06 흐름 지도와 흐름 셋  ·  07 화면 목록표  ·  08 남은 일정 — 새로 씁니다</p>
+    </div></section>
+    </div>
+    <div class="right">
+      <section><h2>오늘 다루는 것 — 본문 16장 (표지·과제 포함 18장)</h2>
+        <table class="flow"><tr>
+      <td class="p">02</td>
+      <td class="k">정리</td>
+      <td class="t">오늘의 목표<em>같은 화면을 흐름마다 복사하면 하나를 고칠 때 셋을 찾아 고치게 됩니다.</em></td>
+    </tr><tr>
+      <td class="p">03</td>
+      <td class="k">구간</td>
+      <td class="t">흐름을 셋으로<em>많이 만드는 것이 목적이 아니라, 서비스가 보이는 최소한을 채우는 것입니다.</em></td>
+    </tr><tr>
+      <td class="p">04</td>
+      <td class="k">정리</td>
+      <td class="t">다음 흐름을 고르는 세 기준<em>아무 흐름이나 둘이 아닙니다.</em></td>
+    </tr><tr>
+      <td class="p">05</td>
+      <td class="k">정리</td>
+      <td class="t">흐름의 세 가지 성격<em>자기 흐름 셋이 어느 쪽인지 보세요.</em></td>
+    </tr><tr>
+      <td class="p">06</td>
+      <td class="k">구간</td>
+      <td class="t">겹치는 화면<em>같은 화면을 흐름마다 복사하면 하나를 고칠 때 셋을 찾아 고치게 됩니다.</em></td>
+    </tr><tr>
+      <td class="p">07</td>
+      <td class="k">도판</td>
+      <td class="t">한 화면이 세 흐름에 쓰일 때<em>같은 상세 화면으로 목록 · 보관함 · 검색 결과 세 군데서 들어옵니다.</em></td>
+    </tr><tr>
+      <td class="p">08</td>
+      <td class="k">정리</td>
+      <td class="t">들어오는 길이 여럿일 때 정할 네 가지<em>길게 쓸 필요 없습니다. 화면 옆에 네 줄이면 됩니다.</em></td>
+    </tr><tr>
+      <td class="p">09</td>
+      <td class="k">비교</td>
+      <td class="t">한 화면으로 묶을 것인가, 나눌 것인가<em>헷갈리면 묶는 쪽을 먼저 해 보세요. 묶었다가 나누기가 반대보다 쉽습니다.</em></td>
+    </tr><tr>
+      <td class="p">10</td>
+      <td class="k">구간</td>
+      <td class="t">화면 목록 확정<em>다음 주 중간 보고서의 중심 문서이자, 남은 여덟 주의 작업 지시서입니다.</em></td>
+    </tr><tr>
+      <td class="p">11</td>
+      <td class="k">정리</td>
+      <td class="t">화면 목록표 — 여섯 칸<em>만든 것의 목록이 아니라 필요한 것의 목록입니다.</em></td>
+    </tr><tr>
+      <td class="p">12</td>
+      <td class="k">실습</td>
+      <td class="t">실습 · 흐름 둘 더하고 목록 만들기<em>새로 그리는 시간이 아니라 정리하는 시간입니다.</em></td>
+    </tr><tr>
+      <td class="p">13</td>
+      <td class="k">구간</td>
+      <td class="t">중간 보고서 — 8주차 평가<em>다음 주가 중간평가입니다. 지금까지 한 것을 모으면 대부분이 됩니다.</em></td>
+    </tr><tr>
+      <td class="p">14</td>
+      <td class="k">실습</td>
+      <td class="t">중간 보고서 — 여덟 장<em>새로 쓰는 것은 첫 장과 마지막 장뿐입니다. 나머지 여섯 장은 모으는 일입니다.</em></td>
+    </tr><tr>
+      <td class="p">15</td>
+      <td class="k">정리</td>
+      <td class="t">무엇을 보는가 · 어떻게 내는가<em>발표가 아닙니다. 보고서를 띄워 놓고 묻는 자리입니다.</em></td>
+    </tr><tr>
+      <td class="p">16</td>
+      <td class="k">정리</td>
+      <td class="t">확인 — 겹치는 화면이 한 벌인가<em>같은 이름의 프레임이 두 개 있으면 복제본입니다.</em></td>
+    </tr><tr>
+      <td class="p">17</td>
+      <td class="k">점검</td>
+      <td class="t">제출 점검표<em>다음 주는 중간평가입니다. 9주차부터 남은 흐름을 채웁니다.</em></td>
+    </tr></table></section>
+    </div>
+  </div>
+  <section class="two">
+    <div><h2>과제</h2><ol><li><b>흐름 3개 — 화면 15장 안팎</b><span>지난주 핵심 흐름에 둘을 더합니다. 각 흐름마다 시작 · 진행 · 결과 · 되돌아옴 네 지점이 있어야 합니다. 겹치는 화면은 한 벌만 만들고 흐름마다 달라지는 것을 옆에 적습니다.</span></li><li><b>화면 목록표</b><span>지금까지 만든 화면을 전부 한 표에 적습니다. 번호 · 이름 · 속한 흐름 · 상태(완료/작업중/없음) · 패널 게재 여부. 보고서의 중심 문서입니다.</span></li><li><b>중간 보고서 — PDF</b><span>오늘 안내한 여덟 장으로 묶습니다. 지금까지 만든 것을 모으는 일이고 새로 쓰는 것은 표지와 남은 일정뿐입니다. 10월 28일 수업 시작 전까지.</span></li></ol>
+      <div class="due">제출 — 중간 보고서 — 10월 28일(수) 수업 시작 전까지 · PDF 와 Figma 링크 제출</div></div>
+    <div><h2>다음</h2><div class="next">
+      <b>08주차 중간평가 — 보고서 검토와 개별 면담</b>
+      <p>중간 보고서 제출 · 1인 10분 검토와 질의 · 남은 8주 작업 계획 확정 · 보완 범위 개별 합의</p>
+      <p>미리 준비 — 중간 보고서 PDF · Figma 링크 · 노트북</p>
+    </div></div>
+  </section>
+</body></html>

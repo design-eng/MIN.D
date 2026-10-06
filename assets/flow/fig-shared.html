@@ -1,0 +1,125 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:2000px;height:780px;background:#fff;font-family:Pretendard,sans-serif;color:#111;padding:20px 34px}
+.top{display:flex;gap:26px;align-items:flex-start}
+.ins{width:760px;flex:none}
+.hd{font-size:14px;color:#9A9AA0;letter-spacing:1.6px;margin-bottom:3px}
+.ht{font-size:24px;font-weight:600;margin-bottom:11px}
+.three{display:flex;gap:16px}
+.cell{flex:1}
+.cl{font-size:17px;font-weight:600;margin-bottom:5px}
+.cs{font-size:15px;color:#9A9AA0;margin-bottom:7px}
+.ph{width:100%;height:226px;background:#111;border-radius:20px;padding:6px}
+.ph.big{height:300px;border-radius:24px}
+.scr{width:100%;height:100%;background:#fff;border-radius:15px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.nav{height:28px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex:none;border-bottom:1px solid #F4F4F6;position:relative}
+.nav .bk{position:absolute;left:8px;font-size:11px;color:#2B6DEF}
+.bd{flex:1;padding:7px 9px;overflow:hidden}
+.seg{display:flex;height:22px;background:#F2F2F4;border-radius:6px;padding:2px;margin-bottom:6px}
+.seg div{flex:1;display:flex;align-items:center;justify-content:center;font-size:8.5px;color:#8A8A90;border-radius:4px}
+.seg div.on{background:#fff;color:#111;font-weight:600}
+.srch{height:24px;border:1px solid #E4E4E8;border-radius:7px;display:flex;align-items:center;padding:0 8px;
+  font-size:9px;color:#9A9AA0;margin-bottom:7px}
+.row{display:flex;gap:6px;align-items:center;border-bottom:1px solid #F4F4F6;padding:5px 0}
+.row .im{width:26px;height:26px;border-radius:5px;flex:none}
+.row .tt{font-size:9.5px;font-weight:600}
+.row .ss{font-size:8px;color:#9A9AA0}
+.row.on{background:#F7F7F9;border-radius:5px;padding-left:4px;padding-right:4px}
+.g1{background:linear-gradient(140deg,#9EC6F5,#5A8FD6)}
+.g2{background:linear-gradient(140deg,#F5C9A8,#D98E58)}
+.g3{background:linear-gradient(140deg,#BFE3C9,#6FB785)}
+.ar{width:72px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:300px;gap:4px}
+.ar .l1{font-size:26px;line-height:1}
+.ar .tx{font-size:15px;color:#6E6E6E;text-align:center;line-height:1.3}
+.one{width:300px;flex:none}
+.hero{height:88px;border-radius:7px;margin-bottom:7px}
+.dt{font-size:13px;font-weight:600;margin-bottom:2px}
+.dsm{font-size:9.5px;color:#9A9AA0;margin-bottom:6px}
+.ds{font-size:9.5px;color:#6E6E6E;line-height:1.5;margin-bottom:8px}
+.btn{height:30px;border-radius:7px;background:#2B6DEF;color:#fff;font-size:10.5px;font-weight:600;
+  display:flex;align-items:center;justify-content:center}
+.spec{flex:1;border:1px solid #E4E4E8;border-radius:12px;padding:14px 16px}
+.sh{font-size:17px;font-weight:600;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #E4E4E8}
+.sr{display:flex;gap:10px;font-size:18px;line-height:1.5;margin-bottom:6px}
+.sr .k{width:100px;flex:none;color:#9A9AA0}
+.sr .v{flex:1}
+.sr .v b{font-weight:600}
+.gap{height:13px}
+.warn{margin-top:16px;border-top:2px solid #111;padding-top:11px;font-size:21px;line-height:1.6}
+.warn b{font-weight:600}
+</style></head><body>
+<div class="top">
+
+  <div class="ins">
+    <div class="hd">들어오는 길 · 셋</div>
+    <div class="ht">같은 상세 화면으로 세 군데서 들어옵니다</div>
+    <div class="three">
+      <div class="cell">
+        <div class="cl">흐름 A — 둘러보기</div><div class="cs">홈 › 주변 장소 목록</div>
+        <div class="ph"><div class="scr">
+          <div class="nav">주변 장소</div>
+          <div class="bd">
+            <div class="row on"><div class="im g1"></div><div><div class="tt">한강 루프탑</div><div class="ss">카페 · 0.4km</div></div></div>
+            <div class="row"><div class="im g2"></div><div><div class="tt">성수 책방</div><div class="ss">서점 · 0.8km</div></div></div>
+            <div class="row"><div class="im g3"></div><div><div class="tt">뚝섬 공원</div><div class="ss">공원 · 1.2km</div></div></div>
+          </div>
+        </div></div>
+      </div>
+      <div class="cell">
+        <div class="cl">흐름 B — 다시 보기</div><div class="cs">보관함 › 저장한 장소</div>
+        <div class="ph"><div class="scr">
+          <div class="nav">보관함</div>
+          <div class="bd">
+            <div class="seg"><div class="on">장소</div><div>코스</div><div>메모</div></div>
+            <div class="row on"><div class="im g1"></div><div><div class="tt">한강 루프탑</div><div class="ss">3일 전 저장</div></div></div>
+            <div class="row"><div class="im g2"></div><div><div class="tt">성수 책방</div><div class="ss">지난주 저장</div></div></div>
+          </div>
+        </div></div>
+      </div>
+      <div class="cell">
+        <div class="cl">흐름 C — 찾기</div><div class="cs">검색 › 결과 목록</div>
+        <div class="ph"><div class="scr">
+          <div class="nav">검색</div>
+          <div class="bd">
+            <div class="srch">루프탑</div>
+            <div class="row on"><div class="im g1"></div><div><div class="tt">한강 루프탑</div><div class="ss">카페 · 0.4km</div></div></div>
+            <div class="row"><div class="im g3"></div><div><div class="tt">서울숲 루프탑</div><div class="ss">카페 · 2.1km</div></div></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ar"><div class="l1">→</div><div class="tx">세 길이<br>한 화면으로</div></div>
+
+  <div class="one">
+    <div class="cl">공용 — 장소 상세</div><div class="cs">세 흐름이 함께 쓰는 한 장</div>
+    <div class="ph big"><div class="scr">
+      <div class="nav"><span class="bk">‹</span>한강 루프탑</div>
+      <div class="bd">
+        <div class="hero g1"></div>
+        <div class="dt">한강 루프탑</div>
+        <div class="dsm">카페 · 0.4km · 11:00–22:00</div>
+        <div class="ds">강이 보이는 루프탑 카페입니다.<br>저녁 노을 시간에 자리가 빨리 찹니다.</div>
+        <div class="btn">저장하기</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="spec">
+    <div class="sh">세 흐름이 똑같이 쓰는 것 — 한 벌만 만듭니다</div>
+    <div class="sr"><div class="k">구조</div><div class="v">사진 · 이름 · 분류와 거리 · 설명 · 버튼 순서</div></div>
+    <div class="sr"><div class="k">규격</div><div class="v">사진 높이 · 여백 · 글자 단계 · 버튼 높이</div></div>
+    <div class="sr"><div class="k">정보</div><div class="v">상세에 나오는 항목과 그 순서</div></div>
+    <div class="gap"></div>
+    <div class="sh">흐름마다 달라지는 것 — 화면 옆에 적습니다</div>
+    <div class="sr"><div class="k">‹ 의 목적지</div><div class="v">A 는 목록으로, B 는 보관함으로, C 는 검색 결과로. <b>들어온 길로 돌아갑니다</b></div></div>
+    <div class="sr"><div class="k">헤더 제목</div><div class="v">셋 다 장소 이름. <b>들어온 곳 이름을 쓰지 않습니다</b></div></div>
+    <div class="sr"><div class="k">버튼 상태</div><div class="v">B 로 들어오면 이미 저장된 상태라 <b>저장됨</b>으로 보입니다</div></div>
+    <div class="sr"><div class="k">검색어</div><div class="v">C 에서는 돌아갔을 때 검색어와 결과가 남아 있어야 합니다</div></div>
+  </div>
+
+</div>
+<div class="warn">겹치는 화면은 <b>세 번 그리는 것이 아니라 한 번 그리고 세 가지를 적어 두는</b> 것입니다. 같은 화면을 흐름마다 복사하면 하나를 고칠 때 셋을 찾아 고치게 됩니다.</div>
+</body></html>
