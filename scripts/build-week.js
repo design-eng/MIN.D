@@ -436,36 +436,53 @@ function buildWeek(wk) {
       const rowH = b.foot ? 0.64 : 0.72;
       const txtH = b.foot ? 0.36 : 0.42;
       const h = 0.86 + n * rowH;
-      card(s, M, top, colW, h, { fill: SURFACE });
+      /* 어느 쪽이 옳은 방향인지 조판으로 드러낸다 (2026-10-06 교수님 지시).
+         권장 칸은 흰 바탕에 검은 테두리와 상단 띠를 두고, 반대쪽은 가라앉힌다.
+         good 을 적지 않으면 왼쪽이 권장이고, "none" 이면 양쪽을 나란히 둔다. */
+      const side = b.good || "left";
+      const lGood = side === "left", rGood = side === "right", neutral = side === "none";
+      const band = (x) => s.addShape(pres.ShapeType.rect, {
+        x, y: top, w: colW, h: 0.07, fill: { color: INK }, line: { color: INK, width: 0 },
+      });
+      card(s, M, top, colW, h, neutral ? { fill: SURFACE }
+        : lGood ? { fill: WHITE, line: INK } : { fill: SURFACE });
+      if (lGood) band(M);
       s.addText(b.leftTitle, {
         x: M + 0.44, y: top + 0.3, w: colW - 0.88, h: 0.4,
-        fontSize: 17, color: INK, fontFace: FB, margin: 0, valign: "middle",
+        fontSize: 17, color: neutral || lGood ? INK : MUTED, fontFace: FB, margin: 0, valign: "middle",
       });
-      card(s, M + colW + 0.44, top, colW, h, { fill: WHITE, line: LINE });
+      card(s, M + colW + 0.44, top, colW, h, neutral ? { fill: WHITE, line: LINE }
+        : rGood ? { fill: WHITE, line: INK } : { fill: SURFACE });
+      if (rGood) band(M + colW + 0.44);
       s.addText(b.rightTitle, {
         x: M + colW + 0.88, y: top + 0.3, w: colW - 0.88, h: 0.4,
-        fontSize: 17, color: MUTED, fontFace: FB, margin: 0, valign: "middle",
+        fontSize: 17, color: rGood ? INK : MUTED, fontFace: FB, margin: 0, valign: "middle",
       });
       b.rows.forEach(([k, good, bad], i) => {
         const y = top + 0.9 + i * rowH;
         s.addText(k, {
           x: M + 0.44, y, w: 2.2, h: 0.3,
-          fontSize: 9, bold: true, color: INK, fontFace: F, charSpacing: 1.6, margin: 0, valign: "middle",
+          fontSize: 9, bold: true, color: neutral || lGood ? INK : MUTED, fontFace: F, charSpacing: 1.6, margin: 0, valign: "middle",
         });
         s.addText(good, {
           x: M + 0.44, y: y + 0.26, w: colW - 0.88, h: txtH,
-          fontSize: 11.5, color: INK_SOFT, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
+          fontSize: 11.5, color: neutral || lGood ? INK_SOFT : GRAPHITE, fontFace: F,
+          bold: lGood, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
         });
         s.addText(k, {
           x: M + colW + 0.88, y, w: 2.2, h: 0.3,
-          fontSize: 9, bold: true, color: MUTED, fontFace: F, charSpacing: 1.6, margin: 0, valign: "middle",
+          fontSize: 9, bold: true, color: rGood ? INK : MUTED, fontFace: F, charSpacing: 1.6, margin: 0, valign: "middle",
         });
         s.addText(bad, {
           x: M + colW + 0.88, y: y + 0.26, w: colW - 0.88, h: txtH,
-          fontSize: 11.5, color: GRAPHITE, fontFace: F, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
+          fontSize: 11.5, color: rGood ? INK_SOFT : GRAPHITE, fontFace: F,
+          bold: rGood, margin: 0, lineSpacingMultiple: 1.2, valign: "top",
         });
         const ry = y + rowH - 0.06;
-        if (i < n - 1) { rule(s, M + 0.44, ry, colW - 0.88, "D2D2D2"); rule(s, M + colW + 0.88, ry, colW - 0.88, LINE); }
+        if (i < n - 1) {
+          rule(s, M + 0.44, ry, colW - 0.88, neutral || lGood ? "D2D2D2" : LINE);
+          rule(s, M + colW + 0.88, ry, colW - 0.88, rGood ? "D2D2D2" : LINE);
+        }
       });
       if (b.foot) {
         const fy = Math.min(top + h + 0.28, 6.12);

@@ -461,7 +461,7 @@ const WEEK_CONTENT = [
         ],
         note: "04 감정 질문이 4주차 저니맵의 감정선 재료가 된다. 지금 안 물으면 나중에 못 그린다." },
 
-      { type: "compare", kicker: "FIX", title: "고쳐야 할 질문 · 고친 질문",
+      { type: "compare", kicker: "FIX", title: "고쳐야 할 질문 · 고친 질문", good: "right",
         sub: "실제로 학생들이 가장 많이 쓰는 세 가지 오류입니다.",
         leftTitle: "이렇게 고칩니다", rightTitle: "이렇게 쓰면 답이 망가집니다",
         rows: [
@@ -1386,7 +1386,7 @@ const WEEK_CONTENT = [
         desc: "화면을 그리기 전에 화면들 사이의 관계를 정합니다.",
         note: "30분 구간. IA와 플로우의 차이를 '지도와 경로'로 비유하면 한 번에 잡힌다." },
 
-      { type: "compare", kicker: "CONCEPT", title: "IA와 태스크 플로우 — 지도와 경로",
+      { type: "compare", kicker: "CONCEPT", title: "IA와 태스크 플로우 — 지도와 경로", good: "none",
         sub: "둘 다 필요하지만 하는 일이 다릅니다.",
         leftTitle: "IA — 지도", rightTitle: "태스크 플로우 — 경로",
         rows: [
