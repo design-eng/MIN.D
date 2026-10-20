@@ -1,0 +1,184 @@
+<html><head><meta charset="utf-8"><title>컨셉트와 프로세스 4주차 수업 요약</title>
+<style>
+  @page { size: A4; margin: 13mm 13mm; }
+  body { font-family:"Pretendard","Noto Sans KR",sans-serif; color:#111; font-size:9.1pt; line-height:1.48; }
+  .rail { display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:1.8px;
+          color:#8A8A8A; text-transform:uppercase; padding-bottom:5px; }
+  .rule { border-bottom:1.4px solid #111; }
+  h1 { font-size:18pt; font-weight:900; margin:9px 0 5px; letter-spacing:-.3px; }
+  .goal { font-size:10pt; color:#111; margin:0 0 9px; max-width:135mm; }
+  .meta { display:flex; flex-wrap:wrap; gap:3px 22px; font-size:8.4pt; color:#6E6E6E;
+          border-top:1px solid #DCDCDC; border-bottom:1px solid #DCDCDC; padding:5px 0; margin-bottom:11px; }
+  .meta b { color:#111; font-weight:500; }
+  h2 { font-size:7.5pt; letter-spacing:1.8px; text-transform:uppercase; color:#8A8A8A;
+       font-weight:400; margin:0 0 4px; }
+  section { margin-bottom:9px; }
+  .cols { display:flex; gap:8mm; align-items:flex-start; }
+  .cols .left { width:57mm; flex:none; }
+  .cols .right { flex:1; min-width:0; }
+  tr { break-inside:avoid; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:2.4px 6px 2.4px 0; border-bottom:1px solid #EDEDED; vertical-align:top; }
+  .sch td { word-break:keep-all; overflow-wrap:break-word; }
+  .sch td:first-child { width:20mm; font-variant-numeric:tabular-nums; font-weight:500; }
+  .sch td em { display:block; font-style:normal; color:#8A8A8A; font-size:7.8pt; margin-top:1px; }
+  .sch tr.rest td { color:#9B9B9B; font-weight:400; }
+  .flow td.p { width:7mm; color:#9B9B9B; font-variant-numeric:tabular-nums; font-size:8.4pt; }
+  .flow td.k { width:12mm; font-size:7.5pt; letter-spacing:1px; color:#8A8A8A; padding-top:5px; }
+  .flow td.t { font-weight:600; }
+  .flow td.t em { display:block; font-style:normal; font-weight:400; color:#6E6E6E;
+                  font-size:8.3pt; margin-top:0; line-height:1.4; }
+  .work { background:#F2F2F2; padding:6px 9px; margin-bottom:4px; }
+  .work b { font-size:10pt; } .work span { color:#6E6E6E; font-size:8.4pt; margin-left:7px; }
+  .work p { margin:3px 0 0; font-size:8.6pt; color:#111; }
+  ol { margin:0; padding:0; list-style:none; counter-reset:h; }
+  ol li { counter-increment:h; padding:3px 0 3px 16px; position:relative; border-bottom:1px solid #EDEDED; }
+  ol li::before { content:counter(h); position:absolute; left:0; top:4px;
+                  font-size:8pt; color:#9B9B9B; font-variant-numeric:tabular-nums; }
+  ol li b { font-weight:600; } ol li span { display:block; color:#6E6E6E; font-size:8.6pt; }
+  .due { margin-top:5px; padding-top:5px; border-top:1.4px solid #111; font-weight:600; font-size:9.6pt; }
+  .next { background:#111; color:#fff; padding:8px 11px; }
+  .next b { font-size:10.5pt; } .next p { margin:3px 0 0; color:#B8B8B8; font-size:8.6pt; }
+  /* 본문 장표가 14장을 넘으면 우측 열이 한 장을 넘긴다. 그 주차만 조판을 조인다. */
+  body.dense { font-size:8.7pt; line-height:1.4; }
+  body.dense .flow td { padding:1.8px 6px 1.8px 0; }
+  body.dense .flow td.t em { font-size:7.8pt; line-height:1.32; }
+  body.dense .sch td { padding:1.9px 6px 1.9px 0; }
+  body.dense h1 { font-size:16.5pt; }
+  body.dense .goal { font-size:9.4pt; }
+  body.dense section { margin-bottom:7px; }
+  body.dense .work { padding:5px 8px; }
+  /* 16장을 넘으면 한 단계 더 조인다 — A4 한 장을 넘기지 않기 위해서다. */
+  body.denser { font-size:8.3pt; line-height:1.34; }
+  body.denser .flow td { padding:1.2px 5px 1.2px 0; }
+  body.denser .flow td.t em { font-size:7.4pt; line-height:1.26; }
+  body.denser .sch td { padding:1.3px 5px 1.3px 0; }
+  body.denser h1 { font-size:15.5pt; }
+  body.denser .goal { font-size:9pt; }
+  body.denser section { margin-bottom:5px; }
+  body.denser h2 { margin-bottom:3px; }
+  body.denser .work { padding:4px 7px; margin-bottom:3px; }
+  body.denser .work p { font-size:8.2pt; }
+  body.denser ol li { padding:2px 0 2px 15px; }
+  body.denser ol li span { font-size:8.2pt; }
+  body.denser .next { padding:6px 9px; }
+  /* 18장을 넘으면 한 단계 더. A4 한 장이 이 문서의 조건이다. */
+  body.densest { font-size:7.9pt; line-height:1.28; }
+  body.densest .flow td { padding:0.8px 4px 0.8px 0; }
+  body.densest .flow td.t em { font-size:7pt; line-height:1.22; }
+  body.densest .sch td { padding:0.9px 4px 0.9px 0; }
+  body.densest h1 { font-size:14.5pt; }
+  body.densest .goal { font-size:8.6pt; }
+  body.densest section { margin-bottom:4px; }
+  body.densest .work { padding:3px 6px; margin-bottom:2px; }
+  body.densest ol li { padding:1.4px 0 1.4px 14px; }
+  .two { display:flex; gap:9mm; align-items:flex-start; break-inside:avoid; }
+  .two > * { flex:1; min-width:0; }
+</style></head><body class="dense denser">
+  <div class="rail"><span>컨셉트와 프로세스 · 대학원 박사과정</span><span>WEEK 04 · 수업 요약</span></div>
+  <div class="rule"></div>
+  <h1>선행연구 쓰는 법 — 다섯 편을 한 문단으로</h1>
+  <p class="goal">논문 한 편에서 네 가지를 꺼내고, 다섯 편을 한 문단으로 묶는 데까지 갑니다.</p>
+  <div class="meta">
+    <span><b>진행</b> 120분 · 강의 90% · 안내 10% · 작성은 과제로</span>
+    <span><b>산출물</b> 선행연구 한 문단 · 인용 문장 다섯 개 · 정리표 보완본</span>
+  </div>
+
+  <div class="cols">
+    <div class="left">
+      <section><h2>진행</h2><table class="sch"><tr class=""><td>00:00–00:10</td><td>지난 회차 확인 · 오늘 이것을 하는 이유<em>안내</em></td></tr><tr class=""><td>00:10–00:35</td><td>PART 01 — 한 편에서 무엇을 꺼내는가<em>강의</em></td></tr><tr class=""><td>00:35–00:55</td><td>PART 02 — 꺼낸 것이 어느 절로 가는가<em>강의</em></td></tr><tr class="rest"><td>00:55–01:05</td><td>휴식</td></tr><tr class=""><td>01:05–01:30</td><td>PART 03 — 인용하는 법<em>강의</em></td></tr><tr class=""><td>01:30–01:50</td><td>PART 04 — 한 문단으로 쓰기<em>강의</em></td></tr><tr class=""><td>01:50–02:00</td><td>과제 안내<em>안내</em></td></tr></table></section>
+      <section><h2>실습</h2>
+    <div class="work">
+      <b>논문에서 꺼내는 네 가지</b>
+      <span>요약하지 않습니다. 이 넷만 꺼냅니다.</span>
+      <p>1 무엇을 물었나  ·  2 무엇으로 쟀나  ·  3 몇 개를 봤나  ·  4 무엇이 남았나</p>
+    </div>
+    <div class="work">
+      <b>한 문단 만드는 순서</b>
+      <span>네 문장이면 한 문단이 됩니다. 길게 쓰지 않습니다.</span>
+      <p>1 다섯 편을 두세 무리로 나눈다  ·  2 무리마다 한 문장을 쓴다  ·  3 빈 자리를 한 문장으로 쓴다  ·  4 내 연구를 한 문장 붙인다</p>
+    </div></section>
+    </div>
+    <div class="right">
+      <section><h2>오늘 다루는 것 — 본문 17장 (표지·과제 포함 19장)</h2>
+        <table class="flow"><tr>
+      <td class="p">02</td>
+      <td class="k">정리</td>
+      <td class="t">오늘의 목표<em>찾는 일은 2회차에 했습니다. 오늘은 쓰는 일입니다.</em></td>
+    </tr><tr>
+      <td class="p">03</td>
+      <td class="k">핵심</td>
+      <td class="t">다섯 편을 찾으셨는데 글에는 왜 한 편도 없습니까.<em>과제에 '관련 문헌을 근거로 검토한다'는 문장은 있고, 그 문헌은 없습니다. 찾은 논문이 글로 넘어오지 않은 것입니다.…</em></td>
+    </tr><tr>
+      <td class="p">04</td>
+      <td class="k">정리</td>
+      <td class="t">어디서 멈추는가<em>대부분 두 번째에서 멈춥니다. 표는 논문이 아닙니다.</em></td>
+    </tr><tr>
+      <td class="p">05</td>
+      <td class="k">구간</td>
+      <td class="t">한 편에서 무엇을 꺼내는가<em>요약하지 않습니다. 꺼낼 것이 넷으로 정해져 있습니다.</em></td>
+    </tr><tr>
+      <td class="p">06</td>
+      <td class="k">실습</td>
+      <td class="t">논문에서 꺼내는 네 가지<em>요약하지 않습니다. 이 넷만 꺼냅니다.</em></td>
+    </tr><tr>
+      <td class="p">07</td>
+      <td class="k">정리</td>
+      <td class="t">논문 한 편 뜯어보기<em>같은 논문인데 왼쪽은 소개이고 오른쪽은 재료입니다.</em></td>
+    </tr><tr>
+      <td class="p">08</td>
+      <td class="k">비교</td>
+      <td class="t">옮겨 적기와 읽고 적기<em>정리표를 채울 때 이미 글이 시작됩니다. 옮겨 적으면 나중에 다시 써야 합니다.</em></td>
+    </tr><tr>
+      <td class="p">09</td>
+      <td class="k">구간</td>
+      <td class="t">꺼낸 것이 어느 절로 가는가<em>선행연구는 선행연구 절에만 쓰는 것이 아닙니다.</em></td>
+    </tr><tr>
+      <td class="p">10</td>
+      <td class="k">정리</td>
+      <td class="t">네 가지가 들어가는 자리<em>선행연구는 여섯 절 중 네 절에 들어갑니다.</em></td>
+    </tr><tr>
+      <td class="p">11</td>
+      <td class="k">비교</td>
+      <td class="t">다섯 편을 묶는 법<em>묶는 기준은 연도가 아니라 무엇을 쟀는가입니다.</em></td>
+    </tr><tr>
+      <td class="p">12</td>
+      <td class="k">구간</td>
+      <td class="t">인용하는 법<em>어디까지가 남의 말이고 어디부터가 내 말인지 표시합니다.</em></td>
+    </tr><tr>
+      <td class="p">13</td>
+      <td class="k">정리</td>
+      <td class="t">인용이 하는 세 가지 일<em>세 번째가 비어 있으면 내 연구가 왜 필요한지 설명되지 않습니다.</em></td>
+    </tr><tr>
+      <td class="p">14</td>
+      <td class="k">비교</td>
+      <td class="t">인용과 표절의 경계<em>그대로 쓰면 따옴표와 쪽수, 내 말로 바꾸면 출처만. 둘 다 출처는 들어갑니다.</em></td>
+    </tr><tr>
+      <td class="p">15</td>
+      <td class="k">구간</td>
+      <td class="t">한 문단으로 쓰기<em>네 문장이면 선행연구 절의 첫 문단이 됩니다.</em></td>
+    </tr><tr>
+      <td class="p">16</td>
+      <td class="k">실습</td>
+      <td class="t">한 문단 만드는 순서<em>네 문장이면 한 문단이 됩니다. 길게 쓰지 않습니다.</em></td>
+    </tr><tr>
+      <td class="p">17</td>
+      <td class="k">정리</td>
+      <td class="t">과제 — 한 문단 채우기<em>과제로 씁니다. 오늘은 채우는 법만 봅니다.</em></td>
+    </tr><tr>
+      <td class="p">18</td>
+      <td class="k">점검</td>
+      <td class="t">과제를 내기 전에<em>여덟 줄을 보고 내십시오.</em></td>
+    </tr></table></section>
+    </div>
+  </div>
+  <section class="two">
+    <div><h2>과제</h2><ol><li><b>선행연구 한 문단</b><span>오늘 본 네 칸을 이어 한 문단으로 만듭니다. 무리 1 · 무리 2 · 빈 자리 · 내 자리. 열 줄 안쪽이면 됩니다. 길게 쓰는 것이 목적이 아닙니다.</span></li><li><b>인용 문장 다섯 개</b><span>편마다 하나씩, 쪽수를 붙여서 적습니다. 그대로 옮긴 것은 따옴표를, 내 말로 바꾼 것은 출처만 붙입니다.</span></li><li><b>정리표 보완</b><span>2회차 여섯 칸에 쪽수 칸을 더합니다. 그리고 '무엇이 남았나' 칸을 편마다 한 줄로 채웁니다. 이 칸이 비어 있으면 빈 자리를 찾을 수 없습니다.</span></li></ol>
+      <div class="due">제출 — 5회차 세션 48시간 전까지 · 공유 폴더 업로드</div></div>
+    <div><h2>다음</h2><div class="next">
+      <b>05주차 연구 방법 고르기</b>
+      <p>내 질문에 맞는 방법은 무엇인가 · 선행연구에서 방법을 빌리는 법 · 양적과 질적 — 고르는 기준 · 각자 쓴 한 문단 함께 보기</p>
+      <p>미리 준비 — 선행연구 한 문단 · 인용 문장 다섯 개 · 정리표 보완본</p>
+    </div></div>
+  </section>
+</body></html>

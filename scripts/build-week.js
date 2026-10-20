@@ -217,9 +217,13 @@ function buildWeek(wk) {
       fontSize: 16, color: GRAPHITE, fontFace: FL, margin: 0, lineSpacingMultiple: 1.3, valign: "top",
     });
     rule(s, M, 4.86, 3.0, INK);
+    /* 수업일과 작성일을 표지에 적는다. 회차에 date(수업일) 또는
+       issued(작성일) 를 넣으면 그 줄이 생긴다. (2026-10-20 교수님 지시) */
     [["과목", COURSE.name + " · " + COURSE.audience],
+     ...(wk.date ? [["수업일", wk.date]] : []),
      ...(SHOW_TIMING ? [["오늘", SESSION + " — " + wk.ratio]] : []),
-     ["제출물", wk.output]]
+     ["제출물", wk.output],
+     ...(wk.issued ? [["작성일", wk.issued]] : [])]
       .forEach(([k, v], i) => {
         const y = 5.08 + i * 0.42;
         s.addText(k, {
