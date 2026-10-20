@@ -55,15 +55,20 @@ function buildWeek(wk) {
   pres.layout = "LAYOUT_WIDE";
   pres.author = "MIN.D";
   pres.company = "MIN.D";
-  pres.title = `${COURSE.name} · ${wk.n}주차 ${wk.title}`;
+  const WK_NO = String(wk.weekLabel || wk.n);
+  pres.title = `${COURSE.name} · ${WK_NO}주차 ${wk.title}`;
   pres.subject = COURSE.subject;
 
-  const DECK_TITLE = `${COURSE.name} · ${wk.n}주차 ${wk.title}`;
+  const DECK_TITLE = `${COURSE.name} · ${WK_NO}주차 ${wk.title}`;
   const SESSION = wk.session || COURSE.session;  // 주차별 오버라이드 허용
   // 학생용 덱에 시간 배분을 노출할지. false면 표지의 "오늘" 줄, 진행 시간표 장표,
   // 실습 단계의 분 표기가 빠진다. 시간표는 수업 요약·발표 대본에만 남는다.
   const SHOW_TIMING = COURSE.showTiming !== false;
-  const WEEK_TAG = "WEEK " + wk.n.padStart(2, "0");
+  /* 자료 번호와 학사 주차가 어긋난 회차가 있다 (서비스디자인은 4주차 자료를
+     4·5주차 통합본으로 만들면서 뒤가 한 칸씩 밀렸다). 파일 이름은 자료 번호를
+     그대로 두고, 장표에 찍히는 주차만 weekLabel 로 덮어쓴다. 학생이 보는 것은
+     학사 주차여야 한다. (2026-10-20 교수님 지시) */
+  const WEEK_TAG = "WEEK " + WK_NO.padStart(2, "0");
   let pageNo = 0;
 
   /* ── 원시 요소 ──────────────────────────────────────────── */
@@ -193,7 +198,7 @@ function buildWeek(wk) {
   {
     const s = light();
     rail(s);
-    s.addText(wk.n.padStart(2, "0"), {
+    s.addText(WK_NO.padStart(2, "0"), {
       x: SW - M - 4.0, y: 0.78, w: 4.0, h: 1.66,
       fontSize: 132, color: INK, fontFace: FB, align: "right", valign: "middle", margin: 0,
     });
