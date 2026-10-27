@@ -303,9 +303,14 @@ function buildWeek(wk) {
         x: M, y: 2.86, w: 8.6, h: 0.28,
         fontSize: 9.5, color: KICK_D, fontFace: F, charSpacing: 2.8, margin: 0, valign: "middle",
       });
+      /* 제목이 길면 두 줄이 되어 키커와 밑줄을 밟는다. 길이에 따라 줄이고
+         위로 올려 두 줄을 받는다. (2026-10-27 교수님 톤 수정으로 제목이
+         길어지면서 드러난 문제) */
+      const dLong = b.title.length > 12;
       s.addText(b.title, {
-        x: M, y: 3.16, w: 8.6, h: 0.86,
-        fontSize: 46, color: WHITE, fontFace: FB, margin: 0, valign: "middle",
+        x: M, y: dLong ? 3.02 : 3.16, w: 8.6, h: dLong ? 1.14 : 0.86,
+        fontSize: dLong ? 34 : 46, color: WHITE, fontFace: FB, margin: 0,
+        lineSpacingMultiple: 1.14, valign: "middle",
       });
       rule(s, M, 4.16, 2.4, WHITE);
       s.addText(b.desc, {
