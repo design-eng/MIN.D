@@ -209,7 +209,9 @@ function buildWeek(wk) {
     });
     s.addText(wk.title, {
       x: M, y: 2.40, w: 9.4, h: 1.34,
-      fontSize: wk.title.length > 13 ? 40 : 48,
+      /* 제목이 길면 두 줄이 되어 목표 문장과 붙는다. 한 단계 더 줄인다.
+         (2026-10-27 — 교수님이 고치신 제목이 27자가 되면서 드러난 문제) */
+      fontSize: wk.title.length > 24 ? 34 : wk.title.length > 13 ? 40 : 48,
       color: INK, fontFace: FB, margin: 0, lineSpacingMultiple: 1.12, valign: "top",
     });
     s.addText(wk.goal, {
