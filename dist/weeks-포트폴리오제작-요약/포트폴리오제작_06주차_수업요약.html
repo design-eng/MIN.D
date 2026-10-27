@@ -1,0 +1,144 @@
+<html><head><meta charset="utf-8"><title>포트폴리오제작 6주차 수업 요약</title>
+<style>
+  @page { size: A4; margin: 13mm 13mm; }
+  body { font-family:"Pretendard","Noto Sans KR",sans-serif; color:#111; font-size:9.1pt; line-height:1.48; }
+  .rail { display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:1.8px;
+          color:#8A8A8A; text-transform:uppercase; padding-bottom:5px; }
+  .rule { border-bottom:1.4px solid #111; }
+  h1 { font-size:18pt; font-weight:900; margin:9px 0 5px; letter-spacing:-.3px; }
+  .goal { font-size:10pt; color:#111; margin:0 0 9px; max-width:135mm; }
+  .meta { display:flex; flex-wrap:wrap; gap:3px 22px; font-size:8.4pt; color:#6E6E6E;
+          border-top:1px solid #DCDCDC; border-bottom:1px solid #DCDCDC; padding:5px 0; margin-bottom:11px; }
+  .meta b { color:#111; font-weight:500; }
+  h2 { font-size:7.5pt; letter-spacing:1.8px; text-transform:uppercase; color:#8A8A8A;
+       font-weight:400; margin:0 0 4px; }
+  section { margin-bottom:9px; }
+  .cols { display:flex; gap:8mm; align-items:flex-start; }
+  .cols .left { width:57mm; flex:none; }
+  .cols .right { flex:1; min-width:0; }
+  tr { break-inside:avoid; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:2.4px 6px 2.4px 0; border-bottom:1px solid #EDEDED; vertical-align:top; }
+  .sch td { word-break:keep-all; overflow-wrap:break-word; }
+  .sch td:first-child { width:20mm; font-variant-numeric:tabular-nums; font-weight:500; }
+  .sch td em { display:block; font-style:normal; color:#8A8A8A; font-size:7.8pt; margin-top:1px; }
+  .sch tr.rest td { color:#9B9B9B; font-weight:400; }
+  .flow td.p { width:7mm; color:#9B9B9B; font-variant-numeric:tabular-nums; font-size:8.4pt; }
+  .flow td.k { width:12mm; font-size:7.5pt; letter-spacing:1px; color:#8A8A8A; padding-top:5px; }
+  .flow td.t { font-weight:600; }
+  .flow td.t em { display:block; font-style:normal; font-weight:400; color:#6E6E6E;
+                  font-size:8.3pt; margin-top:0; line-height:1.4; }
+  .work { background:#F2F2F2; padding:6px 9px; margin-bottom:4px; }
+  .work b { font-size:10pt; } .work span { color:#6E6E6E; font-size:8.4pt; margin-left:7px; }
+  .work p { margin:3px 0 0; font-size:8.6pt; color:#111; }
+  ol { margin:0; padding:0; list-style:none; counter-reset:h; }
+  ol li { counter-increment:h; padding:3px 0 3px 16px; position:relative; border-bottom:1px solid #EDEDED; }
+  ol li::before { content:counter(h); position:absolute; left:0; top:4px;
+                  font-size:8pt; color:#9B9B9B; font-variant-numeric:tabular-nums; }
+  ol li b { font-weight:600; } ol li span { display:block; color:#6E6E6E; font-size:8.6pt; }
+  .due { margin-top:5px; padding-top:5px; border-top:1.4px solid #111; font-weight:600; font-size:9.6pt; }
+  .next { background:#111; color:#fff; padding:8px 11px; }
+  .next b { font-size:10.5pt; } .next p { margin:3px 0 0; color:#B8B8B8; font-size:8.6pt; }
+  /* 본문 장표가 14장을 넘으면 우측 열이 한 장을 넘긴다. 그 주차만 조판을 조인다. */
+  body.dense { font-size:8.7pt; line-height:1.4; }
+  body.dense .flow td { padding:1.8px 6px 1.8px 0; }
+  body.dense .flow td.t em { font-size:7.8pt; line-height:1.32; }
+  body.dense .sch td { padding:1.9px 6px 1.9px 0; }
+  body.dense h1 { font-size:16.5pt; }
+  body.dense .goal { font-size:9.4pt; }
+  body.dense section { margin-bottom:7px; }
+  body.dense .work { padding:5px 8px; }
+  /* 16장을 넘으면 한 단계 더 조인다 — A4 한 장을 넘기지 않기 위해서다. */
+  body.denser { font-size:8.3pt; line-height:1.34; }
+  body.denser .flow td { padding:1.2px 5px 1.2px 0; }
+  body.denser .flow td.t em { font-size:7.4pt; line-height:1.26; }
+  body.denser .sch td { padding:1.3px 5px 1.3px 0; }
+  body.denser h1 { font-size:15.5pt; }
+  body.denser .goal { font-size:9pt; }
+  body.denser section { margin-bottom:5px; }
+  body.denser h2 { margin-bottom:3px; }
+  body.denser .work { padding:4px 7px; margin-bottom:3px; }
+  body.denser .work p { font-size:8.2pt; }
+  body.denser ol li { padding:2px 0 2px 15px; }
+  body.denser ol li span { font-size:8.2pt; }
+  body.denser .next { padding:6px 9px; }
+  /* 18장을 넘으면 한 단계 더. A4 한 장이 이 문서의 조건이다. */
+  body.densest { font-size:7.9pt; line-height:1.28; }
+  body.densest .flow td { padding:0.8px 4px 0.8px 0; }
+  body.densest .flow td.t em { font-size:7pt; line-height:1.22; }
+  body.densest .sch td { padding:0.9px 4px 0.9px 0; }
+  body.densest h1 { font-size:14.5pt; }
+  body.densest .goal { font-size:8.6pt; }
+  body.densest section { margin-bottom:4px; }
+  body.densest .work { padding:3px 6px; margin-bottom:2px; }
+  body.densest ol li { padding:1.4px 0 1.4px 14px; }
+  .two { display:flex; gap:9mm; align-items:flex-start; break-inside:avoid; }
+  .two > * { flex:1; min-width:0; }
+</style></head><body class="">
+  <div class="rail"><span>포트폴리오제작 · 실내·산업디자인학과 3학년</span><span>WEEK 06 · 수업 요약</span></div>
+  <div class="rule"></div>
+  <h1>중간 발표 — 지금까지 만든 것을 보인다</h1>
+  <p class="goal">각자 만든 것을 5분씩 보이고, 남은 세 회차에 무엇을 고칠지 정합니다.</p>
+  <div class="meta">
+    <span><b>진행</b> 120분 · 안내 10분 · 발표 80분 · 정리 20분 · 휴식 10분</span>
+    <span><b>산출물</b> 5분 발표 · 동료 의견 받아 적은 것 · 수정 계획표</span>
+  </div>
+
+  <div class="cols">
+    <div class="left">
+      <section><h2>진행</h2><table class="sch"><tr class=""><td>00:00–00:10</td><td>발표 순서 · 듣는 사람이 할 일<em>안내</em></td></tr><tr class=""><td>00:10–00:55</td><td>발표 1부 — 1인 5분<em>발표 + 즉시 코멘트</em></td></tr><tr class="rest"><td>00:55–01:05</td><td>휴식</td></tr><tr class=""><td>01:05–01:40</td><td>발표 2부 — 1인 5분<em>발표 + 즉시 코멘트</em></td></tr><tr class=""><td>01:40–01:55</td><td>남은 세 회차에 무엇을 할까<em>전체 정리</em></td></tr><tr class=""><td>01:55–02:00</td><td>과제 안내<em>안내</em></td></tr></table></section>
+      <section><h2>실습</h2>
+    <div class="work">
+      <b>5분에 말하는 네 가지</b>
+      <span>넷째를 빼지 마십시오. 오늘 가장 중요한 말입니다.</span>
+      <p>1 누구를 위한 포트폴리오인가  ·  2 어떤 프로젝트를 어떤 순서로  ·  3 대표 프로젝트 세 지면  ·  4 지금 막힌 것</p>
+    </div>
+    <div class="work">
+      <b>수정 계획표 만드는 순서</b>
+      <span>받은 말을 전부 적되, 고칠 것은 골라야 합니다.</span>
+      <p>1 받은 말을 전부 적는다  ·  2 고칠 것과 안 고칠 것으로 나눈다  ·  3 고칠 것을 회차에 나눈다  ·  4 7회차 전까지 할 것에 표시한다</p>
+    </div></section>
+    </div>
+    <div class="right">
+      <section><h2>오늘 다루는 것 — 본문 7장 (표지·과제 포함 9장)</h2>
+        <table class="flow"><tr>
+      <td class="p">02</td>
+      <td class="k">정리</td>
+      <td class="t">오늘 하는 일<em>완성도를 보는 자리가 아닙니다. 지금 어디까지 왔는지 보는 자리입니다.</em></td>
+    </tr><tr>
+      <td class="p">03</td>
+      <td class="k">실습</td>
+      <td class="t">5분에 말하는 네 가지<em>넷째를 빼지 마십시오. 오늘 가장 중요한 말입니다.</em></td>
+    </tr><tr>
+      <td class="p">04</td>
+      <td class="k">비교</td>
+      <td class="t">5분을 쓰는 법<em>5분은 짧습니다. 무엇을 먼저 보일지 정하고 들어오십시오.</em></td>
+    </tr><tr>
+      <td class="p">05</td>
+      <td class="k">정리</td>
+      <td class="t">듣는 사람이 할 일<em>적으면서 듣습니다. 다 듣고 나서 적으면 기억이 안 납니다.</em></td>
+    </tr><tr>
+      <td class="p">06</td>
+      <td class="k">정리</td>
+      <td class="t">남은 세 회차<em>만들 시간은 두 번뿐입니다. 고칠 것을 골라야 합니다.</em></td>
+    </tr><tr>
+      <td class="p">07</td>
+      <td class="k">실습</td>
+      <td class="t">수정 계획표 만드는 순서<em>받은 말을 전부 적되, 고칠 것은 골라야 합니다.</em></td>
+    </tr><tr>
+      <td class="p">08</td>
+      <td class="k">점검</td>
+      <td class="t">오늘 가져가는 것<em>여섯 줄을 확인하고 가십시오.</em></td>
+    </tr></table></section>
+    </div>
+  </div>
+  <section class="two">
+    <div><h2>과제</h2><ol><li><b>수정 계획표</b><span>오늘 받은 말을 전부 적고, 고칠 것과 안 고칠 것으로 나눕니다. 고칠 것은 7회차에 할지 8회차에 할지 적습니다. 안 고칠 것에는 왜 안 고치는지 한 줄 붙입니다.</span></li><li><b>남은 프로젝트 지면</b><span>대표 프로젝트 세 지면은 만드셨으니, 나머지 프로젝트도 같은 구조로 지면을 만듭니다. 색과 서체는 아직 신경 쓰지 않습니다.</span></li><li><b>레퍼런스 20장</b><span>7회차 재료입니다. 포트폴리오 사례가 아니라 색 · 글자 · 사진 분위기를 보는 자료입니다. 한 폴더에 모아 두세요.</span></li></ol>
+      <div class="due">제출 — 11월 10일(화) 수업 전까지 · 클래스룸 업로드</div></div>
+    <div><h2>다음</h2><div class="next">
+      <b>07주차 색과 편집</b>
+      <p>색과 글자를 한 벌로 정하기 · 지면 사이의 통일 · 여백과 정렬 · 레퍼런스에서 기준 뽑기</p>
+      <p>미리 준비 — 수정 계획표 · 남은 프로젝트 지면 · 레퍼런스 20장</p>
+    </div></div>
+  </section>
+</body></html>
