@@ -312,9 +312,10 @@ function buildWeek(wk) {
         fontSize: dLong ? 34 : 46, color: WHITE, fontFace: FB, margin: 0,
         lineSpacingMultiple: 1.14, valign: "middle",
       });
-      rule(s, M, 4.16, 2.4, WHITE);
+      /* 두 줄 제목이면 밑줄과 설명도 함께 내린다. */
+      rule(s, M, dLong ? 4.34 : 4.16, 2.4, WHITE);
       s.addText(b.desc, {
-        x: M, y: 4.38, w: 7.6, h: 0.8,
+        x: M, y: dLong ? 4.56 : 4.38, w: 7.6, h: 0.8,
         fontSize: 13.5, color: BODY_D, fontFace: FL, margin: 0, lineSpacingMultiple: 1.34, valign: "top",
       });
       edgeCaption(s, "SECTION " + b.num, "7A7A7A");
